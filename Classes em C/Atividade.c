@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
+#include <locale.h>
 
 
 //Tipo booleano
@@ -28,12 +29,14 @@ String stringBuilder(char teste[]){
     char tmp[TAMSTRING];
 
     int posAtual = 0;
-    bool comecouFrase = false;
     for(int i = 0; i < TAMSTRING; i++){
-        if((int) teste[i] > 31 && (int) teste[i] < 127){  //32 ate 126
-            tmp[posAtual] = teste[i];
+        if(teste[i] == '\0'){
+            i = TAMSTRING;
         }
-        posAtual++;
+        else if((int) teste[i] > 2){  //Remover os comandos de teclado
+            tmp[posAtual] = teste[i];
+            posAtual++;
+        }
     }
 
     String final;
@@ -60,14 +63,25 @@ void escreverString(String entrada){
 
 int main(){
 
-    char teste[5];
+    //Consertando codificador de texto
+    setlocale(LC_ALL, "pt_BR.utf8");
+    
+    char teste[100];
 
-    teste[0] = 'a';
-    teste[1] = 'b';
-    teste[2] = 'c';
+    printf("%c\n", (char) -1);
+
+    fgets(teste, 100, stdin);
+
+    
+
 
     String entrada = stringBuilder(teste);
 
-    //escreverString(entrada);
+    escreverString(entrada);
 
-}
+    printf("O tamanho da string é %d", entrada.length);
+
+
+    printf("\n");
+    return 0;
+}   
