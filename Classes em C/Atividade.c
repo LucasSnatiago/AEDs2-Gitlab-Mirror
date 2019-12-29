@@ -1,5 +1,4 @@
 //Bibliotecas para serem incluidas
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -26,26 +25,15 @@ typedef struct string{
 
 String stringBuilder(char teste[]){
 
-    char tmp[TAMSTRING];
-
     int posAtual = 0;
-    for(int i = 0; i < TAMSTRING; i++){
-        if(teste[i] == '\0'){
-            i = TAMSTRING;
-        }
-        else if((int) teste[i] > 2){  //Remover os comandos de teclado
-            tmp[posAtual] = teste[i];
-            posAtual++;
-        }
-    }
 
     String final;
 
-    for(int i = 0; i < posAtual; i++){
-        final.string[i] = tmp[i];
-    }    
-
-    final.length = posAtual;
+    while(teste[posAtual] != '\0'){
+        final.string[posAtual] = teste[posAtual];
+        posAtual++;
+    }  
+    final.length = posAtual-1;
 
     return final;
 }
@@ -68,12 +56,7 @@ int main(){
     
     char teste[100];
 
-    printf("%c\n", (char) -1);
-
     fgets(teste, 100, stdin);
-
-    
-
 
     String entrada = stringBuilder(teste);
 

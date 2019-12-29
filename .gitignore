@@ -1,3 +1,4 @@
 #Arquivos para serem excluidos do envio
 *.out
 .vscode
+*.class
