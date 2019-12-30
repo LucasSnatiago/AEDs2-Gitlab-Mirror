@@ -8,8 +8,9 @@ if not os.path.exists(nomeArquivoEntrada):
     raise FileNotFoundError("Arquivo inexistente!")
 
 
-nomeArquivo = '.'.join(nomeArquivoEntrada.split('.')[:-1])
-extensaoArquivo = nomeArquivoEntrada.split(".")[-1]
+nomeArquivo = nomeArquivoEntrada.split('.')
+extensaoArquivo = nomeArquivo.pop()
+nomeArquivo = '.'.join(nomeArquivo)
 
 print(nomeArquivo)
 print(extensaoArquivo)
@@ -17,5 +18,3 @@ print(extensaoArquivo)
 nomeArquivoSaida = str(nomeArquivo) + str(".cpp")
 
 arquivoSaida = open(nomeArquivoSaida, 'w')
-
-
