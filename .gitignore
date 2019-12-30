@@ -2,3 +2,7 @@
 *.out
 .vscode
 *.class
+
+#Arquivos de entrada
+*.in
+*.out

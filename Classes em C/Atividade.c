@@ -11,29 +11,35 @@
 #define true 1
 #define false 0
 
-
-//Tipo STRING
-
-#define TAMSTRING 50000
+/*
+    CRIACAO DO TIPO STRING EM C
+    Criado por Lucas Santiago
+    Data: 30/12/19
+    Versao: 2.0.0
+*/
 
 typedef struct string{
-    
-    char string[TAMSTRING];
+    char* string;
     int length;
-
 }String;
 
 String stringBuilder(char teste[]){
 
-    int posAtual = 0;
+    int buffer = 0;
 
+    while(teste[buffer] != '\0'){
+        buffer++;
+    }
+
+    char* tmp = (char*) malloc(sizeof(char) * buffer); 
+
+    int posAtual;
     String final;
-
-    while(teste[posAtual] != '\0'){
-        final.string[posAtual] = teste[posAtual];
-        posAtual++;
-    }  
-    final.length = posAtual-1;
+    for(posAtual = 0; posAtual < buffer; posAtual++) {
+        tmp[posAtual] = teste[posAtual];
+    }
+    final.string = tmp;
+    final.length = buffer-1;
 
     return final;
 }
@@ -48,6 +54,7 @@ void escreverString(String entrada){
 
 }
 
+////////////////////    FIM DO TIPO STRING   ////////////////////
 
 int main(){
 
