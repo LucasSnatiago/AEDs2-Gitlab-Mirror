@@ -12,9 +12,16 @@ nomeArquivo = nomeArquivoEntrada.split('.')
 extensaoArquivo = nomeArquivo.pop()
 nomeArquivo = '.'.join(nomeArquivo)
 
-print(nomeArquivo)
-print(extensaoArquivo)
-
 nomeArquivoSaida = str(nomeArquivo) + str(".cpp")
 
+arquivoEntrada = open(nomeArquivoEntrada, 'r')
 arquivoSaida = open(nomeArquivoSaida, 'w')
+
+
+for linha in arquivoEntrada:
+    
+
+    arquivoSaida.write(linha) 
+
+arquivoEntrada.close()
+arquivoSaida.close()

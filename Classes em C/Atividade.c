@@ -25,7 +25,7 @@ typedef struct string{
 
 String stringBuilder(char teste[]){
 
-    int buffer = 0;
+    long long int buffer = 0;
 
     while(teste[buffer] != '\0'){
         buffer++;
