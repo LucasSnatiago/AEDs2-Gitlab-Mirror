@@ -27,7 +27,9 @@ int main(){
 
     String entrada = stringBuilder(teste);
 
-    escreverString(entrada);
+    String cifrada = cifraCesar(entrada, 5);
+
+    escreverString(cifrada);
 
     printf("O tamanho da string é %d", entrada.length);
 
