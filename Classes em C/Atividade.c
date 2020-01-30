@@ -27,9 +27,10 @@ int main(){
 
     String entrada = stringBuilder(teste);
 
-    String cifrada = cifraCesar(entrada, 5);
+    char resultado[1000];
 
-    escreverString(cifrada);
+    procurarItens(entrada, "oi", "!", resultado);
+    printf("%s\n", resultado);
 
     printf("O tamanho da string é %d", entrada.length);
 

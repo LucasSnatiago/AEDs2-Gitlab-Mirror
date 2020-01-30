@@ -2,8 +2,19 @@
     CRIACAO DO TIPO STRING EM C
     Criado por Lucas Santiago
     Data: 30/12/19
-    Versao: 2.1.1
+    Versao: 2.2.0
 */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define bool short
+#define true 1
+#define false 0
+
+#define debug(x) printf(x)
+
 
 typedef struct string{  //Criacao da estrutura de uma String
     char* string;
@@ -109,4 +120,58 @@ String cifraCesar(String entrada, int chave){  //Cifra as mensagens recebidas co
 }
 
 
-////////////////////    FIM DO TIPO STRING   ////////////////////
+//Funcao para encontrar um texto em uma frase
+bool find(char texto[], int textoLength, char procura[], int *resp){
+  bool encontrar = false;
+  long int tam = textoLength;
+  int tamProcura = strlen(procura);
+  int posProcura = -1;
+  bool table = true;
+
+  for(long int i = 0; i < tam; i++){
+    if(texto[i] == procura[0] && table){
+      encontrar = true;
+      table = false;
+      for(int j = 0; j < tamProcura; j++){
+        if(texto[i+j] != procura[j]){
+          encontrar = false;
+          j = tamProcura;
+        }
+        else{
+          table = true;
+        }
+      }
+    }
+    if(encontrar){
+      posProcura = i + tamProcura;
+      i = tam;
+    }
+  }
+  *resp = posProcura;
+  return encontrar;
+}
+
+
+bool procurarItens(String entrada, char procurarInicio[], char procurarFinal[], char resp[]){
+  int posI;
+  int posF;
+  bool encontrar = false;
+  encontrar = find(entrada.string, entrada.length, procurarInicio, &posI);
+  if(encontrar){
+    find(&entrada.string[posI], entrada.length,procurarFinal, &posF);
+  }
+  int j = 0;
+
+    if(encontrar){
+        
+        for(int i = posI; i < posI+posF-strlen(procurarFinal); i++){
+            resp[j] = entrada.string[i];
+            j++;
+        }
+    
+        resp[j] = '\0';
+    }
+
+
+  return encontrar;
+}
