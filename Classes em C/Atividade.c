@@ -1,7 +1,6 @@
 //Bibliotecas para serem incluidas
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 #include <time.h>
 #include <locale.h>
 
