@@ -70,7 +70,7 @@ int letrasMinusculas(String entrada){  //Retorna o numero de letras minusculas d
     int quantMinusculas = 0;
 
     for(int i = 0; i < entrada.length; i++){
-        if(entrada.string[i] >= 'a' && entrada.string <= 'z'){
+        if(entrada.string[i] >= 'a' && entrada.string[i] <= 'z'){
             quantMinusculas++;
         }
     }
