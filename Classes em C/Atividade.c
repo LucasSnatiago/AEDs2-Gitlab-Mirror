@@ -15,7 +15,21 @@
 #include "String.h"
 
 
+#define DEBUGING 1
+
+#if DEBUGING == 1
+    #define debug printf 
+#else
+    #define debug //
+#endif
+
+
 int main(){
+
+    #if DEBUGING == 1
+        printf("--------------------------------\n\tDebuging ativado\n--------------------------------\n");
+    #endif
+
 
     //Consertando codificador de texto
     setlocale(LC_ALL, "pt_BR.utf8");
@@ -25,13 +39,13 @@ int main(){
     fgets(teste, 100, stdin);
 
     String entrada = stringBuilder(teste);
+    String entradaCopia = stringBuilder(teste);
 
-    char resultado[1000];
+    String final1 = substituirPrimeiraOcorrencia(entrada, "oi", "NARU");
+    String final2 = substituirTexto(entrada, "oi", "NARU");
 
-    procurarItens(entrada, "oi", "!", resultado);
-    printf("%s\n", resultado);
-
-    printf("O tamanho da string é %d", entrada.length);
+    escreverString(final1);
+    escreverString(final2);
 
 
     printf("\n");

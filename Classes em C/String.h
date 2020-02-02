@@ -1,18 +1,18 @@
 /*
     CRIACAO DO TIPO STRING EM C
     Criado por Lucas Santiago
-    Data: 30/12/19
-    Versao: 2.2.0
+    Data de criacao: 30/12/19
+    Versao: 2.3.0
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <limits.h>
 
 #define bool short
 #define true 1
 #define false 0
-
-#define debug(x) printf(x)
 
 
 typedef struct string{  //Criacao da estrutura de uma String
@@ -21,9 +21,14 @@ typedef struct string{  //Criacao da estrutura de uma String
 }String;
 
 
+char* char2String(){  //Funcao para retornar a maior cadeia de char possivel para o tipo int
+    return (char*) malloc(sizeof(char) * INT_MAX);
+}
+
+
 String stringBuilder(char entrada[]){  //Constroi o tipo String
 
-    long long int buffer = 0;
+    int buffer = 0;
 
     while(entrada[buffer] != '\0'){
         buffer++;
@@ -120,7 +125,7 @@ String cifraCesar(String entrada, int chave){  //Cifra as mensagens recebidas co
 
 
 //Funcao para encontrar um texto em uma frase
-bool find(char texto[], int textoLength, char procura[], int *resp){
+bool _find(char texto[], int textoLength, char procura[], int *resp){
   bool encontrar = false;
   long int tam = textoLength;
   int tamProcura = strlen(procura);
@@ -151,13 +156,13 @@ bool find(char texto[], int textoLength, char procura[], int *resp){
 }
 
 
-bool procurarItens(String entrada, char procurarInicio[], char procurarFinal[], char resp[]){
+bool procurarItens(String entrada, char procurarInicio[], char procurarFinal[], char resp[]){  //Funcao que procura um texto dentro de outro maior
   int posI;
   int posF;
   bool encontrar = false;
-  encontrar = find(entrada.string, entrada.length, procurarInicio, &posI);
+  encontrar = _find(entrada.string, entrada.length, procurarInicio, &posI);
   if(encontrar){
-    find(&entrada.string[posI], entrada.length,procurarFinal, &posF);
+    _find(&entrada.string[posI], entrada.length,procurarFinal, &posF);
   }
   int j = 0;
 
@@ -173,4 +178,82 @@ bool procurarItens(String entrada, char procurarInicio[], char procurarFinal[], 
 
 
   return encontrar;
+}
+
+
+int _posProcura(String entrada, const char texto[]){  //Procura a posicao da primeira ocorrencia de um texto
+    int pos = -1;
+    bool achou = false;
+    int tamanhoEntrada = entrada.length;
+    int tamanhoTexto = strlen(texto);
+
+    for(int i = 0; i < tamanhoEntrada && !achou; i++){
+        
+        if(entrada.string[i] == texto[0]){
+
+            for(int j = 1; j < tamanhoTexto; j++){
+
+                if(entrada.string[i+j] != texto[j]){
+                    j = tamanhoTexto;
+                    achou = false;
+                }
+                else{
+                    achou = true;
+                    pos = i;
+                }
+            }
+        }
+    }
+
+    return pos;
+}
+
+
+String substituirPrimeiraOcorrencia(String entrada, const char texto[], const char substituirPor[]){  //Substituir a primeira ocorrencia de um texto por outro na entrada
+    char* tmp = char2String();
+    int tamanhoTexto = strlen(texto);
+    int tamanhoSubstituicao = strlen(substituirPor);
+    int tamanhoEntrada = entrada.length;
+    int tamanhoFinal = tamanhoEntrada - tamanhoTexto + tamanhoSubstituicao;
+
+    int posOcorrencia = _posProcura(entrada, texto);
+
+    String final;
+
+    if(posOcorrencia != -1){
+        for(int i = 0; i < posOcorrencia; i++){
+            tmp[i] = entrada.string[i];
+        }
+
+        for(int i = 0; i < tamanhoSubstituicao; i++){
+            tmp[i+posOcorrencia] = substituirPor[i];
+        }
+
+        for(int i = posOcorrencia; i < tamanhoEntrada - tamanhoTexto + 1; i++){
+            tmp[i+tamanhoSubstituicao] = entrada.string[i+tamanhoTexto];
+        }
+
+        tmp[tamanhoFinal+1] = '\0';
+
+        final = stringBuilder(tmp);
+    }
+    else{
+        final = entrada;
+    }   
+    
+    return final;
+}
+
+
+String substituirTexto(String entrada, const char procurar[], const char alterarPor[]){  //Substituir todas as ocorrencias de um texto 
+    String final = entrada;
+    char* enderecoFinal;
+
+    do{
+        enderecoFinal = &final.string[0];
+        final = substituirPrimeiraOcorrencia(final, procurar, alterarPor);
+        debug("%p\t\a%p\n", enderecoFinal, &final);
+    }while (&final.string[0] != enderecoFinal);  //Verifica se o endereço do texto mudou (se mudou, houve alteracao no texto)
+    
+    return final;
 }
