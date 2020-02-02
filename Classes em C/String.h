@@ -2,7 +2,7 @@
     CRIACAO DO TIPO STRING EM C
     Criado por Lucas Santiago
     Data de criacao: 30/12/19
-    Versao: 2.3.0
+    Versao: 3.0.1
 */
 
 #include <stdio.h>
@@ -14,6 +14,15 @@
 #define true 1
 #define false 0
 
+#define DEBUGING 1
+
+//Debug de codigo
+#if DEBUGING == 1
+    #define debug printf 
+#else
+    #define debug //
+#endif
+
 
 typedef struct string{  //Criacao da estrutura de uma String
     char* string;
@@ -21,12 +30,18 @@ typedef struct string{  //Criacao da estrutura de uma String
 }String;
 
 
+void freeString(String** entrada){  //Limpar uma String da memoria
+    free(*entrada);
+    *entrada = NULL;
+}
+
+
 char* char2String(){  //Funcao para retornar a maior cadeia de char possivel para o tipo int
     return (char*) malloc(sizeof(char) * INT_MAX);
 }
 
 
-String stringBuilder(char entrada[]){  //Constroi o tipo String
+String* stringBuilder(char entrada[]){  //Constroi o tipo String
 
     int buffer = 0;
 
@@ -37,42 +52,46 @@ String stringBuilder(char entrada[]){  //Constroi o tipo String
     char* tmp = (char*) malloc(sizeof(char) * buffer); 
 
     int posAtual;
-    String final;
+    String* final = (String*) malloc(sizeof(String));
     for(posAtual = 0; posAtual < buffer; posAtual++) {
         tmp[posAtual] = entrada[posAtual];
     }
-    final.string = tmp;
-    final.length = buffer-1;
+    final->string = tmp;
+    final->length = buffer-1;
 
     return final;
 }
 
 
-String stringBuilderX(char entrada[], int tamanhoString){  //Constroi o tipo String, já com o tamanho definido (NÃO RECOMENDADO, USO EXPERIMENTAL)
+String* stringBuilderX(char entrada[], int tamanhoString){  //Constroi o tipo String, já com o tamanho definido (NÃO RECOMENDADO, USO EXPERIMENTAL)
 
-    String final;
-    final.string = entrada;
-    final.length = tamanhoString;
+    String* final;
+    final->string = entrada;
+    final->length = tamanhoString;
 
     return final;
 }
 
 
-void escreverString(String entrada){  //Escreve uma String na tela
+void escreverString(String* entrada){  //Escreve uma String na tela
     
-    for(int i = 0; i < entrada.length; i++){
-        printf("%c", entrada.string[i]);
+    if(entrada){  //Se a String existir em memoria escreva
+        debug("escreverString: Variavel encontrada em memoria!\n");
+        for(int i = 0; i < entrada->length; i++){
+            printf("%c", entrada->string[i]);
+        }
+        printf("\n");
+    }else{
+        debug("escreverString: Variavel não existente em memória!\n");
     }
-    printf("\n");
-
 }
 
 
-int letrasMaiusculas(String entrada){  //Retorna o numero de letras maiusculas de uma String
+int letrasMaiusculas(String* entrada){  //Retorna o numero de letras maiusculas de uma String
     int quantMaiusculas = 0;
 
-    for(int i = 0; i < entrada.length; i++){
-        if(entrada.string[i] >= 'A' && entrada.string[i] <= 'Z'){
+    for(int i = 0; i < entrada->length; i++){
+        if(entrada->string[i] >= 'A' && entrada->string[i] <= 'Z'){
             quantMaiusculas++;
         }
     }
@@ -81,11 +100,11 @@ int letrasMaiusculas(String entrada){  //Retorna o numero de letras maiusculas d
 }
 
 
-int letrasMinusculas(String entrada){  //Retorna o numero de letras minusculas de uma String
+int letrasMinusculas(String* entrada){  //Retorna o numero de letras minusculas de uma String
     int quantMinusculas = 0;
 
-    for(int i = 0; i < entrada.length; i++){
-        if(entrada.string[i] >= 'a' && entrada.string[i] <= 'z'){
+    for(int i = 0; i < entrada->length; i++){
+        if(entrada->string[i] >= 'a' && entrada->string[i] <= 'z'){
             quantMinusculas++;
         }
     }
@@ -94,14 +113,14 @@ int letrasMinusculas(String entrada){  //Retorna o numero de letras minusculas d
 }
 
 
-short palindromo(String entrada){  //Retorna 1 se for palindromo, caso contrario 0
-    short ehPalindromo = 1;
+bool palindromo(String* entrada){  //Retorna 1 se for palindromo, caso contrario 0
+    bool ehPalindromo = 1;
 
-    int j = entrada.length;
-    for(int i = 0; i < entrada.length; i++, j--){
-        if(entrada.string[i] != entrada.string[j]){
+    int j = entrada->length;
+    for(int i = 0; i < entrada->length; i++, j--){
+        if(entrada->string[i] != entrada->string[j]){
             ehPalindromo = 0;
-            i = entrada.length;
+            i = entrada->length;
         }
     }
 
@@ -109,16 +128,16 @@ short palindromo(String entrada){  //Retorna 1 se for palindromo, caso contrario
 } 
 
 
-String cifraCesar(String entrada, int chave){  //Cifra as mensagens recebidas com a cifra de Cesar
-    char* mensagemCifrada = (char*) malloc(sizeof(char) * entrada.length);
+String* cifraCesar(String* entrada, int chave){  //Cifra as mensagens recebidas com a cifra de Cesar
+    char* mensagemCifrada = (char*) malloc(sizeof(char) * entrada->length);
 
     char letra;
-    for(int i = 0; i < entrada.length; i++){
-        letra = (char) ((int) entrada.string[i] + chave);
+    for(int i = 0; i < entrada->length; i++){
+        letra = (char) ((int) entrada->string[i] + chave);
         mensagemCifrada[i] = letra;
     } 
 
-    String cifra = stringBuilderX(mensagemCifrada, entrada.length);
+    String* cifra = stringBuilderX(mensagemCifrada, entrada->length);
 
     return cifra;
 }
@@ -156,20 +175,20 @@ bool _find(char texto[], int textoLength, char procura[], int *resp){
 }
 
 
-bool procurarItens(String entrada, char procurarInicio[], char procurarFinal[], char resp[]){  //Funcao que procura um texto dentro de outro maior
+bool procurarItens(String* entrada, char procurarInicio[], char procurarFinal[], char resp[]){  //Funcao que procura um texto dentro de outro maior
   int posI;
   int posF;
   bool encontrar = false;
-  encontrar = _find(entrada.string, entrada.length, procurarInicio, &posI);
+  encontrar = _find(entrada->string, entrada->length, procurarInicio, &posI);
   if(encontrar){
-    _find(&entrada.string[posI], entrada.length,procurarFinal, &posF);
+    _find(&entrada->string[posI], entrada->length,procurarFinal, &posF);
   }
   int j = 0;
 
     if(encontrar){
         
         for(int i = posI; i < posI+posF-strlen(procurarFinal); i++){
-            resp[j] = entrada.string[i];
+            resp[j] = entrada->string[i];
             j++;
         }
     
@@ -181,19 +200,19 @@ bool procurarItens(String entrada, char procurarInicio[], char procurarFinal[], 
 }
 
 
-int _posProcura(String entrada, const char texto[]){  //Procura a posicao da primeira ocorrencia de um texto
+int _posProcura(String* entrada, const char texto[]){  //Procura a posicao da primeira ocorrencia de um texto
     int pos = -1;
     bool achou = false;
-    int tamanhoEntrada = entrada.length;
+    int tamanhoEntrada = entrada->length;
     int tamanhoTexto = strlen(texto);
 
     for(int i = 0; i < tamanhoEntrada && !achou; i++){
         
-        if(entrada.string[i] == texto[0]){
+        if(entrada->string[i] == texto[0]){
 
             for(int j = 1; j < tamanhoTexto; j++){
 
-                if(entrada.string[i+j] != texto[j]){
+                if(entrada->string[i+j] != texto[j]){
                     j = tamanhoTexto;
                     achou = false;
                 }
@@ -209,20 +228,20 @@ int _posProcura(String entrada, const char texto[]){  //Procura a posicao da pri
 }
 
 
-String substituirPrimeiraOcorrencia(String entrada, const char texto[], const char substituirPor[]){  //Substituir a primeira ocorrencia de um texto por outro na entrada
+String* substituirPrimeiraOcorrencia(String* entrada, const char texto[], const char substituirPor[]){  //Substituir a primeira ocorrencia de um texto por outro na entrada
     char* tmp = char2String();
     int tamanhoTexto = strlen(texto);
     int tamanhoSubstituicao = strlen(substituirPor);
-    int tamanhoEntrada = entrada.length;
+    int tamanhoEntrada = entrada->length;
     int tamanhoFinal = tamanhoEntrada - tamanhoTexto + tamanhoSubstituicao;
 
     int posOcorrencia = _posProcura(entrada, texto);
 
-    String final;
+    String* final;
 
     if(posOcorrencia != -1){
         for(int i = 0; i < posOcorrencia; i++){
-            tmp[i] = entrada.string[i];
+            tmp[i] = entrada->string[i];
         }
 
         for(int i = 0; i < tamanhoSubstituicao; i++){
@@ -230,7 +249,7 @@ String substituirPrimeiraOcorrencia(String entrada, const char texto[], const ch
         }
 
         for(int i = posOcorrencia; i < tamanhoEntrada - tamanhoTexto + 1; i++){
-            tmp[i+tamanhoSubstituicao] = entrada.string[i+tamanhoTexto];
+            tmp[i+tamanhoSubstituicao] = entrada->string[i+tamanhoTexto];
         }
 
         tmp[tamanhoFinal+1] = '\0';
@@ -245,15 +264,15 @@ String substituirPrimeiraOcorrencia(String entrada, const char texto[], const ch
 }
 
 
-String substituirTexto(String entrada, const char procurar[], const char alterarPor[]){  //Substituir todas as ocorrencias de um texto 
-    String final = entrada;
+String* substituirTexto(String* entrada, const char procurar[], const char alterarPor[]){  //Substituir todas as ocorrencias de um texto 
+    String* final = entrada;
     char* enderecoFinal;
 
     do{
-        enderecoFinal = &final.string[0];
+        enderecoFinal = &final->string[0];
         final = substituirPrimeiraOcorrencia(final, procurar, alterarPor);
-        debug("%p\t\a%p\n", enderecoFinal, &final);
-    }while (&final.string[0] != enderecoFinal);  //Verifica se o endereço do texto mudou (se mudou, houve alteracao no texto)
+        debug("substituirTexto: %p\t\a%p\n", enderecoFinal, &final);
+    }while (&final->string[0] != enderecoFinal);  //Verifica se o endereço do texto mudou (se mudou, houve alteracao no texto)
     
     return final;
 }

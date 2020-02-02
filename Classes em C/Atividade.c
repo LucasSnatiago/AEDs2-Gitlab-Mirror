@@ -15,15 +15,6 @@
 #include "String.h"
 
 
-#define DEBUGING 1
-
-#if DEBUGING == 1
-    #define debug printf 
-#else
-    #define debug //
-#endif
-
-
 int main(){
 
     #if DEBUGING == 1
@@ -38,16 +29,23 @@ int main(){
 
     fgets(teste, 100, stdin);
 
-    String entrada = stringBuilder(teste);
-    String entradaCopia = stringBuilder(teste);
+    String* entrada = stringBuilder(teste);
+    String* entradaCopia = stringBuilder(teste);
 
-    String final1 = substituirPrimeiraOcorrencia(entrada, "oi", "NARU");
-    String final2 = substituirTexto(entrada, "oi", "NARU");
+    String* final1 = substituirPrimeiraOcorrencia(entrada, "oi", "NARU");
+    String* final2 = substituirTexto(entradaCopia, "oi", "NARU");
+
+
+    freeString(&final1);
+
+    if(final1){
+        debug("Existe!\n");
+    }
+
+
 
     escreverString(final1);
-    escreverString(final2);
+    //escreverString(final2);
 
-
-    printf("\n");
     return 0;
 }   
