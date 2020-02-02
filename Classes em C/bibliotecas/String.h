@@ -77,7 +77,6 @@ String* stringBuilderX(char entrada[], int tamanhoString){  //Constroi o tipo St
 void escreverString(String* entrada){  //Escreve uma String na tela
     
     if(entrada){  //Se a String existir em memoria escreva
-        debug("escreverString: Variavel encontrada em memoria!\n");
         for(int i = 0; i < entrada->length; i++){
             printf("%c", entrada->string[i]);
         }
