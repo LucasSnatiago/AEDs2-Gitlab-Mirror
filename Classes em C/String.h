@@ -2,13 +2,14 @@
     CRIACAO DO TIPO STRING EM C
     Criado por Lucas Santiago
     Data de criacao: 30/12/19
-    Versao: 3.1.1
+    Versao: 3.1.2
 */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
+#include <locale.h>
 
 #define bool short
 #define true 1
