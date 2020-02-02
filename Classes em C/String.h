@@ -2,7 +2,7 @@
     CRIACAO DO TIPO STRING EM C
     Criado por Lucas Santiago
     Data de criacao: 30/12/19
-    Versao: 3.0.1
+    Versao: 3.1.0
 */
 
 #include <stdio.h>
@@ -275,4 +275,9 @@ String* substituirTexto(String* entrada, const char procurar[], const char alter
     }while (&final->string[0] != enderecoFinal);  //Verifica se o endereço do texto mudou (se mudou, houve alteracao no texto)
     
     return final;
+}
+
+
+void consertarCodificacaoTexto(){ //Consertando codificador de texto
+    setlocale(LC_ALL, "pt_BR.utf8");
 }
