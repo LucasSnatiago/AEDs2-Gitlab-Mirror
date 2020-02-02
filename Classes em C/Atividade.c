@@ -21,9 +21,7 @@ int main(){
         printf("--------------------------------\n\tDebuging ativado\n--------------------------------\n");
     #endif
 
-
-    //Consertando codificador de texto
-    setlocale(LC_ALL, "pt_BR.utf8");
+    consertarCodificacaoTexto();
     
     char teste[100];
 
@@ -36,7 +34,7 @@ int main(){
     String* final2 = substituirTexto(entradaCopia, "oi", "NARU");
 
 
-    freeString(&final1);
+    //freeString(&final1);
 
     if(final1){
         debug("Existe!\n");
@@ -45,7 +43,7 @@ int main(){
 
 
     escreverString(final1);
-    //escreverString(final2);
+    escreverString(final2);
 
     return 0;
 }   

@@ -2,7 +2,7 @@
     CRIACAO DO TIPO STRING EM C
     Criado por Lucas Santiago
     Data de criacao: 30/12/19
-    Versao: 3.1.0
+    Versao: 3.1.1
 */
 
 #include <stdio.h>
@@ -255,9 +255,22 @@ String* substituirPrimeiraOcorrencia(String* entrada, const char texto[], const 
         tmp[tamanhoFinal+1] = '\0';
 
         final = stringBuilder(tmp);
+        freeString(&entrada);
+        if(entrada){
+            debug("substituirPrimeiraOcorrencia: Falha ao excluir String entrada da memoria!\n");
+        }else{
+            debug("substituirPrimeiraOcorrencia: String entrada foi excluida da memoria!\n");
+        }
     }
     else{
         final = entrada;
+        free(tmp);
+        tmp = NULL;
+        if(tmp){
+            debug("substituirPrimeiraOcorrencia: Falha ao excluir char2String tmp da memoria!\n");
+        }else{
+            debug("substituirPrimeiraOcorrencia: char2String tmp foi apagado!\n");
+        }
     }   
     
     return final;
@@ -270,8 +283,8 @@ String* substituirTexto(String* entrada, const char procurar[], const char alter
 
     do{
         enderecoFinal = &final->string[0];
-        final = substituirPrimeiraOcorrencia(final, procurar, alterarPor);
         debug("substituirTexto: %p\t\a%p\n", enderecoFinal, &final);
+        final = substituirPrimeiraOcorrencia(final, procurar, alterarPor);
     }while (&final->string[0] != enderecoFinal);  //Verifica se o endereço do texto mudou (se mudou, houve alteracao no texto)
     
     return final;
