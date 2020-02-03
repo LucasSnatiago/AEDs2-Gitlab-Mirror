@@ -31,7 +31,7 @@ bool ehPalindromo(char entrada[]){  //Retorna se uma entrada eh palindromo
     bool palindromo = true;
     int tamanhoEntrada = tamanhoChar(entrada);
 
-    for(int i = 0, j = tamanhoEntrada-1; i < tamanhoEntrada / 2; i++, j--){
+    for(int i = 0, j = tamanhoEntrada-1; i < tamanhoEntrada / 2 + 1; i++, j--){
         if(entrada[i] != entrada[j]){
             palindromo = false;
         }
@@ -41,11 +41,18 @@ bool ehPalindromo(char entrada[]){  //Retorna se uma entrada eh palindromo
 }
 
 
+void consertarFgets(char* entrada){
+    int tamanho = tamanhoChar(entrada);
+    entrada[tamanho-1] == '\n';
+}
+
+
 int main(){
 
     char entrada[1000];   
 
     fgets(entrada, 1000, stdin);
+    consertarFgets(entrada);
 
     while(!ehFim(entrada)){
 
@@ -56,6 +63,7 @@ int main(){
         }
 
         fgets(entrada, 1000, stdin);
+        consertarFgets(entrada);
     }   
    
     return 0;

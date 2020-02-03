@@ -2,7 +2,7 @@
     CRIACAO DO TIPO STRING EM C
     Criado por Lucas Santiago
     Data de criacao: 30/12/19
-    Versao: 3.2.0
+    Versao: 3.3.0
 */
 
 #include <stdio.h>
@@ -44,13 +44,20 @@ char* char2String(){  //Funcao para retornar a maior cadeia de char possivel par
 }
 
 
-String* stringBuilder(char entrada[]){  //Constroi o tipo String
-
+int _bufferSize(char entrada[]){  //Contar tamanho da entrada
     int buffer = 0;
 
     while(entrada[buffer] != '\0'){
         buffer++;
     }
+
+    return buffer;
+}
+
+
+String* stringBuilder(char entrada[]){  //Constroi o tipo String
+
+    int buffer = _bufferSize(entrada);
 
     char* tmp = (char*) malloc(sizeof(char) * buffer); 
 
@@ -307,12 +314,18 @@ void consertarCodificacaoTexto(){ //Consertando codificador de texto
 }
 
 
+void _consertarFgetsString(char entrada[]){  //Consertar o fgets que deixa passar alguns caracteres
+    int tamanho = _bufferSize(entrada);
+    entrada[tamanho-1] == '\0';
+}
+
+
 String* readString(){  //Lendo uma String da stdin
     char tmp[TAM];
 
     fgets(tmp, TAM, stdin);
     String* saida = stringBuilder(tmp);
-    debug("readString: String lida do teclado:\n%s\n", saida->string);
+    debug("readString: String lida do teclado:\n%s", saida->string);
     debug("readString: Tamanho da String: %d\n", saida->length);
 
     return saida;
