@@ -2,7 +2,7 @@
     CRIACAO DO TIPO STRING EM C
     Criado por Lucas Santiago
     Data de criacao: 30/12/19
-    Versao: 3.1.2
+    Versao: 3.2.0
 */
 
 #include <stdio.h>
