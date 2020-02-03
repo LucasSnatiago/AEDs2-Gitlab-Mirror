@@ -1,4 +1,4 @@
-public class Questao2{
+public class Questao3{
     public static void main(String[] args){        
         String entrada = MyIO.readLine();
 
