@@ -12,18 +12,15 @@
 
 
 //Minhas bibliotecas
-#include "bibliotecas/String.h"
+#include "String.h"
 
 
 int main(){
 
-    #if DEBUGING == 1
-        printf("--------------------------------\n\tDebuging ativado\n--------------------------------\n");
-    #endif
-
-    consertarCodificacaoTexto();
+    //Consertando codificador de texto
+    setlocale(LC_ALL, "pt_BR.utf8");
     
-
-
+    
+   
     return 0;
 }   

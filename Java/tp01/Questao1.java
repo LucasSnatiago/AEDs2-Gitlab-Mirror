@@ -28,10 +28,11 @@ class Questao1{
         boolean ehPalindromo = true;
         int posFinal = entrada.length();
 
-        for(int i = 0; i < entrada.length(); i++){
+        for(int i = 0; i < entrada.length()/2; i++){
             if(entrada.charAt(i) != entrada.charAt(posFinal-1)){
                 ehPalindromo = false;
             }
+            posFinal--;
         }
 
         return ehPalindromo;

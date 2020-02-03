@@ -15,10 +15,12 @@
 #define true 1
 #define false 0
 
-#define DEBUGING 0
+#define TAM 1000000
+
+#define DEBUGGING 1
 
 //Debug de codigo
-#if DEBUGING == 1
+#if DEBUGGING == 1
     #define debug printf 
 #else
     #define debug //
@@ -64,7 +66,7 @@ String* stringBuilder(char entrada[]){  //Constroi o tipo String
 }
 
 
-String* stringBuilderX(char entrada[], int tamanhoString){  //Constroi o tipo String, já com o tamanho definido (NÃO RECOMENDADO, USO EXPERIMENTAL)
+String* _stringBuilderX(char entrada[], int tamanhoString){  //Constroi o tipo String, já com o tamanho definido (NÃO RECOMENDADO, USO EXPERIMENTAL)
 
     String* final;
     final->string = entrada;
@@ -77,9 +79,18 @@ String* stringBuilderX(char entrada[], int tamanhoString){  //Constroi o tipo St
 void escreverString(String* entrada){  //Escreve uma String na tela
     
     if(entrada){  //Se a String existir em memoria escreva
-        for(int i = 0; i < entrada->length; i++){
-            printf("%c", entrada->string[i]);
-        }
+            #if DEBUGGING == 0
+                for(int i = 0; i < entrada->length; i++){
+                    printf("%c", entrada->string[i]);
+                }
+            #else
+                printf("escreverString: ");
+                for(int i = 0; i < entrada->length; i++){ 
+                    printf("%c", entrada->string[i]);
+                    if(entrada->string[i] == '\n') printf("\\n");
+                    if(entrada->string[i] == '\0') printf("\\0");
+                }
+            #endif
         printf("\n");
     }else{
         debug("escreverString: Variavel não existente em memória!\n");
@@ -113,13 +124,13 @@ int letrasMinusculas(String* entrada){  //Retorna o numero de letras minusculas 
 }
 
 
-bool palindromo(String* entrada){  //Retorna 1 se for palindromo, caso contrario 0
-    bool ehPalindromo = 1;
+bool ehPalindromo(String* entrada){  //Retorna 1 se for palindromo, caso contrario 0
+    bool ehPalindromo = true;
 
     int j = entrada->length;
-    for(int i = 0; i < entrada->length; i++, j--){
+    for(int i = 0; i < entrada->length/2; i++, j--){
         if(entrada->string[i] != entrada->string[j]){
-            ehPalindromo = 0;
+            ehPalindromo = false;
             i = entrada->length;
         }
     }
@@ -137,7 +148,7 @@ String* cifraCesar(String* entrada, int chave){  //Cifra as mensagens recebidas 
         mensagemCifrada[i] = letra;
     } 
 
-    String* cifra = stringBuilderX(mensagemCifrada, entrada->length);
+    String* cifra = _stringBuilderX(mensagemCifrada, entrada->length);
 
     return cifra;
 }
@@ -293,4 +304,16 @@ String* substituirTexto(String* entrada, const char procurar[], const char alter
 
 void consertarCodificacaoTexto(){ //Consertando codificador de texto
     setlocale(LC_ALL, "pt_BR.utf8");
+}
+
+
+String* readString(){  //Lendo uma String da stdin
+    char tmp[TAM];
+
+    fgets(tmp, TAM, stdin);
+    String* saida = stringBuilder(tmp);
+    debug("readString: String lida do teclado:\n%s\n", saida->string);
+    debug("readString: Tamanho da String: %d\n", saida->length);
+
+    return saida;
 }
