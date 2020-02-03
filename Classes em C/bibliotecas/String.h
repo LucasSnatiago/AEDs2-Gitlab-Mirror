@@ -15,7 +15,7 @@
 #define true 1
 #define false 0
 
-#define DEBUGING 1
+#define DEBUGING 0
 
 //Debug de codigo
 #if DEBUGING == 1

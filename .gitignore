@@ -6,3 +6,6 @@
 #Arquivos de entrada
 *.in
 *.out
+
+#arquivos de teste de saida
+*.txt

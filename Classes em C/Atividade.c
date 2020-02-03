@@ -23,27 +23,7 @@ int main(){
 
     consertarCodificacaoTexto();
     
-    char teste[100];
 
-    fgets(teste, 100, stdin);
-
-    String* entrada = stringBuilder(teste);
-    String* entradaCopia = stringBuilder(teste);
-
-    String* final1 = substituirPrimeiraOcorrencia(entrada, "oi", "NARU");
-    String* final2 = substituirTexto(entradaCopia, "oi", "NARU");
-
-
-    //freeString(&final1);
-
-    if(final1){
-        debug("Existe!\n");
-    }
-
-
-
-    escreverString(final1);
-    escreverString(final2);
 
     return 0;
 }   
