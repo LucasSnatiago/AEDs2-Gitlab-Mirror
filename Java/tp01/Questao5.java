@@ -9,7 +9,7 @@ public class Questao4{
 
         while(!ehFim(entrada)){
 
-            System.out.println(aleatorio(entrada, gerador));
+            System.out.println();
 
             entrada = MyIO.readLine();
         }
@@ -25,23 +25,25 @@ public class Questao4{
     }
 
 
-    public static String aleatorio(String entrada, Random gerador){  //Escolhe duas letras aleatoriamente e substitui a primeira pela segunda
-        char[] texto = new char[entrada.length()];
+    public static boolean vogais(String entrada){  //Verificar se sao 
 
-        char letra1 = (char)('a' + (Math.abs(gerador.nextInt()) % 26));
-        char letra2 = (char)('a' + (Math.abs(gerador.nextInt()) % 26));
+    }
+
+
+    public static boolean soVogais(String entrada){  //Verificar se uma frase so contem vogais
+        boolean vogais = true;
 
         for(int i = 0; i < entrada.length(); i++){
-            if(entrada.charAt(i) == letra1){
-                texto[i] = letra2;
-            }else{
-                texto[i] = entrada.charAt(i);
-            }
+            if(entrada.charAt(i) != )
         }
 
-        String saida = new String(texto);
-        return saida;
+        return vogais;
     }
+
+
+    public static boolean soConsoantes(String entrada){  //Verificar se uma frase so contem consoantes
+
+    }   
 
 
 }
