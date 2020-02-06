@@ -11,7 +11,7 @@
 
 bool ehFim(char entrada[]){  //Retorna se a linha atual é fim
     bool fim = true;
-    if(entrada[0] != 'F' && entrada[1] != 'I' && entrada[2] != 'M') fim = false;
+    if(entrada[0] != 'F' || entrada[1] != 'I' || entrada[2] != 'M') fim = false;
     return fim;
 }
 
