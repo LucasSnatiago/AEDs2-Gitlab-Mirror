@@ -5,7 +5,7 @@ public class Questao4{
         String entrada = MyIO.readLine();
 
         Random gerador = new Random();
-        gerador.setSeed(4);
+        gerador.setSeed(4);        
 
         while(!ehFim(entrada)){
 
