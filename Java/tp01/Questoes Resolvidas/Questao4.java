@@ -2,14 +2,15 @@ import java.util.Random;
 
 public class Questao4{
     public static void main(String[] args){
-        String entrada = MyIO.readLine();
+        MyIO.setCharset("ISO-8859-1");
+	String entrada = MyIO.readLine();
 
         Random gerador = new Random();
         gerador.setSeed(4);        
 
         while(!ehFim(entrada)){
 
-            System.out.println(aleatorio(entrada, gerador));
+            MyIO.println(aleatorio(entrada, gerador));
 
             entrada = MyIO.readLine();
         }
