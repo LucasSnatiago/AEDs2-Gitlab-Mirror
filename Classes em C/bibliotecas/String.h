@@ -17,7 +17,7 @@
 
 #define TAM 1000000
 
-#define DEBUGGING 1
+//#define DEBUGGING 1
 
 //Debug de codigo
 #if DEBUGGING == 1

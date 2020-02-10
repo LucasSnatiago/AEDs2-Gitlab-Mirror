@@ -9,7 +9,7 @@ public class Questao8{
         FileOutputStream arq = null;
 
         
-        float[] valores = new float[numTestes];
+        double[] valores = new double[numTestes];
         for(int i = 0; i < numTestes; i++){
             valores[i] = MyIO.readFloat();
         }
@@ -41,11 +41,11 @@ public class Questao8{
             MyIO.println("Não foi possivel ler o arquivo!");
         }
         
-  
+          
     }
 
 
-    public static void escreverArquivo(PrintWriter arq, float[] valores, int tamanho){  //Funcao para escrever valores float no arquivo
+    public static void escreverArquivo(PrintWriter arq, double[] valores, int tamanho){  //Funcao para escrever valores float no arquivo
         String numeros = "";
 
         for(int i = 0; i < tamanho; i++){
