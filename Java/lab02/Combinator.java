@@ -1,48 +1,37 @@
 public class Combinator {
     public static void main(String[] args){
-        String entrada1 = MyIO.readLine();
-        String entrada2 = MyIO.readLine();
+        String entrada1 = MyIO.readString();
+        String entrada2 = MyIO.readString();
 
         while(!ehFim(entrada1)){
 
             MyIO.println(combinator(entrada1, entrada2));
             
 
-            entrada1 = MyIO.readLine();
-            if(!ehFim(entrada1)) entrada2 = MyIO.readLine();
+            entrada1 = MyIO.readString();
+            if(!ehFim(entrada1)) entrada2 = MyIO.readString();
         }
 
     }
 
 
-    public static String combinator(String texto1, String texto2){  //Funcao para misturar dois textos
-        int tamanho1 = texto1.length();
-        int tamanho2 = texto2.length();
-        String resp = "";
+    public static String combinator(String entrada1, String entrada2){  //Combinar dois textos
+        String combinada = "";
+        int tam1 = entrada1.length();
+        int tam2 = entrada2.length();
 
-        int pos1 = 0;
-        int pos2 = 0;
-        for(int i = 0; i != 1;){
-            if(tamanho1 > 0){
-                resp += texto1.charAt(pos1);
-                pos1++;
-                tamanho1--;
-            }
-            else if(tamanho2 > 0){
-                resp += texto2.charAt(pos2);
-                pos2++;
-                tamanho2--;
-            }
-            else{
-                i = 1;
-            }
-            MyIO.println(resp);
+        int maior = tam1;
+        if(tam2 > tam1) maior = tam2;
+
+        for(int i = 0; i < maior; i++){
+
+            if(i < tam1) combinada += entrada1.charAt(i);
+            if (i < tam2) combinada += entrada2.charAt(i);
 
         }
-        
-        return resp;
-    }
 
+        return combinada;
+    }
 
     public static boolean ehFim(String entrada) {  //Descobrir se eh o fim do arquivo
         boolean fim = true;
