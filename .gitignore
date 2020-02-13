@@ -9,3 +9,6 @@
 
 #arquivos de teste de saida
 *.txt
+
+#Arquivos de envio para o verde
+*.cpp
