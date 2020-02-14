@@ -2,7 +2,9 @@
     CRIACAO DO TIPO STRING EM C
     Criado por Lucas Santiago
     Data de criacao: 30/12/19
-    Versao: 3.3.0
+    Versao: 3.4.0 - 14/02/20
+    Changelog:
+    + Funcao para copiar uma String em outra
 */
 
 #include <stdio.h>
@@ -329,4 +331,16 @@ String* readString(){  //Lendo uma String da stdin
     debug("readString: Tamanho da String: %d\n", saida->length);
 
     return saida;
+}
+
+
+String* copiarString(String* frase){  //Funcao para copiar a primeira String na segunda String
+    int tamanhoFrase = frase->length;
+    char tmp[tamanhoFrase];
+
+    for(int i = 0; i < tamanhoFrase; i++){
+        tmp[i] = frase->string[i];
+    }
+
+    return _stringBuilderX(tmp, tamanhoFrase);
 }

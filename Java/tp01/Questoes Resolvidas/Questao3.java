@@ -1,5 +1,6 @@
 public class Questao3{
-    public static void main(String[] args){        
+    public static void main(String[] args){
+        MyIO.setCharset("ISO-8859-1"); 
         String entrada = MyIO.readLine();
 
         while(!ehFim(entrada)){
