@@ -2,9 +2,12 @@
     CRIACAO DO TIPO STRING EM C
     Criado por Lucas Santiago
     Data de criacao: 30/12/19
-    Versao: 3.4.0 - 14/02/20
+    Versao: 3.5.0 - 16/02/20
     Changelog:
-    + Funcao para copiar uma String em outra
+    + bufferSizeX adicionado
+    - Bug em consertarFgets corrigido
+    - Bug no stringBuilder corrigido
+    - Bug no stringReader corrigido
 */
 
 #include <stdio.h>
@@ -19,7 +22,13 @@
 
 #define TAM 1000000
 
-//#define DEBUGGING 1
+#ifndef DEBUGGING
+    #define DEBUGGING 0
+#endif
+
+#ifndef DEBUGGING_COMPLETO
+    #define DEBUGGING_COMPLETO 0
+#endif
 
 //Debug de codigo
 #if DEBUGGING == 1
@@ -28,6 +37,11 @@
     #define debug //
 #endif
 
+#if DEBUGGING_COMPLETO == 1
+    #define debugcompleto printf
+#else
+    #define debugcompleto //
+#endif
 
 typedef struct string{  //Criacao da estrutura de uma String
     char* string;
@@ -57,21 +71,34 @@ int _bufferSize(char entrada[]){  //Contar tamanho da entrada
 }
 
 
+int _bufferSizeX(char entrada[]){  //Conta o tamanho da entrada ate encontrar um '\0' ou um '\n'
+    int buffer = 0;
+
+    while(entrada[buffer] != '\0' && entrada[buffer] != '\n'){
+        buffer++;
+    }
+
+    return buffer;
+}
+
+
 String* stringBuilder(char entrada[]){  //Constroi o tipo String
 
     int buffer = _bufferSize(entrada);
+    debug("stringBuilder: Tamanho do buffer: %d\n", buffer);
 
-    char* tmp = (char*) malloc(sizeof(char) * buffer); 
+    char* tmp = (char*) malloc(sizeof(char) * buffer+1); 
 
     int posAtual;
-    String* final = (String*) malloc(sizeof(String));
+    String* resp = (String*) malloc(sizeof(String));
     for(posAtual = 0; posAtual < buffer; posAtual++) {
         tmp[posAtual] = entrada[posAtual];
     }
-    final->string = tmp;
-    final->length = buffer-1;
+    tmp[posAtual] = '\0';
+    resp->string = tmp;
+    resp->length = buffer;
 
-    return final;
+    return resp;
 }
 
 
@@ -93,7 +120,7 @@ void escreverString(String* entrada){  //Escreve uma String na tela
                     printf("%c", entrada->string[i]);
                 }
             #else
-                printf("escreverString: ");
+                printf("escreverString: Tamanho da String = %d\n", entrada->length);
                 for(int i = 0; i < entrada->length; i++){ 
                     printf("%c", entrada->string[i]);
                     if(entrada->string[i] == '\n') printf("\\n");
@@ -317,8 +344,13 @@ void consertarCodificacaoTexto(){ //Consertando codificador de texto
 
 
 void _consertarFgetsString(char entrada[]){  //Consertar o fgets que deixa passar alguns caracteres
-    int tamanho = _bufferSize(entrada);
-    entrada[tamanho-1] == '\0';
+    int tamanho = _bufferSizeX(entrada);
+    #if DEBUGGING == 1
+        debug("Letra substituida por \\0: %c", entrada[tamanho]);
+        if(entrada[tamanho] == '\n') debug("\\n\n");
+        if(entrada[tamanho] == '\0') debug("\\0\n");
+    #endif
+    entrada[tamanho] = '\0';
 }
 
 
@@ -326,9 +358,10 @@ String* readString(){  //Lendo uma String da stdin
     char tmp[TAM];
 
     fgets(tmp, TAM, stdin);
+    _consertarFgetsString(tmp);
     String* saida = stringBuilder(tmp);
     debug("readString: String lida do teclado:\n%s", saida->string);
-    debug("readString: Tamanho da String: %d\n", saida->length);
+    debug("\nreadString: Tamanho da String: %d\n", saida->length);
 
     return saida;
 }
@@ -342,5 +375,37 @@ String* copiarString(String* frase){  //Funcao para copiar a primeira String na 
         tmp[i] = frase->string[i];
     }
 
-    return _stringBuilderX(tmp, tamanhoFrase);
+    return stringBuilder(tmp);
+}
+
+
+void _trocarLetras(String* entrada, char letra1, char letra2, int pos){  //Funcao para trocar as letras dentro de uma frase
+
+    if(pos != 0) _trocarLetras(entrada, letra1, letra2, pos-1);
+    if(entrada->string[pos] == letra1){
+        debugcompleto("_trocarLetras: trocar %c por %c\n", letra1, letra2);
+        entrada->string[pos] = letra2;
+        debugcompleto("_trocarLetras: resultado %c se tornou %c\n", letra1, entrada->string[pos]);
+    }
+
+}
+
+
+String* trocarLetras(String* entrada, char letra1, char letra2){  //Funcao para trocar as letras dentro de uma frase
+    String* fraseFinal;
+
+    fraseFinal = copiarString(entrada);
+    escreverString(fraseFinal);
+    
+    _trocarLetras(fraseFinal, letra1, letra2, entrada->length-1);
+    #if DEBUGGING == 1
+        for(int i = 0; i < entrada->length; i++){
+            if(fraseFinal->string[i] == letra1){
+                debug("trocarLetras: Houve uma falha ao subistituir a letra %c por %c! Nas posições:\t", letra1, letra2);
+                debug("%d\t\n", i);
+            }
+        }
+    #endif
+
+    return fraseFinal;
 }

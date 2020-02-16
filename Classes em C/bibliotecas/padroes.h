@@ -36,3 +36,8 @@ void escreverSim(){  //Funcao para escrever SIM na saida
 void escreverNao(){  //Funcao para escrever NAO na saida
     printf("NAO\n");
 }
+
+
+void escreverInt(int entrada){  //Escrever um numero na saida
+    printf("%d\n", entrada);
+}
