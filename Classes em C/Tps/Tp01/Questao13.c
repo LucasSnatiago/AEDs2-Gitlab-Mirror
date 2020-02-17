@@ -12,6 +12,7 @@
 
 int main(void){
 
+    setlocale(LC_ALL, "ISO-8859-1");
     srand(4);
     String* entrada = readString();
     
@@ -26,6 +27,8 @@ int main(void){
         String* resp = trocarLetras(entrada, letra1, letra2);
         
         escreverString(resp);
+
+        freeString(&resp);
         
         entrada = readString();
     }

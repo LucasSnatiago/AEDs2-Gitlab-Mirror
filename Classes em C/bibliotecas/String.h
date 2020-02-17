@@ -357,7 +357,7 @@ void _consertarFgetsString(char entrada[]){  //Consertar o fgets que deixa passa
 String* readString(){  //Lendo uma String da stdin
     char tmp[TAM];
 
-    fscanf(stdin, "%s", tmp);
+    fscanf(stdin, "\n%s\n", tmp);
     //_consertarFgetsString(tmp);
     String* saida = stringBuilder(tmp);
     debug("readString: String lida do teclado:\n%s", saida->string);
@@ -395,7 +395,6 @@ String* trocarLetras(String* entrada, char letra1, char letra2){  //Funcao para 
     String* fraseFinal;
 
     fraseFinal = copiarString(entrada);
-    escreverString(fraseFinal);
     
     _trocarLetras(fraseFinal, letra1, letra2, entrada->length-1);
     #if DEBUGGING == 1
