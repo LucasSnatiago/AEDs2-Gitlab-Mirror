@@ -1,16 +1,14 @@
 public class Questao12 {
     public static void main(String[] args){
-        MyIO.setCharset("UTF-8");        
+        MyIO.setCharset("ISO-8859-1");        
         String entrada = MyIO.readLine();
 
         while(!ehFim(entrada)){
 
             String cifrada = cifraCesar(entrada, 3);    
 
-            MyIO.setCharset("ASCII");
             System.out.println(cifrada);
 
-            MyIO.setCharset("UTF-8"); 
             entrada = MyIO.readLine();
         }
 
@@ -34,7 +32,7 @@ public class Questao12 {
         String textoCifrado = "";
 
         if(pos > 0) textoCifrado = cifraCesar(entrada, chave, pos-1);
-        textoCifrado += (char) ((int) entrada.charAt(pos) + chave);
+        textoCifrado += (char) (entrada.charAt(pos) + chave);
 
         return textoCifrado;
     }

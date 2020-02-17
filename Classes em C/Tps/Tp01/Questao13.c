@@ -2,8 +2,8 @@
 #include <stdlib.h>
 
 
-#define DEBUGGING 1
-#define DEBUGGING_COMPLETO 1
+#define DEBUGGING 0
+#define DEBUGGING_COMPLETO 0
 
 //Incluindo minhas bibliotecas
 #include "../../bibliotecas/String.h"

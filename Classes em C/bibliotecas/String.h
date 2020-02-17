@@ -357,8 +357,8 @@ void _consertarFgetsString(char entrada[]){  //Consertar o fgets que deixa passa
 String* readString(){  //Lendo uma String da stdin
     char tmp[TAM];
 
-    fgets(tmp, TAM, stdin);
-    _consertarFgetsString(tmp);
+    fscanf(stdin, "%s", tmp);
+    //_consertarFgetsString(tmp);
     String* saida = stringBuilder(tmp);
     debug("readString: String lida do teclado:\n%s", saida->string);
     debug("\nreadString: Tamanho da String: %d\n", saida->length);
