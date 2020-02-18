@@ -81,10 +81,65 @@ int _bufferSizeX(char entrada[]){  //Conta o tamanho da entrada ate encontrar um
     return buffer;
 }
 
+int acharPrimeiraString (char entrada[], char key[]) {
+
+    int pos = -1;
+    int tamEntrada = strlen(entrada);
+    int tamKey = strlen(key);
+
+    debug("acharPrimeiraString: Achando string\n");
+
+    for (int k = 0; k < tamEntrada; k ++) {
+        debugcompleto("\racharPrimeiraString: Pos -> %d", k);
+
+        for (int j = 0; j < tamKey; j++) {
+
+            if (entrada[k+j] != key[j]) {
+
+                j = tamKey;
+
+            } else if (j == tamKey-1) {
+
+                pos = k;
+                k = tamEntrada;
+
+            }
+
+
+        }
+    }
+    debugcompleto("\n");
+    return pos;
+}
+
+
+void removerString(char entrada[], char key[]){  //Consertar o fgets que deixa passar alguns caracteres
+    
+    int tamEntrada = strlen(entrada);
+    int tamKey = strlen(key);
+    int pos = acharPrimeiraString(entrada, key);
+
+    if (pos != -1) {
+        for (int i = 0; i < tamEntrada-tamKey-pos; i++) {
+            debugcompleto("\rremoverString: Pos -> %d", i);
+            entrada[i+pos] = entrada[i+tamKey+pos];
+        }
+        debugcompleto("\n");
+        for (int i = 0; i < tamKey; i ++) {
+            debugcompleto("\rremoverString: Pos -> %d", i);
+            entrada[tamEntrada-tamKey+i] = '\0';
+
+        }
+        debugcompleto("\n");
+        debug("removerString: String formatada -> %s\n", entrada);
+    } else {
+        debug("removerString: String não foi formatada -> key não encontrada\n");
+    }
+}
 
 String* stringBuilder(char entrada[]){  //Constroi o tipo String
 
-    int buffer = _bufferSize(entrada);
+    int buffer = _bufferSizeX(entrada);
     debug("stringBuilder: Tamanho do buffer: %d\n", buffer);
 
     char* tmp = (char*) malloc(sizeof(char) * buffer+1); 
@@ -341,24 +396,29 @@ String* substituirTexto(String* entrada, const char procurar[], const char alter
 void consertarCodificacaoTexto(){ //Consertando codificador de texto
     setlocale(LC_ALL, "pt_BR.utf8");
 }
+    
 
+void removerTudoString(char entrada[], char key[]) {
 
-void _consertarFgetsString(char entrada[]){  //Consertar o fgets que deixa passar alguns caracteres
-    int tamanho = _bufferSizeX(entrada);
-    #if DEBUGGING == 1
-        debug("Letra substituida por \\0: %c", entrada[tamanho]);
-        if(entrada[tamanho] == '\n') debug("\\n\n");
-        if(entrada[tamanho] == '\0') debug("\\0\n");
-    #endif
-    entrada[tamanho] = '\0';
+    int pos = acharPrimeiraString(entrada, key);
+    
+    debug("removerTudoString: Removendo todas as ocorrencias\n");
+
+    while (pos != -1) {
+        removerString(entrada, key);
+        pos = acharPrimeiraString(entrada, key);
+
+    }
+
+    debug("removerTudoString: String formatada -> %s\n", entrada);
+
 }
-
 
 String* readString(){  //Lendo uma String da stdin
     char tmp[TAM];
 
-    fscanf(stdin, "\n%s\n", tmp);
-    //_consertarFgetsString(tmp);
+    fgets(tmp, TAM, stdin);
+    //removerTudoString(tmp, "\n");
     String* saida = stringBuilder(tmp);
     debug("readString: String lida do teclado:\n%s", saida->string);
     debug("\nreadString: Tamanho da String: %d\n", saida->length);

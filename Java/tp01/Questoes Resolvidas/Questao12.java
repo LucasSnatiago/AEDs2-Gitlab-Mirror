@@ -1,13 +1,13 @@
 public class Questao12 {
     public static void main(String[] args){
-        MyIO.setCharset("ISO-8859-1");        
+       // MyIO.setCharset("ISO-8859-1");        
         String entrada = MyIO.readLine();
 
         while(!ehFim(entrada)){
 
             String cifrada = cifraCesar(entrada, 3);    
 
-            System.out.println(cifrada);
+            MyIO.println(cifrada);
 
             entrada = MyIO.readLine();
         }
