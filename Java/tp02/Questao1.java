@@ -1,7 +1,32 @@
-class Questao1{
-    public static void main(String[] args){
+import java.io.BufferedReader;
+import java.io.FileReader;
 
+public class Questao1 {
+    public static void main(String[] args){
+        String entrada = MyIO.readLine();
+        LerArquivo lerArq = new LerArquivo(entrada);
+        Personagem personagens = new Personagem(lerArq.texto);
+
+        while(!ehFim(entrada)){
+
+            MyIO.println(personagens.toString());
+
+            entrada = MyIO.readLine();
+            lerArq = null;
+            personagens = null;
+            if(!ehFim(entrada)){
+                lerArq = new LerArquivo(entrada);
+                personagens = new Personagem(lerArq.texto);
+            }
+        }
     }
+
+    public static boolean ehFim(String entrada) {  //Descobrir se eh o fim do arquivo
+        boolean fim = true;
+        if(entrada.charAt(0) != 'F' || entrada.charAt(1) != 'I' || entrada.charAt(2) != 'M')
+            fim = false;
+        return fim;
+    } 
 }
 
 
@@ -41,7 +66,7 @@ class Personagem {
     }
 
     public Personagem(String entrada){
-
+        this.nome = entrada;
     }
 
     private void setNome(String entrada){
@@ -114,5 +139,31 @@ class Personagem {
 
     public String getHomeworld(){
         return this.homeworld;
+    }
+
+    public String toString(){
+        return ("## " + this.nome + " ##");
+    }
+}
+
+class LerArquivo {
+    public String texto;
+
+    public LerArquivo(String entrada){
+        try{
+            BufferedReader arqTexto = new BufferedReader(new FileReader(entrada));
+            String texto = "";
+            String linha = arqTexto.readLine();
+            
+            while(linha != null){
+                texto += linha;
+                linha = arqTexto.readLine();
+            }
+
+            this.texto = texto;
+            arqTexto.close();
+        }catch(Exception erro){
+            MyIO.println("Houve um erro na leitura do arquivo!");
+        }
     }
 }
