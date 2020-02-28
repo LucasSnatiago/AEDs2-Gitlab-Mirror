@@ -54,15 +54,15 @@ class Personagem {
     */
 
     public Personagem(){
-        this.nome = "";
+        this.nome = null;
         this.altura = -1;
         this.peso = -1;
-        this.corDoCabelo = "";
-        this.corDaPele = "";
-        this.corDosOlhos = "";
-        this.anoNascimento = "";
-        this.genero = "";
-        this.homeworld = "";
+        this.corDoCabelo = null;
+        this.corDaPele = null;
+        this.corDosOlhos = null;
+        this.anoNascimento = null;
+        this.genero = null;
+        this.homeworld = null;
     }
 
     public Personagem(String entrada){
