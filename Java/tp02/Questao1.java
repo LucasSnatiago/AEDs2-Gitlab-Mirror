@@ -3,6 +3,7 @@ import java.io.FileReader;
 
 public class Questao1 {
     public static void main(String[] args){
+        MyIO.setCharset("UTF-8");
         String entrada = MyIO.readLine();
         LerArquivo lerArq = new LerArquivo(entrada);
         Personagem personagens = new Personagem(lerArq.texto);
@@ -66,7 +67,52 @@ class Personagem {
     }
 
     public Personagem(String entrada){
-        this.nome = entrada;
+        extrairElementos(entrada);
+    }
+
+    private void extrairElementos(String entrada){
+        String tmp = "";
+        int tamString = entrada.length();
+
+        int posI = 1;
+        int posF = 1;
+        boolean aspas = false;
+        for(int i = 0; i < tamString; i++){
+
+            if(entrada.charAt(i) == '\'') aspas = !aspas;
+            if(entrada.charAt(i) == ',' && !aspas){
+                posF = i;
+                //DEBUG: MyIO.print(posI + " | " + posF  + " | " + i + "     ");
+                
+                for(int j = posI; j < posF; j++)
+                    tmp += entrada.charAt(j);
+                
+                posI = i+2;
+                
+                proxElemento(tmp);
+            }
+
+            tmp = "";
+        }
+
+    }
+
+    private void proxElemento(String entrada){
+        int tamEntrada = entrada.length();
+        String elemento = "";
+        String valor = "";
+        int parte = 1;
+
+        for(int i = 0; i < tamEntrada; i++){
+
+            if(entrada.charAt(i) == ':') parte = 2;
+            if(parte == 1) elemento += entrada.charAt(i);
+            if(parte == 2) valor += entrada.charAt(i);
+
+        }
+
+        MyIO.print(elemento + " | " + valor + "\n");
+
     }
 
     private void setNome(String entrada){
