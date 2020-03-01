@@ -2,12 +2,15 @@
     CRIACAO DO TIPO STRING EM C
     Criado por Lucas Santiago
     Data de criacao: 30/12/19
-    Versao: 3.5.0 - 16/02/20
+    Versao: 3.6.0 - 01/03/20
     Changelog:
-    + bufferSizeX adicionado
-    - Bug em consertarFgets corrigido
-    - Bug no stringBuilder corrigido
-    - Bug no stringReader corrigido
+    + Concaternar Strings
+    + String 2 Int
+    + String 2 float
+    + String 2 double
+    + char 2 Int
+    + char 2 float
+    + char 2 double
 */
 
 #include <stdio.h>
@@ -467,4 +470,165 @@ String* trocarLetras(String* entrada, char letra1, char letra2){  //Funcao para 
     #endif
 
     return fraseFinal;
+}
+
+
+String* concaternarString(String* entrada, String* adicionar){  //Funcao para concaternar Strings
+    int tam = entrada->length + adicionar->length;
+    char textos[tam];
+
+    int pos = 0;
+    for(int i = 0; i < entrada->length; i++){
+        textos[pos] = entrada->string[i];
+        pos++;
+    }
+
+    for(int i = 0; i < adicionar->length; i++){
+        textos[pos] = adicionar->string[i];
+    }
+
+    String* final = stringBuilder(textos);
+    return final;
+}
+
+
+bool compararStrings(String* A, String* B){  //Funcao para comparar se duas Strings sao iguais
+    bool resp = true;
+
+    if(A->length != B->length) resp = false;
+    else
+        for(int i = 0; i < A->length; i++){
+            if(A->string[i] != B->string[i]){
+                resp = false;
+                i = A->length;
+            }
+        }
+
+    return resp;
+}
+
+
+int string2Int(String* entrada){  //Transformar uma String em um numero inteiro
+    int saida = 0;
+
+    for(int i = entrada->length; i > 0; i--){
+        saida += (int) entrada->string[i];
+        saida *= 10;
+    }
+    saida /= 10;
+
+    return saida;
+}
+
+float string2Float(String* entrada){  //Transformar uma String em um numero flutuante
+    float saida = 0;
+
+    int posVirgula;
+    for(int i = 0; i < entrada->length; i++){
+        if(entrada->string[i] == '.'){
+            posVirgula = i;
+            i = entrada->length;
+        }
+        if(i == entrada->length-1) posVirgula = 0;
+    }
+
+    for(int i = entrada->length; i > 0; i--){
+        if(entrada->string[i] != '.') saida += (int) entrada->string[i];
+        saida *= 10;
+    }
+
+    for(int i = 0; i < posVirgula+1; i++){
+        saida /= 10;
+    }
+
+
+    return saida;
+}
+
+double string2Double(String* entrada){  //Transformar uma String em um numero flutuante de precisao
+    double saida = 0;
+
+    int posVirgula;
+    for(int i = 0; i < entrada->length; i++){
+        if(entrada->string[i] == '.'){
+            posVirgula = i;
+            i = entrada->length;
+        }
+        if(i == entrada->length-1) posVirgula = 0;
+    }
+
+    for(int i = entrada->length; i > 0; i--){
+        if(entrada->string[i] != '.') saida += (int) entrada->string[i];
+        saida *= 10;
+    }
+
+    for(int i = 0; i < posVirgula+1; i++){
+        saida /= 10;
+    }
+
+    return saida;
+}
+
+int char2Int(char* entrada){  //Transformar um vetor em um numero inteiro
+    int saida = 0;
+    int tam = _bufferSize(entrada);
+
+    for(int i = tam; i > 0; i--){
+        saida += (int) entrada[i];
+        saida *= 10;
+    }
+    saida /= 10;
+
+    return saida;
+}
+
+float char2Float(char* entrada){  //Transformar um vetor em um numero flutuante
+    float saida = 0;
+    int tam = _bufferSize(entrada);
+
+    int posVirgula;
+    for(int i = 0; i < tam; i++){
+        if(entrada[i] == '.'){
+            posVirgula = i;
+            i = tam;
+        }
+        if(i == tam-1) posVirgula = 0;
+    }
+
+    for(int i = tam; i > 0; i--){
+        if(entrada[i] != '.') saida += (int) entrada[i];
+        saida *= 10;
+    }
+
+    for(int i = 0; i < posVirgula+1; i++){
+        saida /= 10;
+    }
+
+
+    return saida;
+}
+
+double char2Double(char* entrada){  //Transformar um vetor em um numero flutuante de precisao
+    double saida = 0;
+    int tam = _bufferSize(entrada);
+
+    int posVirgula;
+    for(int i = 0; i < tam; i++){
+        if(entrada[i] == '.'){
+            posVirgula = i;
+            i = tam;
+        }
+        if(i == tam-1) posVirgula = 0;
+    }
+
+    for(int i = tam; i > 0; i--){
+        if(entrada[i] != '.') saida += (int) entrada[i];
+        saida *= 10;
+    }
+
+    for(int i = 0; i < posVirgula+1; i++){
+        saida /= 10;
+    }
+
+    return saida;
 }
