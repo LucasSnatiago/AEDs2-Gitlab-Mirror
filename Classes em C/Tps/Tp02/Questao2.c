@@ -26,7 +26,7 @@ int main(void){
     while(!ehFimString(path)){
     
         personagem = carregarPersonagem(conteudoArquivo);
-        escreverString(personagem->nome);
+        escreverPersonagens(personagem);
     
         freePersonagem(&personagem);
         freeString(&path);

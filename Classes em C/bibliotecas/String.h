@@ -191,6 +191,25 @@ void escreverString(String* entrada){  //Escreve uma String na tela
     }
 }
 
+void escreverStringSemNovaLinha(String* entrada){  //Escreve uma String na tela
+    
+    if(entrada){  //Se a String existir em memoria escreva
+            #if DEBUGGING == 0
+                for(int i = 0; i < entrada->length; i++){
+                    printf("%c", entrada->string[i]);
+                }
+            #else
+                printf("escreverString: Tamanho da String = %d\n", entrada->length);
+                for(int i = 0; i < entrada->length; i++){ 
+                    printf("%c", entrada->string[i]);
+                    if(entrada->string[i] == '\n') printf("\\n");
+                    if(entrada->string[i] == '\0') printf("\\0");
+                }
+            #endif
+    }else{
+        debug("escreverString: Variavel não existente em memória!\n");
+    }
+}
 
 int letrasMaiusculas(String* entrada){  //Retorna o numero de letras maiusculas de uma String
     int quantMaiusculas = 0;

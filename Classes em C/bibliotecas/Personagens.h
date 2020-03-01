@@ -242,3 +242,31 @@ void freePersonagem(Personagens** personagem){
     free(*personagem);
     personagem = NULL;
 }
+
+void escreverPersonagens(Personagens* personagem){  //Funcao para escrever na tela os personagens
+    int altura = personagem->altura;
+    double peso = personagem->peso;
+
+    if(personagem->altura == -1) altura = 0;
+    if(personagem->peso == -1) peso = 0;
+
+    printf(" ## ");
+    escreverStringSemNovaLinha(personagem->nome);
+    printf(" ## ");
+    printf("%d", altura);
+    printf(" ## ");
+    printf("%lg", peso);
+    printf(" ## ");
+    escreverStringSemNovaLinha(personagem->corDoCabelo);
+    printf(" ## ");
+    escreverStringSemNovaLinha(personagem->corDaPele);
+    printf(" ## ");
+    escreverStringSemNovaLinha(personagem->corDosOlhos);
+    printf(" ## ");
+    escreverStringSemNovaLinha(personagem->anoNascimento);
+    printf(" ## ");
+    escreverStringSemNovaLinha(personagem->genero);
+    printf(" ## ");
+    escreverStringSemNovaLinha(personagem->homeworld);
+    printf(" ## \n");
+}
