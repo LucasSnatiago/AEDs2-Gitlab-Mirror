@@ -15,7 +15,7 @@
 #define true 1
 #define false 0
 
-#define TAM 1000000
+#define TAM 10000
 
 #ifndef DEBUGGING
     #define DEBUGGING 0
@@ -131,21 +131,21 @@ void _loadPersonagem(char elemento[], char valor[], Personagens* personagem){  /
     String* elementoS = stringBuilder(elemento);
     String* valorS = stringBuilder(valor);
 
-    String* name = stringBuilder("name");
-    String* mass = stringBuilder("mass");
-    String* height = stringBuilder("height");
-    String* hair_color = stringBuilder("hair_color");
-    String* skin_color = stringBuilder("skin_color");
-    String* eye_color = stringBuilder("eye_color");
-    String* birth_year = stringBuilder("birth_year");
-    String* gender = stringBuilder("gender");
-    String* homeworld = stringBuilder("homeworld");
-    String* unknown = stringBuilder("unknown");
+    String* name = stringBuilder((char*)"name");
+    String* mass = stringBuilder((char*)"mass");
+    String* height = stringBuilder((char*)"height");
+    String* hair_color = stringBuilder((char*)"hair_color");
+    String* skin_color = stringBuilder((char*)"skin_color");
+    String* eye_color = stringBuilder((char*)"eye_color");
+    String* birth_year = stringBuilder((char*)"birth_year");
+    String* gender = stringBuilder((char*)"gender");
+    String* homeworld = stringBuilder((char*)"homeworld");
+    String* unknown = stringBuilder((char*)"unknown");
 
     if(compararStrings(elementoS, height) && compararStrings(valorS, unknown)) personagem->altura = -1;
     else if(compararStrings(elementoS, mass) && compararStrings(valorS, unknown)) personagem->peso = -1;
     else if(compararStrings(elementoS, name)) _setNome(valorS, personagem);
-    else if(compararStrings(elementoS, height)) _setAltura(string2Int(valorS), personagem);
+    else if(compararStrings(elementoS, height)) _setAltura(atoi(valorS->string), personagem);
     else if(compararStrings(elementoS, hair_color)) _setCorDoCabelo(valorS, personagem);
     else if(compararStrings(elementoS, skin_color)) _setCorDaPele(valorS, personagem);
     else if(compararStrings(elementoS, eye_color)) _setCorDosOlhos(valorS, personagem);
@@ -159,7 +159,7 @@ void _loadPersonagem(char elemento[], char valor[], Personagens* personagem){  /
                 posTmp++;
             }
         }
-        _setPeso(char2Double(tmp), personagem);
+        _setPeso(atof(tmp), personagem);
     }
 }
 
@@ -255,7 +255,8 @@ void escreverPersonagens(Personagens* personagem){  //Funcao para escrever na te
     printf(" ## ");
     printf("%d", altura);
     printf(" ## ");
-    printf("%lg", peso);
+    if(peso == (int) peso) printf("%d", (int)peso);
+    else printf("%s", peso);
     printf(" ## ");
     escreverStringSemNovaLinha(personagem->corDoCabelo);
     printf(" ## ");

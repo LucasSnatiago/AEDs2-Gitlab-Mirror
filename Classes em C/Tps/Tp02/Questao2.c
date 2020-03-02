@@ -6,7 +6,8 @@
 #define true 1
 #define false 0
 
-#define DEBUGGING 0
+#define DEBUGGING 1
+#define DEBUGGING_COMPLETO 1
 
 //Minhas Bibliotecas
 #include "../../bibliotecas/String.h"

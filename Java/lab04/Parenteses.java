@@ -18,40 +18,33 @@ class Parenteses {
     }
 
     public static boolean numParenteses(String entrada){  //Verificar se o numero de parenteses esta correto
+        //Fazer usando metodo de pilha
         boolean saida = true;
-        int tamanhoEntrada = entrada.length();
-        int numeroParentesEsq = 0;
-        int numeroParentesDir = 0;
+        Pilha pilha = new Pilha();
 
-        int esq = 0;
-        int dir = tamanhoEntrada-1;
-        boolean achouEsq;
-        boolean achouDir;
-        while(esq != tamanhoEntrada-1 && dir > -1) {
+        for(int i = 0; i < entrada.length(); i++){
+            
+            if(entrada.charAt(i) == '(') pilha.inserir();
+            if(entrada.charAt(i) == ')') pilha.remover();
+            if(pilha.valor < 0) saida = false; 
 
-            achouEsq = false;
-            achouDir = false;
-
-            while(esq < tamanhoEntrada && entrada.charAt(esq) != '('){ 
-                if(entrada.charAt(esq) == '(') achouEsq = true;
-                esq++;
-                numeroParentesEsq++;
-            }
-
-            while(dir >= 0 && entrada.charAt(dir) != ')'){ 
-                if(entrada.charAt(dir) == ')') achouDir = true;
-                dir--;
-                numeroParentesDir++; 
-            }
-
-            if(achouEsq != achouDir) saida = false;
-            if(achouEsq && achouDir && esq > dir) saida = false;
-
-            esq++;
-            dir--;
         }
-        if (numeroParentesEsq != numeroParentesDir) saida = false;
+        if(pilha.valor != 0) saida = false;
 
         return saida;
     }
+}
+
+
+class Pilha{
+    int valor;
+
+    public void inserir(){
+        this.valor++;
+    }
+
+    public void remover(){
+        this.valor--;
+    }
+
 }

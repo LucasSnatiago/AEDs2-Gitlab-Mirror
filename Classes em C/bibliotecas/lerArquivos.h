@@ -15,7 +15,7 @@
 #define true 1
 #define false 0
 
-#define TAM 1000000
+#define TAM 10000
 
 #ifndef DEBUGGING
     #define DEBUGGING 0
