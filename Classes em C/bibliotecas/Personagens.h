@@ -155,9 +155,10 @@ void _loadPersonagem(char elemento[], char valor[], Personagens* personagem){  /
     else if(compararStrings(elementoS, mass)){
         for(int i = 0; i < valorS->length; i++){
             if(valorS->string[i] != ',') {
-                tmp[posTmp] += valorS->string[i];
+                tmp[posTmp] = valorS->string[i];
                 posTmp++;
             }
+            tmp[posTmp]= '\0';
         }
         _setPeso(atof(tmp), personagem);
     }
@@ -244,30 +245,30 @@ void freePersonagem(Personagens** personagem){
 }
 
 void escreverPersonagens(Personagens* personagem){  //Funcao para escrever na tela os personagens
-    int altura = personagem->altura;
-    double peso = personagem->peso;
+    int altura = getAltura(personagem);
+    double peso = getPeso(personagem);
 
     if(personagem->altura == -1) altura = 0;
     if(personagem->peso == -1) peso = 0;
 
     printf(" ## ");
-    escreverStringSemNovaLinha(personagem->nome);
+    escreverStringSemNovaLinha(getNome(personagem));
     printf(" ## ");
     printf("%d", altura);
     printf(" ## ");
-    if(peso == (int) peso) printf("%d", (int)peso);
-    else printf("%s", peso);
+    if(peso == (int)peso) printf("%d", (int)peso);
+    else printf("%g", peso);
     printf(" ## ");
-    escreverStringSemNovaLinha(personagem->corDoCabelo);
+    escreverStringSemNovaLinha(getCorDoCabelo(personagem));
     printf(" ## ");
-    escreverStringSemNovaLinha(personagem->corDaPele);
+    escreverStringSemNovaLinha(getCorDaPele(personagem));
     printf(" ## ");
-    escreverStringSemNovaLinha(personagem->corDosOlhos);
+    escreverStringSemNovaLinha(getCorDosOlhos(personagem));
     printf(" ## ");
-    escreverStringSemNovaLinha(personagem->anoNascimento);
+    escreverStringSemNovaLinha(getAnoNascimento(personagem));
     printf(" ## ");
-    escreverStringSemNovaLinha(personagem->genero);
+    escreverStringSemNovaLinha(getGenero(personagem));
     printf(" ## ");
-    escreverStringSemNovaLinha(personagem->homeworld);
+    escreverStringSemNovaLinha(getHomeworld(personagem));
     printf(" ## \n");
 }

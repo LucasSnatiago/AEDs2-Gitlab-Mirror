@@ -6,8 +6,8 @@
 #define true 1
 #define false 0
 
-#define DEBUGGING 1
-#define DEBUGGING_COMPLETO 1
+#define DEBUGGING 0
+#define DEBUGGING_COMPLETO 0
 
 //Minhas Bibliotecas
 #include "../../bibliotecas/String.h"
@@ -18,8 +18,7 @@
 
 int main(void){
 
-    setlocale(LC_ALL, "pt_BR.utf8");
-
+    
     String* path = readString();
     String* conteudoArquivo = lerArquivo(path);
     Personagens* personagem;
