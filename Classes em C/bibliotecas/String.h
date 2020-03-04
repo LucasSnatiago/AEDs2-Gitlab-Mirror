@@ -2,15 +2,10 @@
     CRIACAO DO TIPO STRING EM C
     Criado por Lucas Santiago
     Data de criacao: 30/12/19
-    Versao: 3.6.0 - 01/03/20
+    Versao: 3.7.0 - 01/03/20
     Changelog:
-    + Concaternar Strings
-    + String 2 Int
-    + String 2 float
-    + String 2 double
-    + char 2 Int
-    + char 2 float
-    + char 2 double
+    + Split String
+    + Limpar Buffer
 */
 
 #include <stdio.h>
@@ -29,6 +24,7 @@
 #define false 0
 
 #define TAM 10000
+#define Tam 100
 
 #ifndef DEBUGGING
     #define DEBUGGING 0
@@ -148,7 +144,7 @@ void removerString(char entrada[], char key[]){  //Consertar o fgets que deixa p
 String* stringBuilder(char entrada[]){  //Constroi o tipo String
 
     int buffer = _bufferSizeX(entrada);
-    debug("stringBuilder: Tamanho do buffer: %d\n", buffer);
+    debugcompleto("stringBuilder: Tamanho do buffer: %d\n", buffer);
 
     char* tmp = (char*) malloc(sizeof(char) * buffer+1); 
 
@@ -178,7 +174,7 @@ String* _stringBuilderX(char entrada[], int tamanhoString){  //Constroi o tipo S
 void escreverString(String* entrada){  //Escreve uma String na tela
     
     if(entrada){  //Se a String existir em memoria escreva
-            #if DEBUGGING == 0
+            #if DEBUGGING_COMPLETO == 0
                 for(int i = 0; i < entrada->length; i++){
                     printf("%c", entrada->string[i]);
                 }
@@ -199,7 +195,7 @@ void escreverString(String* entrada){  //Escreve uma String na tela
 void escreverStringSemNovaLinha(String* entrada){  //Escreve uma String na tela
     
     if(entrada){  //Se a String existir em memoria escreva
-            #if DEBUGGING == 0
+            #if DEBUGGING_COMPLETO == 0
                 for(int i = 0; i < entrada->length; i++){
                     printf("%c", entrada->string[i]);
                 }
@@ -441,11 +437,17 @@ void removerTudoString(char entrada[], char key[]) {
 
 }
 
+
+void limparBuffer(){  //Limpar buffer do teclado
+    scanf("\n");
+}
+
+
 String* readString(){  //Lendo uma String da stdin
     char tmp[TAM];
 
+    limparBuffer();
     fgets(tmp, TAM, stdin);
-    //removerTudoString(tmp, "\n");
     String* saida = stringBuilder(tmp);
     debug("readString: String lida do teclado:\n%s", saida->string);
     debug("\nreadString: Tamanho da String: %d\n", saida->length);
@@ -535,60 +537,24 @@ bool compararStrings(String* A, String* B){  //Funcao para comparar se duas Stri
 int string2Int(String* entrada){  //Transformar uma String em um numero inteiro
     int saida = 0;
 
-    for(int i = entrada->length; i > 0; i--){
-        saida += (int) entrada->string[i];
-        saida *= 10;
-    }
-    saida /= 10;
+    saida = atoi(entrada->string);
 
     return saida;
 }
 
 float string2Float(String* entrada){  //Transformar uma String em um numero flutuante
-    float saida = 0;
+    float saida;
 
-    int posVirgula;
-    for(int i = 0; i < entrada->length; i++){
-        if(entrada->string[i] == '.'){
-            posVirgula = i;
-            i = entrada->length;
-        }
-        if(i == entrada->length-1) posVirgula = 0;
-    }
-
-    for(int i = entrada->length; i > 0; i--){
-        if(entrada->string[i] != '.') saida += (int) entrada->string[i];
-        saida *= 10;
-    }
-
-    for(int i = 0; i < posVirgula+1; i++){
-        saida /= 10;
-    }
+    saida = (float) atof(entrada->string);
 
 
     return saida;
 }
 
 double string2Double(String* entrada){  //Transformar uma String em um numero flutuante de precisao
-    double saida = 0;
+    double saida;
 
-    int posVirgula;
-    for(int i = 0; i < entrada->length; i++){
-        if(entrada->string[i] == '.'){
-            posVirgula = i;
-            i = entrada->length;
-        }
-        if(i == entrada->length-1) posVirgula = 0;
-    }
-
-    for(int i = entrada->length; i > 0; i--){
-        if(entrada->string[i] != '.') saida += (int) entrada->string[i];
-        saida *= 10;
-    }
-
-    for(int i = 0; i < posVirgula+1; i++){
-        saida /= 10;
-    }
+    saida = atof(entrada->string);
 
     return saida;
 }
@@ -655,4 +621,29 @@ double char2Double(char* entrada){  //Transformar um vetor em um numero flutuant
     }
 
     return saida;
+}
+
+
+String** splitString(String* entrada, char corte){ //Funcao para dar split em uma String
+    
+    int numCortes = 0;
+    char texto[entrada->length];
+    int posTexto = 0;
+    String** elementos = (String**) malloc(sizeof(String) * entrada->length);
+    for(int i = 0; i < entrada->length; i++){
+        if(entrada->string[i] == corte){
+            texto[posTexto] = '\0';
+            posTexto = 0;
+            elementos[numCortes] = stringBuilder(texto);
+            numCortes++; 
+        }
+        else{
+            texto[posTexto] = entrada->string[i];
+            posTexto++;
+        }
+    }
+    texto[posTexto] = '\0';
+    elementos[numCortes] = stringBuilder(texto);
+
+    return elementos; 
 }

@@ -2,7 +2,10 @@
     Funcoes padroes nos codigos
     Criado por Lucas Santiago
     Data de criacao: 03/02/2020
-    Versao: 1.1.0 - 13/02/2020
+    Versao: 1.2.0 - 13/02/2020
+    CHANGELOG:
+    + Leitor de inteiro
+    + Leitor de numero flutuante
 */
 
 //Bibliotecas usadas
@@ -40,4 +43,18 @@ void escreverNao(){  //Funcao para escrever NAO na saida
 
 void escreverInt(int entrada){  //Escrever um numero na saida
     printf("%d\n", entrada);
+}
+
+
+int lerInt(){  //Ler um numero do teclado
+    int num;
+    scanf("\n%d", &num);
+    return num;
+}
+
+
+float lerFloat(){  //Ler um numero flutuante do teclado
+    float num;
+    scanf("\n%f", &num);
+    return num;
 }

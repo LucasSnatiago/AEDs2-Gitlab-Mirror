@@ -240,6 +240,14 @@ Personagens* carregarPersonagem(String* entrada){  //Funcao para pegar todas as 
 }
 
 void freePersonagem(Personagens** personagem){
+    Personagens* tmp = *personagem;
+
+    freeString(&tmp->nome);
+    freeString(&tmp->corDoCabelo);
+    freeString(&tmp->corDaPele);
+    freeString(&tmp->anoNascimento);
+    freeString(&tmp->genero);
+    freeString(&tmp->homeworld);    
     free(*personagem);
     personagem = NULL;
 }
