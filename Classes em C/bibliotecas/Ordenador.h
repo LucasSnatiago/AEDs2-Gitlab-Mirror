@@ -47,7 +47,7 @@ void escreverLista(Ordenador* lista){
 
     for(int i = 0; i < lista->numElementos; i++){
 
-        printf("[%d]", i);
+        printf("[%d] ", i);
         escreverPersonagens(lista->ordem[i]);
 
     }
@@ -62,7 +62,7 @@ Ordenador* criarLista(){  //Funcao para criar uma estrutura que ordena personage
 
 void _swiftListaDir(Ordenador* lista, int pos){  //Mover todos os personagens para a direita de alguma posicao
 
-    for(int i = lista->numElementos; i > pos; i--)
+    for(int i = lista->numElementos; i >= pos; i--)
         lista->ordem[i+1] = lista->ordem[i];
 
     lista->numElementos++;
@@ -70,10 +70,10 @@ void _swiftListaDir(Ordenador* lista, int pos){  //Mover todos os personagens pa
 
 
 void _swiftListaEsq(Ordenador* lista, int pos){  //Mover todos os personagens para a esquerda de alguma posicao
-
+   
     for(int i = pos; i < lista->numElementos; i++)
         lista->ordem[i] = lista->ordem[i+1];
-
+    
     lista->numElementos--;
 
 }

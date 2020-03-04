@@ -14,7 +14,7 @@
 #include "../../bibliotecas/lerArquivos.h"
 #include "../../bibliotecas/padroes.h"
 #include "../../bibliotecas/Personagens.h"
-#include "../../bibliotecas/AlocacaoSequencial.h"
+#include "../../bibliotecas/Ordenador.h"
 
 
 void printarRemocao(Personagens* personagem){  //Printar um personagem que foi removido
