@@ -133,3 +133,12 @@ Personagens* removerInicio(Ordenador* lista){  //Remover personagem do comeco da
 
     return removido;
 }
+
+
+void printarRemocao(Personagens* personagem){  //Printar um personagem que foi removido
+
+    printf("(R) ");
+    escreverString(personagem->nome);
+    freePersonagem(&personagem);
+
+}
