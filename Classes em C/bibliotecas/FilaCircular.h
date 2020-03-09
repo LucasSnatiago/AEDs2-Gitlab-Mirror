@@ -42,7 +42,7 @@ FilaCircular* new_FilaCircular(int tamFilaCircular){  //Criador de FilaCirculars
 
 void printarPeso(Personagens* personagem){  //Printar o peso de um personagem
 
-    printf("%d\n", (int) personagem->peso);
+    printf("%d\n", (int)personagem->peso);
 
 }
 
@@ -56,27 +56,39 @@ void printarRemocao(Personagens* personagem){  //Printar um personagem que foi r
 
 void inserirFC(FilaCircular* filacircular, Personagens* personagem){  //Adicionar um elemento no final de uma FilaCircular
 
-    if(filacircular->posF+1 % filacircular->tam == filacircular->posI % filacircular->tam){
-        printarRemocao(filacircular->lista[filacircular->posF % filacircular->tam]);
-        filacircular->posF++;
-        filacircular->lista[filacircular->posF % filacircular->tam] = personagem;
+    int posFinal = ((filacircular->posF+1) % filacircular->tam);
+    int posPersonagemPrintar = (filacircular->posF) % filacircular->tam;
+    printf("%d\n", posPersonagemPrintar);
+    Personagens* personagemPrintar = filacircular->lista[posPersonagemPrintar];
+    if(personagemPrintar == NULL) printf("Esse ojeto nao existe!\n");
+
+    if(posFinal == filacircular->posI){
+        printarRemocao(personagemPrintar);
+        filacircular->posF = (filacircular->posF+1) % filacircular->tam;
+        filacircular->lista[filacircular->posF] = personagem;
     }else{
-        filacircular->lista[filacircular->posF % filacircular->tam] = personagem;
         filacircular->posF++;
+        filacircular->lista[filacircular->posF] = personagem;
+        printarPeso(filacircular->lista[filacircular->posF]);
     }
-    printarPeso(personagem);
 
 }
 
 
 void removerFC(FilaCircular* filacircular){  //Remover personagem do final de uma lista
 
-    if(filacircular->posF-1 % filacircular->tam == filacircular->posI % filacircular->tam){
-        printf("Erro na remocao: A lista esta vazia\n");
+    if(filacircular->posI == filacircular->posF){
+        
+        printf("Erro na remocao da fila circular");
+    
     }else{
-        printarRemocao(filacircular->lista[filacircular->posF % filacircular->tam]);
-        filacircular->posF--;
+
+        printarRemocao(filacircular->lista[filacircular->posI]);
+        filacircular->posI++;
+
     }
+
+    
 
 }
 

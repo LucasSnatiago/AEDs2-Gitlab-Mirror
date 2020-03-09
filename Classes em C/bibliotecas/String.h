@@ -146,7 +146,7 @@ String* stringBuilder(char entrada[]){  //Constroi o tipo String
     int buffer = _bufferSizeX(entrada);
     debugcompleto("stringBuilder: Tamanho do buffer: %d\n", buffer);
 
-    char* tmp = (char*) malloc(sizeof(char) * buffer+1); 
+    char* tmp = (char*) malloc(sizeof(char) * buffer + 1); 
 
     int posAtual;
     String* resp = (String*) malloc(sizeof(String));
