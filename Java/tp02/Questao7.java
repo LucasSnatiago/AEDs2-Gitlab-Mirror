@@ -1,61 +1,48 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.time.Clock;
+import java.time.LocalDate;
 
-public class Questao5 {
+public class Questao7 {
     public static void main(String[] args){
         MyIO.setCharset("UTF-8");
         String entrada = MyIO.readLine();
-        LerArquivo lerArq = new LerArquivo(entrada);
-        Personagem personagens = new Personagem(lerArq.texto);
-        Pilha pilha = new Pilha(100);
+        Arquivo arq = new Arquivo();
+        arq.lerArquivo(entrada);
+        Personagem personagens = new Personagem(arq.texto);
 
         while(!ehFim(entrada)){
 
-            pilha.inserir(personagens);
+            
 
             entrada = MyIO.readLine();
-            lerArq = null;
+            arq = null;
             personagens = null;
             if(!ehFim(entrada)){
-                lerArq = new LerArquivo(entrada);
-                personagens = new Personagem(lerArq.texto);
+                arq = new Arquivo();
+                arq.lerArquivo(entrada);
+                personagens = new Personagem(arq.texto);
             }
         }
 
-        //Esta funcionando ate aqui
+        entrada = MyIO.readLine();
+        arq = new Arquivo();
+        arq.lerArquivo(entrada);
+        personagens = new Personagem(arq.texto);
+        
+        while(!ehFim(entrada)){
 
-        int numExecucoes = MyIO.readInt();
-        String execucoespilha = MyIO.readLine();
 
-        for(int i = 0 ; i < numExecucoes; i++){
 
-            String[] textoCortado = splitString(execucoespilha, ' ');
-            ordenarExecucoes(textoCortado, pilha);
-
-            if(i+1 != numExecucoes) execucoespilha = MyIO.readLine();
-        }
-
-        MyIO.println(pilha.toString());
-
-    }
-
-    public static void printarRemovido(Personagem personagem){  //Escrever na tela personagem removido
-
-        MyIO.print("(R) ");
-        MyIO.println(personagem.getNome());
-
-    }
-
-    public static void ordenarExecucoes(String[] entrada, Pilha pilha){  //Funcao que ordena qual sera a proxima execucao para ser feita na pilha
-        Personagem personagem;
-
-        if(entrada[0].trim().equals("I")){
-            personagem = new Personagem(new LerArquivo(entrada[1].trim()).texto);
-            pilha.inserir(personagem);
-        }
-        if(entrada[0].trim().equals("R")){
-            personagem = pilha.remover();
-            printarRemovido(personagem);
+            entrada = MyIO.readLine();
+            arq = null;
+            personagens = null;
+            if(!ehFim(entrada)){
+                arq = new Arquivo();
+                arq.lerArquivo(entrada);
+                personagens = new Personagem(arq.texto);
+            }
         }
 
     }
@@ -137,49 +124,19 @@ class Ordenador{
     
 }
 
-class Pilha extends Ordenador{
 
+class pesquisaSequencial extends Ordenador {
 
-    public Pilha(int tam){  //Instanciar um objeto do tipo pilha
-        super(tam);
-    }
-
-    public Pilha(){  //Instanciar objeto com numero padrao de espacos
+    public pesquisaSequencial(){
         super();
     }
 
-    public void inserir(Personagem personagem){  //Inserir um personagem no final da pilha
-
-       if(this.numElementos == this.tamMax) MyIO.println("Erro ao inserir: pilha cheia");
-       else{
-            this.pilha[this.numElementos] = personagem;
-            this.numElementos++;
-       }
-
+    public pesquisaSequencial(int tam){
+        super(tam);
     }
 
-
-    public Personagem remover(){  //Remover um personagem no final da pilha
-        Personagem saida = null;
-
-        saida = this.pilha[numElementos-1];
-        this.numElementos--;
-
-        return saida;
-    }
     
 
-    public String toString(){
-        String saida = "";
-
-        for(int i = 0; i < this.numElementos; i++){
-            saida += ("[" + i + "] " + this.pilha[i].toString());
-            if(i+1 != this.numElementos) saida += '\n';
-        }
-        
-        return saida;
-    }
-    
 }
 
 
@@ -193,18 +150,6 @@ class Personagem {
     private String anoNascimento;
     private String genero;
     private String homeworld;
-
-    /*  Elementos da classe:
-        this.nome;
-        this.altura;
-        this.peso;
-        this.corDoCabelo;
-        this.corDaPele;
-        this.corDosOlhos;
-        this.anoNascimento;
-        this.genero;
-        this.homeworld;
-    */
 
     public Personagem(){  //Construtor da classe
         this.nome = null;
@@ -407,10 +352,10 @@ class Personagem {
     }
 }
 
-class LerArquivo {
+class Arquivo {
     public String texto;
 
-    public LerArquivo(String entrada){
+    public String lerArquivo(String entrada){  //Ler conteudo dentro de um arquivo
         try{
             BufferedReader arqTexto = new BufferedReader(new FileReader(entrada));
             String texto = "";
@@ -426,5 +371,37 @@ class LerArquivo {
         }catch(Exception erro){
             MyIO.println("Houve um erro na leitura do arquivo!");
         }
+
+        return this.texto;
     }
+
+    public void criarLog(long tempoExecucao){  //Funcao para criar o log em arquivo
+        
+        try{
+            
+            FileWriter escreverArq = new FileWriter("matrícula_sequencial.txt");
+            
+            escreverArq.write("650888\t" + tempoExecucao + "\t");
+            escreverArq.close();
+
+        }catch(Exception error){
+
+            MyIO.println("Erro ou criar o arquivo de log!");
+
+        }
+    }
+
+    public long cronometro(){  //Iniciar um cronometro
+
+        Clock clock = Clock.systemDefaultZone();
+        return clock.millis();
+
+    }
+
+    public long calcularTempo(long clockA, long clockB){  //Calcula o tempo entre dois clocks em milisegundos
+
+        return (clockB - clockA);
+
+    }
+
 }
