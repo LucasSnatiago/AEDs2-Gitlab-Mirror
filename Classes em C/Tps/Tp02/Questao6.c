@@ -54,5 +54,7 @@ int main(void){
             entrada = readString();
     }
 
+    escreverFilaCircular(fila);
+
     return 0;
 }

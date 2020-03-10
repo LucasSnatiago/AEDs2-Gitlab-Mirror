@@ -24,6 +24,7 @@ typedef struct filacircular{
     int tam;
     int posI;
     int posF;
+    int numElementos;
 }FilaCircular;
 
 
@@ -36,14 +37,41 @@ FilaCircular* new_FilaCircular(int tamFilaCircular){  //Criador de FilaCirculars
     resp->tam = tamFilaCircular;
     resp->posI = 0;
     resp->posF = 0;
+    resp->numElementos = 0;
 
     return resp;
 } 
 
-void printarPeso(Personagens* personagem){  //Printar o peso de um personagem
+void printarAltura(Personagens* personagem){  //Printar o peso de um personagem
 
-    printf("%d\n", (int)personagem->peso);
+    printf("%d\n", (int)personagem->altura);
 
+}
+
+void escreverFilaCircular(FilaCircular* filacircular){  //escrever todos os itens da lista
+
+    for(int i = 0; i < filacircular->numElementos; i++){
+        printf("[%d] ", i);
+        escreverPersonagens(filacircular->lista[(filacircular->posI + i) % filacircular->tam]);
+    }
+
+}
+
+int mediaAlturaFilaCircular(FilaCircular* filacircular){  //Calcular a media entre as alturas
+    int media = 0;
+
+    //escreverFilaCircular(filacircular);
+
+    for(int i = 0; i < filacircular->numElementos; i++)
+        media += filacircular->lista[((filacircular->posI + i) % filacircular->tam)]->altura;
+
+    float calc;
+    if(filacircular->numElementos != 0) calc = (float)  media / filacircular->numElementos;
+    
+    int saida = (int) calc;
+    if((int)(calc*10) % 10 > 4) saida++; 
+
+    return saida;
 }
 
 void printarRemocao(Personagens* personagem){  //Printar um personagem que foi removido
@@ -56,39 +84,31 @@ void printarRemocao(Personagens* personagem){  //Printar um personagem que foi r
 
 void inserirFC(FilaCircular* filacircular, Personagens* personagem){  //Adicionar um elemento no final de uma FilaCircular
 
-    int posFinal = ((filacircular->posF+1) % filacircular->tam);
-    int posPersonagemPrintar = (filacircular->posF) % filacircular->tam;
-    printf("%d\n", posPersonagemPrintar);
-    Personagens* personagemPrintar = filacircular->lista[posPersonagemPrintar];
-    if(personagemPrintar == NULL) printf("Esse ojeto nao existe!\n");
+    if(filacircular->lista[filacircular->posF] != NULL){
 
-    if(posFinal == filacircular->posI){
-        printarRemocao(personagemPrintar);
-        filacircular->posF = (filacircular->posF+1) % filacircular->tam;
         filacircular->lista[filacircular->posF] = personagem;
+        //filacircular->posI = (filacircular->posI + 1) % filacircular->tam;
+
     }else{
-        filacircular->posF++;
+
         filacircular->lista[filacircular->posF] = personagem;
-        printarPeso(filacircular->lista[filacircular->posF]);
+        filacircular->numElementos++;
+
     }
+
+    printf("%d\n", mediaAlturaFilaCircular(filacircular));
+    filacircular->posF = (filacircular->posF + 1) % filacircular->tam;
+    if(filacircular->posF == filacircular->posI) filacircular->posI = (filacircular->posI + 1) % filacircular->tam;
 
 }
 
 
 void removerFC(FilaCircular* filacircular){  //Remover personagem do final de uma lista
 
-    if(filacircular->posI == filacircular->posF){
-        
-        printf("Erro na remocao da fila circular");
-    
-    }else{
-
-        printarRemocao(filacircular->lista[filacircular->posI]);
-        filacircular->posI++;
-
-    }
-
-    
+    printarRemocao(filacircular->lista[filacircular->posI]);
+    filacircular->lista[filacircular->posI] = NULL;
+    filacircular->numElementos--;
+    filacircular->posI = (filacircular->posI + 1) % filacircular->tam;
 
 }
 

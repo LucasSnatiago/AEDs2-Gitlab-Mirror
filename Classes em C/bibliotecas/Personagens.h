@@ -142,8 +142,8 @@ void _loadPersonagem(char elemento[], char valor[], Personagens* personagem){  /
     String* homeworld = stringBuilder((char*)"homeworld");
     String* unknown = stringBuilder((char*)"unknown");
 
-    if(compararStrings(elementoS, height) && compararStrings(valorS, unknown)) personagem->altura = -1;
-    else if(compararStrings(elementoS, mass) && compararStrings(valorS, unknown)) personagem->peso = -1;
+    if(compararStrings(elementoS, height) && compararStrings(valorS, unknown)) personagem->altura = 0;
+    else if(compararStrings(elementoS, mass) && compararStrings(valorS, unknown)) personagem->peso = 0;
     else if(compararStrings(elementoS, name)) _setNome(valorS, personagem);
     else if(compararStrings(elementoS, height)) _setAltura(atoi(valorS->string), personagem);
     else if(compararStrings(elementoS, hair_color)) _setCorDoCabelo(valorS, personagem);
