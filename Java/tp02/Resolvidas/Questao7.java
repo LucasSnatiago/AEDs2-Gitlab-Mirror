@@ -2,7 +2,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.time.Clock;
-import java.time.LocalDate;
 
 public class Questao7 {
     public static void main(String[] args){
@@ -11,10 +10,12 @@ public class Questao7 {
         Arquivo arq = new Arquivo();
         arq.lerArquivo(entrada);
         Personagem personagens = new Personagem(arq.texto);
+        PesquisaSequencial ps = new PesquisaSequencial(100);
+
 
         while(!ehFim(entrada)){
 
-            
+            ps.inserirFinal(personagens);
 
             entrada = MyIO.readLine();
             arq = null;
@@ -27,24 +28,31 @@ public class Questao7 {
         }
 
         entrada = MyIO.readLine();
+        Arquivo log = new Arquivo();
         arq = new Arquivo();
-        arq.lerArquivo(entrada);
-        personagens = new Personagem(arq.texto);
+        String nomePersonagem = arq.texto;
+        long tempoExecucao = 0;
+        int numExecucoes = 0;
         
         while(!ehFim(entrada)){
 
-
-
+            long iniciarCronometro = log.cronometro();
+            if(ps.pesquisa(entrada, log)) MyIO.println("SIM");
+            else MyIO.println("NAO");
+            long finalizarCronometro = log.cronometro();
+            
+            tempoExecucao += log.calcularTempo(iniciarCronometro, finalizarCronometro);
+            numExecucoes++;
+            
             entrada = MyIO.readLine();
-            arq = null;
-            personagens = null;
             if(!ehFim(entrada)){
-                arq = new Arquivo();
-                arq.lerArquivo(entrada);
-                personagens = new Personagem(arq.texto);
+                nomePersonagem = arq.texto;
             }
         }
-
+        
+        long media = tempoExecucao / numExecucoes;
+        log.criarLog(media);
+    
     }
 
     public static String[] splitString(String entrada, char corte){  //Separar uma String em varias
@@ -80,28 +88,28 @@ public class Questao7 {
 
 
 class Ordenador{
-    protected Personagem[] pilha;
+    protected Personagem[] lista;
     protected int numElementos;
     protected int tamMax;
 
-    public Ordenador(int tam){  //Instanciar Ordenardor delimitando numero de elementos na pilha
-        this.pilha = new Personagem[tam];
+    public Ordenador(int tam){  //Instanciar Ordenardor delimitando numero de elementos na lista
+        this.lista = new Personagem[tam];
         this.tamMax = tam;
         this.numElementos = 0;
     }
 
     public Ordenador(){  //Instanciar Ordenador com numero padrao de tamanho
-        this.pilha = new Personagem[100];
+        this.lista = new Personagem[100];
         this.tamMax = 100;
         this.numElementos = 0;
     }
 
-    protected void swiftEsq(int pos){  //Mover todos os elementos da pilha para a esquerda ate a pos
+    protected void swiftEsq(int pos){  //Mover todos os elementos da lista para a esquerda ate a pos
 
         if(pos < 0 || pos+1 > this.numElementos) MyIO.println("Erro no swift: Posicao invalida!");
         else{
             for(int i = pos; i < this.numElementos; i++){
-                this.pilha[i] = this.pilha[i+1];
+                this.lista[i] = this.lista[i+1];
             }
             
             this.numElementos--;
@@ -109,12 +117,12 @@ class Ordenador{
 
     }
 
-    protected void swiftDir(int pos){  //Mover todos os elementos da pilha para a direita da pos
+    protected void swiftDir(int pos){  //Mover todos os elementos da lista para a direita da pos
 
         if(pos < 0 || pos+1 > this.numElementos) MyIO.println("Erro no swift: Posicao invalida!");
         else{
             for(int i = this.numElementos-1; i >= pos; i--){
-                this.pilha[i+1] = this.pilha[i]; 
+                this.lista[i+1] = this.lista[i]; 
             }
             
             this.numElementos++;
@@ -125,17 +133,36 @@ class Ordenador{
 }
 
 
-class pesquisaSequencial extends Ordenador {
+class PesquisaSequencial extends Ordenador {
 
-    public pesquisaSequencial(){
+    public PesquisaSequencial(){
         super();
     }
 
-    public pesquisaSequencial(int tam){
+    public PesquisaSequencial(int tam){
         super(tam);
     }
 
-    
+    public void inserirFinal(Personagem personagem){  //Funcao para inserir um Personagem no final da lista
+
+        this.lista[this.numElementos] = personagem;
+        this.numElementos++;
+
+    }  
+
+    public boolean pesquisa(String nomePesquisa, Arquivo log){  //Pesquisar se existe um personagem na lista com o nome igual a nomePesquisa
+        boolean saida = false;
+
+        for(int i = 0; i < this.numElementos; i++){
+            log.numMovimentacoes++;
+            if(this.lista[i].getNome().equals(nomePesquisa)){ 
+                saida = true;
+                i = this.numElementos;
+            }
+        }
+
+        return saida;
+    }
 
 }
 
@@ -354,6 +381,11 @@ class Personagem {
 
 class Arquivo {
     public String texto;
+    public int numMovimentacoes;
+
+    public Arquivo(){
+        this.numMovimentacoes = 0;
+    }
 
     public String lerArquivo(String entrada){  //Ler conteudo dentro de um arquivo
         try{
@@ -381,7 +413,7 @@ class Arquivo {
             
             FileWriter escreverArq = new FileWriter("matrícula_sequencial.txt");
             
-            escreverArq.write("650888\t" + tempoExecucao + "\t");
+            escreverArq.write("650888\t" + tempoExecucao + "\t" + this.numMovimentacoes);
             escreverArq.close();
 
         }catch(Exception error){
