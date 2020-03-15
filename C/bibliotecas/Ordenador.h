@@ -47,7 +47,7 @@ void escreverLista(Ordenador* lista){
 
     for(int i = 0; i < lista->numElementos; i++){
 
-        printf("[%d] ", i);
+        //printf("[%d] ", i);
         escreverPersonagens(lista->ordem[i]);
 
     }

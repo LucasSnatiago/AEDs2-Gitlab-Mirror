@@ -34,37 +34,45 @@
 #endif
 
 
+//Pesquisa sequencial de elementos
+bool pesquisaSequencial(Ordenador* lista, String* nome){
+    
+
+    for(int i = 0; i < lista->numElementos; i++){
+        printf("%d", compararAlfabeto(lista->ordem[i]->nome->string, nome->string));
+    }
+
+    return 1;
+}
+
 
 bool pesquisar(Ordenador* lista, String* nome, int* numComparacoes){  //Funcao para fazer uma pesquisa binaria dentro de uma lista
     bool achou = false;
 
-    int pos = lista->numElementos / 2;
-    int tamElementos = lista->numElementos;
-    int flagSaida = false;
+    int posI = 0;
+    int posF = lista->numElementos-1;
 
-    while(!flagSaida){
+    int pos;
 
-        if(compararAlfabeto(lista->ordem[pos]->nome, nome) == 1){
+    while(posI <= posF){
 
-            pos /= 2;
-            tamElementos /= 2;
+        pos = (posI + posF) / 2;
+
+        if(strcmp(lista->ordem[pos]->nome->string, nome->string) < 0){
+
+            posI = pos+1;
             numComparacoes++;
 
-        }else if(compararAlfabeto(lista->ordem[pos]->nome, nome) == 2){
+        }else if(strcmp(lista->ordem[pos]->nome->string, nome->string) > 0){
 
-            pos *= 2;
-            tamElementos /= 2;
+            posF = pos-1;
             numComparacoes++;
 
-        }else if(compararAlfabeto(lista->ordem[pos]->nome, nome) == 0){
+        }else if(strcmp(lista->ordem[pos]->nome->string, nome->string) == 0){
 
+            posI = lista->numElementos;
             numComparacoes++;
             achou = true;
-            flagSaida = true;
-
-        }else if(tamElementos == 1) {
-
-            flagSaida = true;
 
         }
 

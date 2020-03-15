@@ -16,6 +16,7 @@
 #include "../../bibliotecas/Ordenador.h"
 #include "../../bibliotecas/PesquisaBinaria.h"
 #include "../../bibliotecas/Log.h"
+#include "../../bibliotecas/Selecao.h"
 
 
 int main(void){
@@ -23,40 +24,31 @@ int main(void){
     Ordenador *lista = criarLista();
     String *entrada = readString();
     Personagens* personagem;
-    FILE *log = criarLog((const char*)"matrícula_binaria.txt");
+    FILE *log = criarLog("matrícula_selecaoRecursiva.txt");
+    String *conteudoArquivo;
 
     while(!ehFimString(entrada)){
 
-        personagem = carregarPersonagem(entrada);
+        conteudoArquivo = lerArquivo(entrada);
+        personagem = carregarPersonagem(conteudoArquivo);
         inserirFinal(lista, personagem);
 
         entrada = readString();
     }
 
-    entrada = readString();
-    int numComparacoes = 0;
-    clock_t start;
-    clock_t stop;
-    clock_t tempoExecucao = 0;
-    int numExecucoes = 0;
 
+    long start = clock();
+    selectionSortRecur(lista, 0);
+    long stop = clock();
 
-    while(!ehFimString(entrada)){
+    long tempoExecucao = 0;
+    tempoExecucao += calcularTempo(start, stop);
 
-        start = clock();
-        if(pesquisar(lista, entrada, &numComparacoes)) printf("SIM\n");
-        else printf("NAO\n");
-        stop = clock();
-
-        tempoExecucao += calcularTempo(start, stop);
-        numExecucoes++;
-
-        entrada = readString();
-    }
+    escreverLista(lista);
     
-    inserirTempoExecucao(log, tempoExecucao/numExecucoes, numComparacoes);
+    //numExecucoes++;
+    //inserirTempoExecucao(log, tempoExecucao/numExecucoes, numComparacoes);
 
     fclose(log);
     return 0;
 }
-
