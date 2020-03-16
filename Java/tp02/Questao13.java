@@ -202,35 +202,55 @@ class AlgoritmoOrdenacao extends Ordenador {
         super(tam);
     }
 
+    private void swapHeap(int a, int b){
+        Personagem tmp = this.lista[a];
+        this.lista[a] = this.lista[b];
+        this.lista[b] = tmp;
+    }
+
+    public void constroi(){
+        for(int i = this.numElementos; i > 1 && this.lista[i].getAltura() > this.lista[i/2].getAltura(); i /= 2){
+            swapHeap(i, i/2);
+        }
+    }
+
+    public void reconstroi(){
+        int i = 1, filho;
+        while(i <= (this.numElementos/2)){
+     
+           if (this.lista[2*i].getAltura() > this.lista[2*i+1].getAltura() || 2*i == this.numElementos){
+                filho = 2*i;
+           } else {
+                filho = 2*i + 1;
+           }
+     
+           if(this.lista[i].getAltura() < this.lista[filho].getAltura()){
+                swapHeap(i, filho);
+                i = filho;
+           }else{
+                i = this.numElementos;
+           }
+        }
+     }
+
     public void ordenar(Arquivo log){
 
-       //Alterar o vetor ignorando a posicao zero
-        for(int i = 0; i < n; i++){
-            tmp[i+1] = array[i];
-        }
-        array = tmp;
-
-        //Contrucao do heap
-        for(int tamHeap = 2; tamHeap <= n; tamHeap++){
-            constroi(tamHeap);
+        for(int i = 0; i < this.numElementos; i++){
+            this.lista[i+1] = this.lista[i];
         }
 
-        for(int i = 1; i < tmp.length; i++){
-            System.out.println(tmp[i]);
+        for(int tamHeap = 2; tamHeap <= this.numElementos; tamHeap++){
+            constroi();
         }
 
-        //Ordenacao propriamente dita
-        int tamHeap = n;
+        int tamHeap = this.numElementos;
         while(tamHeap > 1){
-            swap(1, tamHeap--);
-            reconstroi(tamHeap);
+            swapHeap(1, tamHeap--);
+            reconstroi();
         }
 
-        //Alterar o vetor para voltar a posicao zero
-        tmp = array;
-        array = new int[n];
-        for(int i = 0; i < n; i++){
-            array[i] = tmp[i+1];
+        for(int i = 0; i < this.numElementos; i++){
+            this.lista[i] = this.lista[i+1];
         }
 
     }
