@@ -32,7 +32,8 @@ public class Questao13 {
         ps.ordenar(log);
         log.cronometroStop();
 
-        log.criarLog("matrícula_heapsort.txt");
+        log.criarLog("matrícula_countingsort.txt");
+        ps.consertarNomes();
         ps.escreverLista();
         
     
@@ -202,61 +203,57 @@ class AlgoritmoOrdenacao extends Ordenador {
         super(tam);
     }
 
-    private void swapHeap(int a, int b){
-        Personagem tmp = this.lista[a];
-        this.lista[a] = this.lista[b];
-        this.lista[b] = tmp;
-    }
-
-    public void constroi(){
-        for(int i = this.numElementos; i > 1 && this.lista[i].getAltura() > this.lista[i/2].getAltura(); i /= 2){
-            swapHeap(i, i/2);
+    public int getMaior() {
+        double maior = this.lista[0].getPeso();
+ 
+        for (int i = 0; i < this.numElementos; i++) {
+            if(maior < this.lista[i].getPeso()){
+                maior = this.lista[i].getPeso();
+            }
         }
-    }
 
-    public void reconstroi(){
-        int i = 1, filho;
-        while(i <= (this.numElementos/2)){
-     
-           if (this.lista[2*i].getAltura() > this.lista[2*i+1].getAltura() || 2*i == this.numElementos){
-                filho = 2*i;
-           } else {
-                filho = 2*i + 1;
-           }
-     
-           if(this.lista[i].getAltura() < this.lista[filho].getAltura()){
-                swapHeap(i, filho);
-                i = filho;
-           }else{
-                i = this.numElementos;
-           }
-        }
+        return maior;	
      }
+ 
+     //Ordenar usando countingSort
+    public void ordenar(Arquivo log) {
+        //Array paralelo para contar os elementos
+        Personagem[] count = new Personagem[(int)getMaior() + 2];
+        Personagem[] ordenado = new Personagem[this.numElementos];
+ 
+        //Inicializar cada posicao do array de contagem 
+        for (int i = 0; i < count.length; count[i] = 0, i++);
+ 
+        //Agora, o count[i] contem o numero de elemento iguais a i
+        for (int i = 0; i < this.numElementos; count[this.lista[i]]++, i++);
+ 
+        //Agora, o count[i] contem o numero de elemento menores ou iguais a i
+        for(int i = 1; i < count.length; count[i].peso(count[i].getPeso() + count[i-1].getPeso()), i++);
+ 
+        //Ordenando
+        for(int i = this.numElementos-1; i >= 0; ordenado[count[array[i]]-1] = array[i], count[array[i]]--, i--);
+ 
+        //Copiando para o array original
+        for(int i = 0; i < n; array[i] = ordenado[i], i++);
+    }
 
-    public void ordenar(Arquivo log){
+    public void consertarNomes(){
 
-        for(int i = 0; i < this.numElementos; i++){
-            this.lista[i+1] = this.lista[i];
-        }
+        for (int i = 1; i < this.numElementos; i++) {
+            Personagem tmp = this.lista[i];
+            int j = i - 1;
 
-        for(int tamHeap = 2; tamHeap <= this.numElementos; tamHeap++){
-            constroi();
-        }
+            while ((j >= 0) && verificarOrdemAlfabetica(this.lista[j].getNome(), tmp.getNome()) == 2 && (this.lista[j].getPeso() == tmp.getPeso())) {
+                this.lista[j + 1] = this.lista[j];
+                j--;
+            }
 
-        int tamHeap = this.numElementos;
-        while(tamHeap > 1){
-            swapHeap(1, tamHeap--);
-            reconstroi();
-        }
-
-        for(int i = 0; i < this.numElementos; i++){
-            this.lista[i] = this.lista[i+1];
+            this.lista[j + 1] = tmp;
         }
 
     }
 
 }
-
 
 class Personagem {
     private String nome;
