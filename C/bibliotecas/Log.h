@@ -46,8 +46,8 @@ FILE* criarLog(const char* nomeArquivo){  //Criar um arquivo de log contendo log
     return arq;
 }
 
-void inserirTempoExecucao(FILE *arq, clock_t tempoExecucao, int numMovimentacoes){  //Inserir tempo de execucao de um algoritmo no arquivo
-    fprintf(arq, "%ld\t%d\t", tempoExecucao, numMovimentacoes);
+void inserirTempoExecucao(FILE *arq, clock_t tempoExecucao, int numMovimentacoes, int numComparacoes){  //Inserir tempo de execucao de um algoritmo no arquivo
+    fprintf(arq, "%ld\t%d\t%d\t", tempoExecucao, numComparacoes, numMovimentacoes);
 }
 
 clock_t calcularTempo(clock_t start, clock_t fim){  //Retornando tempo de execucao do codigo

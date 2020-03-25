@@ -652,25 +652,12 @@ String** splitString(String* entrada, char corte){ //Funcao para dar split em um
  // 0 -> Strings iguais 
  // 1 -> String A vem primeiro do que B 
  // 2 -> String B vem primeiro do que A
-short compararAlfabeto(char* stringA, char* stringB){ 
-    short resp = 0;
-    int tamA = strlen(stringA);
-    int tamB = strlen(stringB);
-
-    int menor = tamA;
-    if(menor > tamB) menor = tamB;
-
-    for(int i = 0 ; i < menor; i++){
-        if(stringA[i] < stringB[i]){
-            resp = 1;
-            i = menor;
-        }
-        if(stringA[i] > stringB[i]){
-            resp = 2;
-            i = menor;
-        }
-        
-    }
+int compararAlfabeto(char* stringA, char* stringB){ 
+    int resp = 0;
+    
+    resp = strcmp(stringA, stringB);
+    if(resp > 0) resp = 1;
+    else if(resp < 0) resp = 2;    
 
     return resp;
 }

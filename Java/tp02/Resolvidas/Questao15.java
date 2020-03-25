@@ -3,7 +3,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.time.Clock;
 
-public class Questao13 {
+public class Questao15 {
     public static void main(String[] args){
         MyIO.setCharset("UTF-8");
         String entrada = MyIO.readLine();
@@ -35,7 +35,6 @@ public class Questao13 {
         log.criarLog("matrícula_countingsort.txt");
         ps.consertarNomes();
         ps.escreverLista();
-        
     
     }
 
@@ -203,10 +202,10 @@ class AlgoritmoOrdenacao extends Ordenador {
         super(tam);
     }
 
-    public int getMaior() {
+    public double getMaior() {
         double maior = this.lista[0].getPeso();
  
-        for (int i = 0; i < this.numElementos; i++) {
+        for (int i = 1; i < this.numElementos; i++) {
             if(maior < this.lista[i].getPeso()){
                 maior = this.lista[i].getPeso();
             }
@@ -218,23 +217,22 @@ class AlgoritmoOrdenacao extends Ordenador {
      //Ordenar usando countingSort
     public void ordenar(Arquivo log) {
         //Array paralelo para contar os elementos
-        Personagem[] count = new Personagem[(int)getMaior() + 2];
+        double[] count = new double[(int)getMaior() + 1];
         Personagem[] ordenado = new Personagem[this.numElementos];
  
         //Inicializar cada posicao do array de contagem 
-        for (int i = 0; i < count.length; count[i] = 0, i++);
- 
+        for(int i = 0; i < count.length; count[i] = 0.0, i++);
         //Agora, o count[i] contem o numero de elemento iguais a i
-        for (int i = 0; i < this.numElementos; count[this.lista[i]]++, i++);
+        for (int i = 0; i < this.numElementos; count[(int)this.lista[i].getPeso()]++, i++, log.numComparacoes++);
  
         //Agora, o count[i] contem o numero de elemento menores ou iguais a i
-        for(int i = 1; i < count.length; count[i].peso(count[i].getPeso() + count[i-1].getPeso()), i++);
+        for(int i = 1; i < count.length; count[i] += count[i-1], i++, log.numMovimentacoes++);
  
         //Ordenando
-        for(int i = this.numElementos-1; i >= 0; ordenado[count[array[i]]-1] = array[i], count[array[i]]--, i--);
+        for(int i = this.numElementos-1; i >= 0; ordenado[(int)count[(int)this.lista[i].getPeso()]-1] = this.lista[i], count[(int)this.lista[i].getPeso()]--, i--, log.numMovimentacoes++, log.numComparacoes++);
  
         //Copiando para o array original
-        for(int i = 0; i < n; array[i] = ordenado[i], i++);
+        for(int i = 0; i < this.numElementos; this.lista[i] = ordenado[i], i++, log.numMovimentacoes++);
     }
 
     public void consertarNomes(){
@@ -340,8 +338,8 @@ class Personagem {
         String tmp = "";
 
         //DEBUG: MyIO.println(elemento + " | " + valor);
-        if(compararStrings(elemento, "height") && compararStrings(valor, "unknown")) this.altura = -1;
-        else if(compararStrings(elemento, "mass") && compararStrings(valor, "unknown")) this.peso = -1;
+        if(compararStrings(elemento, "height") && compararStrings(valor, "unknown")) this.altura = 0;
+        else if(compararStrings(elemento, "mass") && compararStrings(valor, "unknown")) this.peso = 0;
         else if(compararStrings(elemento, "name")) setNome(valor);
         else if(compararStrings(elemento, "height")) setAltura(Integer.parseInt(valor));
         else if(compararStrings(elemento, "hair_color")) setCorDoCabelo(valor);
