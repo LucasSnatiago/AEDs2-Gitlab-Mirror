@@ -16,8 +16,7 @@
 #include "../../bibliotecas/Ordenador.h"
 #include "../../bibliotecas/PesquisaBinaria.h"
 #include "../../bibliotecas/Log.h"
-#include "../../bibliotecas/Insertion.h"
-
+#include "../../bibliotecas/Radix.h"
 
 
 
@@ -26,7 +25,7 @@ int main(void){
     Ordenador *lista = criarLista();
     String *entrada = readString();
     Personagens* personagem;
-    //FILE *log = criarLog("matrícula_selecaoRecursiva.txt");
+    FILE *log = criarLog("matrícula_radixsort.txt");
     String *conteudoArquivo;
 
     while(!ehFimString(entrada)){
@@ -38,23 +37,25 @@ int main(void){
         entrada = readString();
     }
 
+    int comparacoes = 0;
+    int movimentacoes = 0;
+    int* numComparacoes = &comparacoes;
+    int* numMovimentacoes = & movimentacoes;
 
-    long start = clock();
-    insertionSortA(lista, lista->numElementos);
-    long stop = clock();
-
-
+    clock_t start = clock();
+    radixsort(lista, numComparacoes, numMovimentacoes);
+    clock_t stop = clock();
+    insertionSort(lista);
 
     long tempoExecucao = 0;
     tempoExecucao += calcularTempo(start, stop);
 
-    for(int i = 0; i < 10; i++){
-        escreverPersonagens(lista->ordem[i]);
-    }
+    escreverLista(lista);
     
-    //numExecucoes++;
-    //inserirTempoExecucao(log, tempoExecucao/numExecucoes, numComparacoes);
+    inserirTempoExecucao(log, tempoExecucao, comparacoes, movimentacoes);
 
-    //fclose(log);
+
+    fclose(log);
     return 0;
 }
+
