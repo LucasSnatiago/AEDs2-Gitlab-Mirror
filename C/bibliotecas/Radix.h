@@ -19,7 +19,7 @@ void radixsort(Ordenador* vetor, int* numComparacoes, int* numMovimentacoes) {
         *numComparacoes++;
     	for (i = 0; i < tamanho; i++){
     	    bucket[(vetor->ordem[i]->altura / exp) % 10]++;
-            *numComparacoes++;
+            *numComparacoes+=1;
         }
     	for (i = 1; i < 10; i++){
     	    bucket[i] += bucket[i - 1];

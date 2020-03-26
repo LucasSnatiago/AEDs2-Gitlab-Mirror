@@ -3,7 +3,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.time.Clock;
 
-public class Questao19 {
+public class Questao22 {
     public static void main(String[] args){
         MyIO.setCharset("UTF-8");
         String entrada = MyIO.readLine();
@@ -31,6 +31,9 @@ public class Questao19 {
         log.cronometroStart();
         ps.ordenarSelecao(log);
         log.cronometroStop();
+
+
+        ps.consertarNomes();
 
         ps.escreverLista(10);
         
@@ -137,26 +140,10 @@ class Ordenador{
     // 2 -> A segunda String vem primeiro
     public int verificarOrdemAlfabetica(String A, String B){
         int alfabeto = 0;
-        int tamA = A.length();
-        int tamB = B.length();
 
-        int menor = tamA;
-        if(menor > tamB) menor = tamB;
-
-        for(int i = 0; i < menor; i++){
-            
-            if(A.charAt(i) < B.charAt(i)){
-                alfabeto = 1;
-                i = menor;
-            }
-
-            else if(A.charAt(i) > B.charAt(i)){
-                alfabeto = 2;
-                i = menor;
-            }
-
-        }
-    
+        alfabeto = A.compareTo(B); 
+        if(alfabeto < 0) alfabeto = 1;
+        else if(alfabeto > 0) alfabeto = 2;
 
         return alfabeto;
     }
@@ -180,6 +167,13 @@ class Ordenador{
         Personagem tmp = A;
         A = B;
         B = tmp;
+    }
+
+    //Trocar dois personanges na lista a partir da pos
+    protected void swap(int i, int j){
+        Personagem tmp = this.lista[i];
+        this.lista[i] = this.lista[j];
+        this.lista[j] = tmp;
     }
 
     //Escrever a ordem da lista
@@ -206,21 +200,49 @@ class Selecao extends Ordenador {
         super(tam);
     }
 
+    //Quicksort
     public void ordenarSelecao(Arquivo log){
+        Quicksort(log, 0, this.numElementos-1);
+    }
 
-        Personagem menor = this.lista[0];
+    public void Quicksort(Arquivo log, int esq, int dir){
+        int i = esq, j = dir;
+        Personagem pivo = this.lista[(dir+esq)/2];
 
-        int i;
-        int j;
-        for(i = 0; i < this.numElementos; i++){
-            for(j = i; j < this.numElementos; j++){
+        while (i <= j) {
+            while (this.lista[i].getCorDoCabelo().compareTo(pivo.getCorDoCabelo()) < 0){
+                i++;
                 log.numComparacoes++;
-                if(verificarOrdemAlfabetica(menor.getNome(), this.lista[j].getNome()) == 2){
-                    menor = this.lista[j];
-                }
             }
-            log.numMovimentacoes++;
-            swap(menor, this.lista[j]);
+            while (this.lista[j].getCorDoCabelo().compareTo(pivo.getCorDoCabelo()) > 0){
+                j--;
+                log.numComparacoes++;
+            }
+            if (i <= j) {
+                swap(i, j);
+                log.numMovimentacoes++;
+                i++;
+                j--;
+            }
+        }
+        
+        if (esq < j)  Quicksort(log, esq, j);
+        if (i < dir)  Quicksort(log, i, dir);
+
+    }
+
+    public void consertarNomes(){
+
+        for (int i = 1; i < this.numElementos; i++) {
+            Personagem tmp = this.lista[i];
+            int j = i - 1;
+
+            while ((j >= 0) && this.lista[j].getNome().compareTo(tmp.getNome()) > 0 && this.lista[j].getCorDoCabelo().compareTo(tmp.getCorDoCabelo()) == 0) {
+                this.lista[j + 1] = this.lista[j];
+                j--;
+            }
+
+            this.lista[j + 1] = tmp;
         }
 
     }
