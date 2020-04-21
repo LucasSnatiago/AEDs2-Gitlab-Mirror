@@ -27,72 +27,49 @@ public class Questao1 {
         }        
 
         int repeticoes = Integer.parseInt(MyIO.readLine());
-        String[] entrada2;
         for(int i = 0; i < repeticoes; i++) {
-            entrada2 = splitString(MyIO.readLine(), ' ');
-            ordenador(entrada2, ps);
-            ps.mostrar();
+            ordenador(splitString(MyIO.readLine(), " "), ps);
         }
     
         ps.mostrar();
     }
 
-    public static String[] splitString(String entrada, char corte){  //Separar uma String em varias
-        String[] saida = new String[entrada.length()];
-        int posSaida = 0;
-        char[] tmp = new char[entrada.length()];
-        int posTmp = 0;
-
-        for(int i = 0; i < entrada.length(); i++){
-            if(entrada.charAt(i) == corte){
-                tmp[posTmp] = '\0';
-                saida[posSaida] = new String(tmp);
-                posTmp = 0;
-                posSaida++;
-            } else{
-                tmp[posTmp] = entrada.charAt(i);
-                posTmp++;
-            }
-        }
-        tmp[posTmp] = '\0';
-        saida[posSaida] = new String(tmp);
-
-        return saida;
+    public static String[] splitString(String entrada, String corte){  //Separar uma String em varias
+        return entrada.split(corte);
     }
 
     //Orquestrar execucoes
     public static void ordenador(String[] texto, Lista lista) {
-        Arquivo arq = new Arquivo();
-        Personagem personagem;
-
-        MyIO.println(texto[0] + "|" + texto[1] + "|" + texto[2]);
 
         if (texto[0].equals("II")){
-            arq.lerArquivo(texto[1]);
-            personagem = new Personagem(arq.texto);
-            try{
-                lista.inserir(personagem, 0);
-            }catch (Exception err) {}
+
+            try{ lista.inserir(new Personagem(new Arquivo(texto[1]).texto), 0);
+            } catch (Exception err) {}
+
         } else if (texto[0].equals("IF")) {
-            arq.lerArquivo(texto[1]);
-            personagem = new Personagem(arq.texto);
-            try{
-                lista.inserir(personagem, lista.numElementos);
-            }catch (Exception err) {}
+
+            try{ lista.inserir(new Personagem(new Arquivo(texto[1]).texto), lista.numElementos);
+            } catch (Exception err) {}
+
         } else if (texto[0].equals("I*")) {
-            arq.lerArquivo(texto[2]);
-            personagem = new Personagem(arq.texto);
-            try{
-                lista.inserir(personagem, Integer.parseInt(texto[1]));
-            }catch (Exception err) {}
+
+            try{ lista.inserir(new Personagem(new Arquivo(texto[2]).texto), Integer.parseInt(texto[1]));
+            } catch (Exception err) {}
+
         } else if (texto[0].equals("RI")) {
+
             lista.escreverRemocao(0);
+
         } else if (texto[0].equals("RF")) {
+
             lista.escreverRemocao(lista.numElementos);
+
         } else if (texto[0].equals("R*")) {
-            MyIO.println("REOVER");
+
             lista.escreverRemocao(Integer.parseInt(texto[1]));
+
         }
+
     }
 
 
@@ -158,7 +135,7 @@ class Lista extends Celula {
         int contador = 0;
 
         while(i != null) {
-            MyIO.println("[" + contador + "]  " + i.personagem.toString());
+            MyIO.println("[" + contador + "] " + i.personagem.toString());
             contador++;
             i = i.prox;
         }
@@ -229,7 +206,7 @@ class Lista extends Celula {
         Celula tmp = this.inicio;
         Celula removida = null;
 
-        for (int i = 0; i < pos-1; i++) tmp = tmp.prox;  //Ir ate uma celula antes da celula para remover
+        for (int i = 0; i < pos; i++) tmp = tmp.prox;  //Ir ate uma celula antes da celula para remover
         removida = tmp.prox;
         tmp.prox = tmp.prox.prox;
         tmp = null;   
@@ -472,7 +449,7 @@ class Personagem {
         if(this.altura == -1) altura = "0";
         if(this.peso == -1) peso = "0";
 
-        return (" ## " + this.nome + " ## " + altura + " ## " + peso + " ## " + 
+        return (" ## " + this.nome + " ## " + altura + " ## " + 0 + " ## " + 
         this.corDoCabelo + " ## " + this.corDaPele + " ## " + this.corDosOlhos + " ## " +
         this.anoNascimento + " ## " + this.genero + " ## " + this.homeworld + " ## ");
     }
@@ -488,6 +465,13 @@ class Arquivo {
     public Arquivo(){
         this.numComparacoes = 0;
         this.numMovimentacoes = 0;
+    }
+
+    //Criar o objeto arquivo salvando o texto de um arquivo
+    public Arquivo(String entrada) {
+        this.numComparacoes = 0;
+        this.numMovimentacoes = 0;
+        this.texto = lerArquivo(entrada);
     }
 
     public String lerArquivo(String entrada){  //Ler conteudo dentro de um arquivo
