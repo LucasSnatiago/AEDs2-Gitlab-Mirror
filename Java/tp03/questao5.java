@@ -1,5 +1,39 @@
 class questao5 {
+  public static void main(String[] args) {
+    Matriz matriz1 = null;
+    Matriz matriz2 = null;
+    int[] valores = new int[50];
 
+    int entrada = MyIO.readInt();
+
+    int lado1;
+    int lado2;
+    for (int i = 0; i < entrada; i++) {
+      lado1 = MyIO.readInt();
+      lado2 = MyIO.readInt();
+      matriz1 = new Matriz(lado1, lado2);
+
+      for(int j = 0; j < lado1*lado2; j++) {
+        valores[j] = MyIO.readInt();
+      }
+      matriz1.inserir(valores);
+
+      lado1 = MyIO.readInt();
+      lado2 = MyIO.readInt();
+      matriz2 = new Matriz(lado1, lado2);
+
+      for(int j = 0; j < lado1*lado2; j++) {
+        valores[j] = MyIO.readInt();
+      }
+      matriz2.inserir(valores);
+
+      matriz1.mostrarTudo();
+      matriz2.mostrarTudo();
+      matriz1.mostrarDiagonalPrincipal();
+      matriz2.mostrarDiagonalSecundaria();
+    }
+
+  }
 }
 
 class Matriz extends Celula {
@@ -13,31 +47,79 @@ class Matriz extends Celula {
     }
 
     public Matriz(int tamLinha, int tamColuna) {
-        this.inicio = null;
-        this.tamLinha = tamLinha;
-        this.tamColuna = tamColuna;
+      this.inicio = null;
+      this.tamLinha = tamLinha;
+      this.tamColuna = tamColuna;
+      criarMatriz();
+    }
+
+    private void criarMatriz() {
+      Celula hold = new Celula();
+      this.inicio = hold;
+      criarLinha(hold, this.tamLinha-1);
+      criarColuna(hold);
+      linkarCelulas(hold);
+    }
+
+    //Criar linhas
+    private void criarLinha(Celula hold, int tamLinha) {
+      Celula tmp = hold;
+
+      for(int i = 0; i < tamLinha; i++) {
+        tmp.prox = new Celula();
+        tmp.prox.ant = tmp;
+        tmp = tmp.prox;
+      }
+
+    }
+
+    //Criar as colunas
+    private void criarColuna(Celula hold) {
+      Celula tmp = hold;
+
+      for(int i = 0; i < this.tamColuna-1; i++) {
+        tmp.inf = new Celula();
+        criarLinha(tmp.inf, this.tamLinha-1);
+        tmp.inf.sup = tmp;
+        tmp = tmp.inf;
+      }
+
+    }
+
+    //Linkar as celulas superiores e inferiores
+    private void linkarCelulas(Celula hold) {
+      Celula tmp = hold;
+
+      for(int i = 0; i < this.tamColuna-1; i++) {
+        _linkarLinha(tmp);
+        tmp = tmp.inf;
+      }
+    }
+
+    //Linkar a linha da matriz
+    private void _linkarLinha(Celula hold) {
+      Celula tmp = hold;
+
+      for(int i = 0; i < this.tamLinha-1; i++) {
+        tmp.prox.inf = tmp.inf.prox;
+        tmp.inf.prox.sup = tmp.prox;
+      }
     }
 
     public void inserir(int[] insert) {
-        
-        Celula tmp = null;
-        Celula anterior = null;
-        int contador = 0;
-        for(int j : insert) {
-            tmp = new Celula(j);
-            anterior.prox = tmp;
-            tmp.ant = anterior;
-            contador++;
-            if(contador == this.tamLinha) {
-                
-                contador = 0;
-            }
+      Celula tmp = this.inicio;
+      Celula atual = tmp;
+
+      int contador = 0;
+      for(int i = 0; i < this.tamColuna; i++) {
+        for(int j = 0; j < this.tamLinha; j++) {
+          atual.elemento = insert[contador];
+          contador++;
+          atual = atual.prox;
         }
-
-    }
-
-    public Celula remover() {
-
+        tmp = tmp.inf;
+        atual = tmp;
+      }
     }
 
     public void mostrarDiagonalPrincipal() {
@@ -53,7 +135,8 @@ class Matriz extends Celula {
     private void _mostrarDiagonalPrincipal(Celula i) {
         if(i != null){
             System.out.print(i.elemento + " ");
-            _mostrarDiagonalPrincipal(i.prox.inf);
+            if (i.inf != null)
+              _mostrarDiagonalPrincipal(i.inf.prox);
         }
     }
 
@@ -71,8 +154,29 @@ class Matriz extends Celula {
     private void _mostrarDiagonalSecundaria(Celula i) {
         if(i != null){
             System.out.print(i.elemento + " ");
-            _mostrarDiagonalSecundaria(i.ant.inf);
+            if(i.ant != null)
+              _mostrarDiagonalSecundaria(i.ant.inf);
         }
+    }
+
+    public void mostrarTudo() {
+      Celula  i = this.inicio;
+      Celula linha = i;
+
+
+      for (int j = 0; j < this.tamColuna; j ++) {
+        for (int k = 0; k < this.tamLinha; k++) {
+          if (i != null) {
+            System.out.print(i.elemento + " ");
+            i = i.prox;
+          } else {
+            System.out.print("null ");
+          }
+        }
+        System.out.println();
+        linha = linha.inf;
+        i = linha;
+      }
     }
 
     public Matriz somar(Matriz matriz) {
