@@ -1,7 +1,7 @@
 class questao5 {
   public static void main(String[] args) {
     Matriz matriz1 = null;
-    Matriz matriz2 = null;
+	Matriz matriz2 = null;
     int[] valores = new int[50];
 
     int entrada = MyIO.readInt();
@@ -17,7 +17,7 @@ class questao5 {
         valores[j] = MyIO.readInt();
       }
       matriz1.inserir(valores);
-
+	  
       lado1 = MyIO.readInt();
       lado2 = MyIO.readInt();
       matriz2 = new Matriz(lado1, lado2);
@@ -27,10 +27,12 @@ class questao5 {
       }
       matriz2.inserir(valores);
 
-      matriz1.mostrarTudo();
-      matriz2.mostrarTudo();
+
+	  //Prints finais da matriz
       matriz1.mostrarDiagonalPrincipal();
-      matriz2.mostrarDiagonalSecundaria();
+	  matriz1.mostrarDiagonalSecundaria();
+	  matriz1.somar(matriz2).mostrarTudo();
+	  matriz1.multiplicacao(matriz2).mostrarTudo();
     }
 
   }
@@ -125,9 +127,7 @@ class Matriz extends Celula {
     public void mostrarDiagonalPrincipal() {
         if(this.tamLinha == this.tamColuna) {
             Celula tmp = this.inicio;
-            System.out.print("[ ");
             _mostrarDiagonalPrincipal(tmp);
-            System.out.println("]");
             tmp = null;
         }
     }
@@ -144,9 +144,7 @@ class Matriz extends Celula {
         if(this.tamLinha == this.tamColuna) {
             Celula i = this.inicio;
             while(i.prox != null) i = i.prox;
-            System.out.print("[ ");
             _mostrarDiagonalSecundaria(i);
-            System.out.println("]");
             i = null;
         }
     }
@@ -229,8 +227,11 @@ class Matriz extends Celula {
     }
 
     private void _multiplicar(Celula i, Celula j, Celula resp) {
+      Celula linha = i;
+      Celula coluna = j;
+
       if(i != null){
-        resp.elemento = i.elemento * j.elemento;
+        resp.elemento = linha.elemento * coluna.elemento;
         _multiplicar(i.prox, j.prox, resp.prox);
       }
     }
