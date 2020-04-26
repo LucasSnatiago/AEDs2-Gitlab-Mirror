@@ -205,7 +205,86 @@ class Matriz extends Celula {
       }
     }
 
-    public Matriz multiplicacao(Matriz matriz) {
+    public Matriz multiplicacao (Matriz m) {
+	
+      Matriz resp = new Matriz(m.tamLinha, m.tamColuna);
+      resp.inicio = new Celula();
+      Celula resp_cel = resp.inicio;
+      Celula m1_cel = this.inicio;
+      Celula m2_cel = m.inicio;
+      Celula cima = resp.inicio;
+      Celula aux = m1_cel;
+      Celula aux2 = m2_cel;
+      int soma;
+    
+    
+      for(int i = 0; i < m.tamLinha; i++)
+      {
+        m1_cel    =  this.inicio;
+        m2_cel    =  m.inicio;
+        resp_cel  =  resp.inicio;
+    
+        
+        if(i > 0)
+        {
+          for(int k = i; k > 1; k--)
+          {
+            m1_cel    =  m1_cel.inf;
+            resp_cel  =  resp_cel.inf;
+          }
+    
+          m1_cel        =  m1_cel.inf;
+          m2_cel        =  m.inicio;
+          resp_cel.inf  =  new Celula();
+          resp_cel      =  resp_cel.inf;
+        }
+        
+        aux   =  m1_cel;
+        aux2  =  m2_cel;
+    
+        for(int j = 0; j < this.tamColuna; j++)
+        {
+    
+          soma = 0;
+          
+          for(int k = 0; k < this.tamLinha; k++)
+          {
+            soma += m1_cel.elemento * m2_cel.elemento;
+    
+            m1_cel  =  m1_cel.prox;
+            m2_cel  =  m2_cel.inf;
+          }
+    
+          resp_cel.elemento = soma;
+    
+          resp_cel.prox      =  new Celula();
+          resp_cel.prox.ant  =  resp_cel;
+          resp_cel          =  resp_cel.prox;
+          m1_cel            =  aux;
+          aux2              =  aux2.prox;
+          m2_cel            =  aux2;
+    
+          if(i > 0)
+          {
+            cima = resp.inicio;
+    
+            for(int k = i; k > 1; k--)
+              cima = cima.inf;
+              
+            for(int k = j; k >= 0; k--)
+              cima = cima.prox;
+    
+            resp_cel.sup  =  cima;
+            cima.inf      =  resp_cel;  
+          }
+        }
+      }
+    
+    
+      return resp;
+      }
+    
+    /*public Matriz multiplicacao(Matriz matriz) {
       Matriz saida = null;
 
       if(this.tamLinha == this.tamColuna && matriz.tamLinha == matriz.tamColuna && this.tamLinha == matriz.tamLinha) {
@@ -229,13 +308,16 @@ class Matriz extends Celula {
     private void _multiplicar(Celula i, Celula j, Celula resp) {
       Celula linha = i;
       Celula coluna = j;
+      int soma = 0;
 
-      if(i != null){
-        resp.elemento = linha.elemento * coluna.elemento;
-        _multiplicar(i.prox, j.prox, resp.prox);
+      while(i != null && j != null) {
+        soma += i.elemento * j.elemento;
+        i.prox;
+        j.inf;
       }
-    }
+    }*/
 }
+
 
 class Celula {
     protected Celula prox, ant;
