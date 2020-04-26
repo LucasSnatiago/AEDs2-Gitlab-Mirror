@@ -308,7 +308,7 @@ class Fila extends Celula {
     public Fila(int tamMaxLista) {
         this.inicio = this.fim = null;
         this.numElementos = 0;
-        this.numMaxElementos = tamMaxLista;
+        this.numMaxElementos = tamMaxLista+1;
         _criarLista();
     }
 
@@ -318,21 +318,28 @@ class Fila extends Celula {
         if (texto[0].equals("I")){
 
             try{ inserir(new Personagem(new Arquivo(texto[1]).texto));
-            } catch (Exception err) {}
+            } catch (Exception err) {
+                MyIO.println("Não foi possivel inserir personagem!");
+            }
 
         } else if (texto[0].equals("R")) {
 
-            try { remover(); 
-            }catch (Exception err) {}
+            try { 
+                MyIO.println("(R) " + remover().personagem.getNome()); 
+            }catch (Exception err) {
+                MyIO.println("Não foi possivel remover o personagem!");
+            }
 
         } 
     }
 
+    //Inserir dinamicamente na fila
     public void inserir(Personagem pers) {
         if(this.numMaxElementos == -1) _inserir(pers);
         else _inserirMax(pers);
     }
 
+    //Inserir em lista flexivel
     private void _inserir(Personagem pers) {
         if(this.fim == null){
             this.inicio = this.fim = new Celula(pers);
@@ -347,19 +354,40 @@ class Fila extends Celula {
         }
     }
 
+    //Inserir em fila com limite de tamanho
     private void _inserirMax(Personagem pers) {
         if(this.fim.prox == this.inicio){
             this.inicio = this.inicio.prox;
             this.fim = this.fim.prox;
             this.fim.personagem = pers;
         }else{
-            Celula tmp = this.fim;
-            tmp = tmp.prox;
+            Celula tmp = this.fim.prox;
             tmp.personagem = pers;
-            tmp = null;
+            this.fim = this.fim.prox;
+            this.numElementos++;
         }
+
+        escreverMediaPeso();
     }
 
+    //Escrever na saida padrao a media dos pesos dos personagens da fila
+    private void escreverMediaPeso() {
+        Celula tmp = this.inicio.prox;
+        float soma = 0;
+
+        while (tmp != this.fim.prox) {
+            soma += tmp.personagem.getAltura();
+            tmp = tmp.prox;
+        }
+
+        float resultado = soma / this.numElementos;
+        int resp = 0;
+        if((resultado * 10) % 10 >= 5) resp = (int) resultado +1;
+        else resp = (int) resultado;
+        MyIO.println(resp);
+    }
+
+    //Criar a lista com o maximo de celulas possiveis
     private void _criarLista() {
         Celula inicio = new Celula();
         this.inicio = this.fim = inicio;
@@ -367,21 +395,24 @@ class Fila extends Celula {
         
         for(int i = 0; i < this.numMaxElementos-1; i++) {
             tmp.prox = new Celula();
-            tmp.prox.ant = tmp.prox;
+            tmp.prox.ant = tmp;
             tmp = tmp.prox;
         }
 
         tmp.prox = inicio;
-        tmp.prox.ant = tmp.prox;
+        inicio.ant = tmp;
     }
 
+    //Remoção dinamica em fila
     public Celula remover() throws Exception {
         Celula removida = null;
         if(this.numMaxElementos == -1) removida = _remover();
         else removida = _removidaMax();
+        this.numElementos--;
         return removida;
     }
 
+    //Remover de lista infinita
     private Celula _remover() throws Exception {
         if (this.inicio == null)
             throw new Exception("Erro ao remover de fila vazia!");
@@ -395,6 +426,7 @@ class Fila extends Celula {
         return removida;
     }
 
+    //Remover de fila de tamanho finito
     private Celula _removidaMax() throws Exception {
         if(this.inicio == this.fim)
             throw new Exception("Erro ao remover de fila vazia!");
@@ -404,15 +436,17 @@ class Fila extends Celula {
         return removida;            
     }
 
+    //Mostrar elementos da fila
     public void mostrar() {
-        Celula tmp = this.inicio;
+        Celula tmp = this.inicio.prox;
 
-        while (tmp != this.fim) {
+        while (tmp != this.fim.prox) {
             MyIO.println(tmp.personagem.toString());
             tmp = tmp.prox;
         }
     }
 
+    //Mostrar elementos da fila ao contrário
     public void mostrarInvertido() {
         Celula tmp = this.fim;
 
@@ -422,12 +456,14 @@ class Fila extends Celula {
         }
     }
 
+    //Ordenar valores da fila
     public void sort() {
         quicksort();
         quicksort();
         insertsort();
     }
 
+    //Quicksort
     private void quicksort() {
         _quicksort(0, this.numElementos);
     }
@@ -467,6 +503,7 @@ class Fila extends Celula {
         if (i < dir)  _quicksort(i, dir);
     }
     
+    //Insertionsort
     private void insertsort() {
         Celula inicio = this.inicio;
 
@@ -488,12 +525,14 @@ class Fila extends Celula {
         }
     }
 
+    //Swap de Celulas
     private void swap(Celula i, Celula j) {
         Personagem tmp = i.personagem;
         i.personagem = j.personagem;
         j.personagem = tmp;
     }
 
+    //Swap de Celulas passando posição
     private void swap(int i, int j) {
         Celula celI = this.inicio;
         Celula celJ = this.inicio;
@@ -606,8 +645,8 @@ class Personagem {
         String tmp = "";
 
         //DEBUG: MyIO.println(elemento + " | " + valor);
-        if(compararStrings(elemento, "height") && compararStrings(valor, "unknown")) this.altura = -1;
-        else if(compararStrings(elemento, "mass") && compararStrings(valor, "unknown")) this.peso = -1;
+        if(compararStrings(elemento, "height") && compararStrings(valor, "unknown")) this.altura = 0;
+        else if(compararStrings(elemento, "mass") && compararStrings(valor, "unknown")) this.peso = 0;
         else if(compararStrings(elemento, "name")) setNome(valor);
         else if(compararStrings(elemento, "height")) setAltura(Integer.parseInt(valor));
         else if(compararStrings(elemento, "hair_color")) setCorDoCabelo(valor);
