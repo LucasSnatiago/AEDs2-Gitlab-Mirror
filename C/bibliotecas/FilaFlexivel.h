@@ -60,7 +60,6 @@ Celula* removerFila(FilaFlexivel* fila, Personagens* person) {
     } else {
         removida = fila->inicio;
         fila->inicio = fila->inicio->prox;
-        removida->prox = NULL;
     }
 
     return removida;
@@ -71,7 +70,7 @@ void escreverFila(FilaFlexivel* fila) {
     Celula* tmp = fila->inicio;
 
     while(tmp != NULL){
-        printf
+        escreverPersonagens(tmp->personagem);
         tmp = tmp->prox;
     }
 }

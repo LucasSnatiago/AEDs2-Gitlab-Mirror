@@ -36,7 +36,7 @@
 
 //Debug de codigo
 #if DEBUGGING == 1
-    #define debug printf 
+    #define debug printf
 #else
     #define debug //
 #endif
@@ -118,7 +118,7 @@ int acharPrimeiraString (char entrada[], char key[]) {
 
 
 void removerString(char entrada[], char key[]){  //Consertar o fgets que deixa passar alguns caracteres
-    
+
     int tamEntrada = strlen(entrada);
     int tamKey = strlen(key);
     int pos = acharPrimeiraString(entrada, key);
@@ -146,7 +146,7 @@ String* stringBuilder(char entrada[]){  //Constroi o tipo String
     int buffer = _bufferSizeX(entrada);
     debugcompleto("stringBuilder: Tamanho do buffer: %d\n", buffer);
 
-    char* tmp = (char*) malloc(sizeof(char) * buffer + 1); 
+    char* tmp = (char*) malloc(sizeof(char) * buffer + 1);
 
     int posAtual;
     String* resp = (String*) malloc(sizeof(String));
@@ -172,7 +172,7 @@ String* _stringBuilderX(char entrada[], int tamanhoString){  //Constroi o tipo S
 
 
 void escreverString(String* entrada){  //Escreve uma String na tela
-    
+
     if(entrada){  //Se a String existir em memoria escreva
             #if DEBUGGING_COMPLETO == 0
                 for(int i = 0; i < entrada->length; i++){
@@ -180,7 +180,7 @@ void escreverString(String* entrada){  //Escreve uma String na tela
                 }
             #else
                 printf("escreverString: Tamanho da String = %d\n", entrada->length);
-                for(int i = 0; i < entrada->length; i++){ 
+                for(int i = 0; i < entrada->length; i++){
                     printf("%c", entrada->string[i]);
                     if(entrada->string[i] == '\n') printf("\\n");
                     if(entrada->string[i] == '\0') printf("\\0");
@@ -193,7 +193,7 @@ void escreverString(String* entrada){  //Escreve uma String na tela
 }
 
 void escreverStringSemNovaLinha(String* entrada){  //Escreve uma String na tela
-    
+
     if(entrada){  //Se a String existir em memoria escreva
             #if DEBUGGING_COMPLETO == 0
                 for(int i = 0; i < entrada->length; i++){
@@ -201,7 +201,7 @@ void escreverStringSemNovaLinha(String* entrada){  //Escreve uma String na tela
                 }
             #else
                 printf("escreverString: Tamanho da String = %d\n", entrada->length);
-                for(int i = 0; i < entrada->length; i++){ 
+                for(int i = 0; i < entrada->length; i++){
                     printf("%c", entrada->string[i]);
                     if(entrada->string[i] == '\n') printf("\\n");
                     if(entrada->string[i] == '\0') printf("\\0");
@@ -250,7 +250,7 @@ bool ehPalindromo(String* entrada){  //Retorna 1 se for palindromo, caso contrar
     }
 
     return ehPalindromo;
-} 
+}
 
 
 String* cifraCesar(String* entrada, int chave){  //Cifra as mensagens recebidas com a cifra de Cesar
@@ -260,7 +260,7 @@ String* cifraCesar(String* entrada, int chave){  //Cifra as mensagens recebidas 
     for(int i = 0; i < entrada->length; i++){
         letra = (char) ((int) entrada->string[i] + chave);
         mensagemCifrada[i] = letra;
-    } 
+    }
 
     String* cifra = _stringBuilderX(mensagemCifrada, entrada->length);
 
@@ -311,12 +311,12 @@ bool procurarItens(String* entrada, char procurarInicio[], char procurarFinal[],
   int j = 0;
 
     if(encontrar){
-        
+
         for(int i = posI; i < posI+posF-strlen(procurarFinal); i++){
             resp[j] = entrada->string[i];
             j++;
         }
-    
+
         resp[j] = '\0';
     }
 
@@ -332,7 +332,7 @@ int _posProcura(String* entrada, const char texto[]){  //Procura a posicao da pr
     int tamanhoTexto = strlen(texto);
 
     for(int i = 0; i < tamanhoEntrada && !achou; i++){
-        
+
         if(entrada->string[i] == texto[0]){
 
             for(int j = 1; j < tamanhoTexto; j++){
@@ -396,13 +396,13 @@ String* substituirPrimeiraOcorrencia(String* entrada, const char texto[], const 
         }else{
             debug("substituirPrimeiraOcorrencia: char2String tmp foi apagado!\n");
         }
-    }   
-    
+    }
+
     return final;
 }
 
 
-String* substituirTexto(String* entrada, const char procurar[], const char alterarPor[]){  //Substituir todas as ocorrencias de um texto 
+String* substituirTexto(String* entrada, const char procurar[], const char alterarPor[]){  //Substituir todas as ocorrencias de um texto
     String* final = entrada;
     char* enderecoFinal;
 
@@ -411,7 +411,7 @@ String* substituirTexto(String* entrada, const char procurar[], const char alter
         debug("substituirTexto: %p\t\a%p\n", enderecoFinal, &final);
         final = substituirPrimeiraOcorrencia(final, procurar, alterarPor);
     }while (&final->string[0] != enderecoFinal);  //Verifica se o endereço do texto mudou (se mudou, houve alteracao no texto)
-    
+
     return final;
 }
 
@@ -419,12 +419,12 @@ String* substituirTexto(String* entrada, const char procurar[], const char alter
 void consertarCodificacaoTexto(){ //Consertando codificador de texto
     setlocale(LC_ALL, "pt_BR.utf8");
 }
-    
+
 
 void removerTudoString(char entrada[], char key[]) {
 
     int pos = acharPrimeiraString(entrada, key);
-    
+
     debug("removerTudoString: Removendo todas as ocorrencias\n");
 
     while (pos != -1) {
@@ -484,7 +484,7 @@ String* trocarLetras(String* entrada, char letra1, char letra2){  //Funcao para 
     String* fraseFinal;
 
     fraseFinal = copiarString(entrada);
-    
+
     _trocarLetras(fraseFinal, letra1, letra2, entrada->length-1);
     #if DEBUGGING == 1
         for(int i = 0; i < entrada->length; i++){
@@ -625,7 +625,7 @@ double char2Double(char* entrada){  //Transformar um vetor em um numero flutuant
 
 
 String** splitString(String* entrada, char corte){ //Funcao para dar split em uma String
-    
+
     int numCortes = 0;
     char texto[entrada->length];
     int posTexto = 0;
@@ -635,7 +635,7 @@ String** splitString(String* entrada, char corte){ //Funcao para dar split em um
             texto[posTexto] = '\0';
             posTexto = 0;
             elementos[numCortes] = stringBuilder(texto);
-            numCortes++; 
+            numCortes++;
         }
         else{
             texto[posTexto] = entrada->string[i];
@@ -645,19 +645,19 @@ String** splitString(String* entrada, char corte){ //Funcao para dar split em um
     texto[posTexto] = '\0';
     elementos[numCortes] = stringBuilder(texto);
 
-    return elementos; 
+    return elementos;
 }
 
  //Funcao para comparar qual String vem primeiro no alfabeto
- // 0 -> Strings iguais 
- // 1 -> String A vem primeiro do que B 
+ // 0 -> Strings iguais
+ // 1 -> String A vem primeiro do que B
  // 2 -> String B vem primeiro do que A
-int compararAlfabeto(char* stringA, char* stringB){ 
+int compararAlfabeto(char* stringA, char* stringB){
     int resp = 0;
-    
+
     resp = strcmp(stringA, stringB);
     if(resp > 0) resp = 1;
-    else if(resp < 0) resp = 2;    
+    else if(resp < 0) resp = 2;
 
     return resp;
 }

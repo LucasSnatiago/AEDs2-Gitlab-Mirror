@@ -9,20 +9,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#ifndef DEBUGGING
-    #define DEBUGGING 0
-#endif
-
-#if DEBUGGING == 1
-    #define printf debug
-#else
-    #define debug //
-#endif
-
-typedef struct celula {
+//Criacao do tipo Celula
+typedef struct Celula {
     Celula* prox;
     Personagens* personagem;
-} Celula;
+}Celula;
 
 //Criar uma nova Celula de Personagem
 Celula* new_Celula(Personagens* pers) {
@@ -34,6 +25,6 @@ Celula* new_Celula(Personagens* pers) {
 
 //Limpar uma celula da memoria
 void freeCelula(Celula* cel) {
-    freePersonagem(cel->personagem);
+    freePersonagem(&cel->personagem);
     free(cel);
 }
