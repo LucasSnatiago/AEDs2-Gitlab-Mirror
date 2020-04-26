@@ -300,23 +300,26 @@ class Fila extends Celula {
     public int numElementos;
 
     public Fila() {
-        this.inicio = new Celula();
-        this.fim = this.inicio;
+        this.inicio = this.fim = null;
         this.numElementos = 0;
     }
 
     public void inserir(Personagem pers) {
-        Celula tmp = this.fim;
-
-        tmp.prox = new Celula(pers);
-        tmp.prox.ant = tmp;
-
-        this.fim = tmp.prox;
-        this.numElementos++;
+        if(this.fim == null){
+            this.inicio = this.fim = new Celula(pers);
+        } else {
+            Celula tmp = this.fim;
+    
+            tmp.prox = new Celula(pers);
+            tmp.prox.ant = tmp;
+    
+            this.fim = tmp.prox;
+            this.numElementos++;
+        }
     }
 
     public Celula remover() throws Exception {
-        if (this.inicio == this.fim)
+        if (this.inicio == null)
             throw new Exception("Erro ao remover de fila vazia!");
 
             
@@ -329,7 +332,7 @@ class Fila extends Celula {
     }
 
     public void mostrar() {
-        Celula tmp = this.inicio.prox;
+        Celula tmp = this.inicio;
 
         while (tmp != null) {
             MyIO.println(tmp.personagem.toString());
@@ -348,11 +351,12 @@ class Fila extends Celula {
 
     public void sort() {
         quicksort();
+        quicksort();
         insertsort();
     }
 
     private void quicksort() {
-        _quicksort(1, this.numElementos-1);
+        _quicksort(0, this.numElementos);
     }
 
     private void _quicksort(int esq, int dir) {
@@ -378,7 +382,7 @@ class Fila extends Celula {
             }
 
             if(i <= j){
-                swap(i, j);
+                swap(celI, celJ);
                 i++;
                 j--;
                 celI = celI.prox;
@@ -391,23 +395,23 @@ class Fila extends Celula {
     }
     
     private void insertsort() {
-        Celula inicio = this.inicio.prox;
+        Celula inicio = this.inicio;
 
-        Celula tmp = inicio;
-        Celula menor = inicio;
+        Celula tmp = null;
+        Celula menor = null;
         Celula atual = inicio;
 
-        for(int i = 0; i < this.numElementos-1; i++) {
-            for(int j = i; j < this.numElementos-1; j++) {
-                if(tmp.personagem.getCorDoCabelo().compareTo(menor.personagem.getCorDoCabelo()) < 0){
+        while(atual.prox != null) {
+            menor = atual;
+            tmp = atual;
+            while(tmp.prox != null) {
+                if(tmp.personagem.getCorDoCabelo().compareTo(menor.personagem.getCorDoCabelo()) == 0 && tmp.personagem.getNome().compareTo(menor.personagem.getNome()) < 0){
                     menor = tmp;
                 }
                 tmp = tmp.prox;
             }
-            swap(tmp, menor);
+            swap(menor, atual);
             atual = atual.prox;
-            tmp = atual;
-            menor = atual;
         }
     }
 
@@ -650,7 +654,7 @@ class Personagem {
         if(this.altura == -1) altura = "0";
         if(this.peso == -1) peso = "0";
 
-        return (" ## " + this.nome + " ## " + altura + " ## " + 0 + " ## " + 
+        return (" ## " + this.nome + " ## " + altura + " ## " + peso + " ## " + 
         this.corDoCabelo + " ## " + this.corDaPele + " ## " + this.corDosOlhos + " ## " +
         this.anoNascimento + " ## " + this.genero + " ## " + this.homeworld + " ## ");
     }
