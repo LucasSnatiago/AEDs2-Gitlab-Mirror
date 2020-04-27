@@ -84,7 +84,7 @@ void escreverPilhaFlexivel(PilhaFlexivel* pilha) {
 void _pilhaFlexivelInvertida(Celula* i, int num) {
   if(i->prox != NULL) _pilhaFlexivelInvertida(i->prox, num-1);
 
-  printf("[%d] ", num);
+  //printf("[%d] ", num);
   escreverPersonagens(i->personagem);
 }
 

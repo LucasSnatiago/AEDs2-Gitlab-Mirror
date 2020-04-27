@@ -12,6 +12,7 @@
 //Criacao do tipo Celula
 typedef struct Celula {
     Celula* prox;
+    Celula* ant;
     Personagens* personagem;
 }Celula;
 
@@ -19,6 +20,7 @@ typedef struct Celula {
 Celula* new_Celula(Personagens* pers) {
     Celula* celula = (Celula*) malloc(sizeof(Celula));
     celula->prox = NULL;
+    celula->ant = NULL;
     celula->personagem = pers;
     return celula;
 }

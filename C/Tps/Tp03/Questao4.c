@@ -14,40 +14,29 @@
 #include "../../bibliotecas/padroes.h"
 #include "../../bibliotecas/Personagens.h"
 #include "../../bibliotecas/Celula.h"
-#include "../../bibliotecas/PilhaFlexivel.h"
+#include "../../bibliotecas/ListaFlexivel.h"
 
 //Criar um personagem a partir de uma path
 Personagens* personagemCarregado(String* entrada) {
     return carregarPersonagem(lerArquivo(entrada));
 }
 
-//Executar
-void ordenar(PilhaFlexivel* pilha, String** texto) {
-  if(strcmp(texto[0]->string, "I") == 0){
-    empilhar(pilha, personagemCarregado(texto[1]));
-  } else if(strcmp(texto[0]->string, "R") == 0) {
-    desempilhar(pilha);
-  }
-}
-
 int main(void){
 
-    PilhaFlexivel* pilha = new_pilhaFlexivel();
+    ListaFlexivel* lista = new_ListaFlexivel();
     String *entrada = readString();
 
     while(!ehFimString(entrada)){
 
-        empilhar(pilha, personagemCarregado(entrada));
+        inserir(lista, personagemCarregado(entrada));
         entrada = readString();
 
     }
 
-    int repeticoes = string2Int(readString());
-    for(int i = 0; i < repeticoes; i++) {
-      ordenar(pilha, splitString(readString(), ' '));
-    }
-
-    escreverPilhaFlexivelInvertida(pilha);
+    quicksort(lista);
+    quicksort(lista);
+    insertsortCordoCabelo(lista);
+    mostrarListaFlexivel(lista);
 
     return 0;
 }
