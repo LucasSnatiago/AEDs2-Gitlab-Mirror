@@ -1,7 +1,8 @@
 class questao5 {
   public static void main(String[] args) {
     Matriz matriz1 = null;
-	Matriz matriz2 = null;
+    Matriz matriz2 = null;
+    Matriz mult = null;
     int[] valores = new int[50];
 
     int entrada = MyIO.readInt();
@@ -28,13 +29,40 @@ class questao5 {
       matriz2.inserir(valores);
 
 
-	  //Prints finais da matriz
-      matriz1.mostrarDiagonalPrincipal();
-	  matriz1.mostrarDiagonalSecundaria();
-	  matriz1.somar(matriz2).mostrarTudo();
-	  matriz1.multiplicacao(matriz2).mostrarTudo();
+    //Prints finais da matriz
+    matriz1.mostrarDiagonalPrincipal();
+    matriz1.mostrarDiagonalSecundaria();
+    matriz1.somar(matriz2).mostrarTudo();
+    try{
+      mult = multiplicacao(matriz1, matriz2);
+    } catch (Exception err) {
+      MyIO.println("Erro ao multiplicar!");
+    }
+    mult.mostrarTudo();
     }
 
+  }
+
+  //Multiplicar duas matrizes
+  public static Matriz multiplicacao(Matriz m1, Matriz m2) throws Exception{
+
+    if(m1.tamColuna != m2.tamColuna || m1.tamColuna != m2.tamLinha) 
+        throw new Exception("Erro! As duas matrizes são de tamanhos diferentes");
+            
+    Matriz resp = new Matriz(m1.tamLinha,m1.tamColuna);    
+    
+    for (Celula i = m1.inicio, x = resp.inicio ; x != null ; i = i.inf, x = x.inf ) {
+        for (Celula l = m2.inicio, y = x ; y != null ; l = l.prox, y = y.prox) {
+            Celula j = l;
+            Celula h = i;
+            while( j != null ) {
+                y.elemento += j.elemento * h.elemento;
+                j = j.inf;    
+                h = h.prox;
+            }
+        }
+    }        
+    return resp;
   }
 }
 
@@ -128,15 +156,14 @@ class Matriz extends Celula {
         if(this.tamLinha == this.tamColuna) {
             Celula tmp = this.inicio;
             _mostrarDiagonalPrincipal(tmp);
-            tmp = null;
         }
+        MyIO.println("");
     }
 
     private void _mostrarDiagonalPrincipal(Celula i) {
         if(i != null){
-            System.out.print(i.elemento + " ");
-            if (i.inf != null)
-              _mostrarDiagonalPrincipal(i.inf.prox);
+          System.out.print(i.elemento + " ");
+          if(i.prox != null) _mostrarDiagonalPrincipal(i.prox.inf);
         }
     }
 
@@ -145,15 +172,14 @@ class Matriz extends Celula {
             Celula i = this.inicio;
             while(i.prox != null) i = i.prox;
             _mostrarDiagonalSecundaria(i);
-            i = null;
         }
+        MyIO.println("");
     }
 
     private void _mostrarDiagonalSecundaria(Celula i) {
         if(i != null){
-            System.out.print(i.elemento + " ");
-            if(i.ant != null)
-              _mostrarDiagonalSecundaria(i.ant.inf);
+          System.out.print(i.elemento + " ");
+          if(i.ant != null && i.ant.inf != null) _mostrarDiagonalSecundaria(i.ant.inf);
         }
     }
 
@@ -204,85 +230,6 @@ class Matriz extends Celula {
         _somar(i.prox, j.prox, resp.prox);
       }
     }
-
-    public Matriz multiplicacao (Matriz m) {
-	
-      Matriz resp = new Matriz(m.tamLinha, m.tamColuna);
-      resp.inicio = new Celula();
-      Celula resp_cel = resp.inicio;
-      Celula m1_cel = this.inicio;
-      Celula m2_cel = m.inicio;
-      Celula cima = resp.inicio;
-      Celula aux = m1_cel;
-      Celula aux2 = m2_cel;
-      int soma;
-    
-    
-      for(int i = 0; i < m.tamLinha; i++)
-      {
-        m1_cel    =  this.inicio;
-        m2_cel    =  m.inicio;
-        resp_cel  =  resp.inicio;
-    
-        
-        if(i > 0)
-        {
-          for(int k = i; k > 1; k--)
-          {
-            m1_cel    =  m1_cel.inf;
-            resp_cel  =  resp_cel.inf;
-          }
-    
-          m1_cel        =  m1_cel.inf;
-          m2_cel        =  m.inicio;
-          resp_cel.inf  =  new Celula();
-          resp_cel      =  resp_cel.inf;
-        }
-        
-        aux   =  m1_cel;
-        aux2  =  m2_cel;
-    
-        for(int j = 0; j < this.tamColuna; j++)
-        {
-    
-          soma = 0;
-          
-          for(int k = 0; k < this.tamLinha; k++)
-          {
-            soma += m1_cel.elemento * m2_cel.elemento;
-    
-            m1_cel  =  m1_cel.prox;
-            m2_cel  =  m2_cel.inf;
-          }
-    
-          resp_cel.elemento = soma;
-    
-          resp_cel.prox      =  new Celula();
-          resp_cel.prox.ant  =  resp_cel;
-          resp_cel          =  resp_cel.prox;
-          m1_cel            =  aux;
-          aux2              =  aux2.prox;
-          m2_cel            =  aux2;
-    
-          if(i > 0)
-          {
-            cima = resp.inicio;
-    
-            for(int k = i; k > 1; k--)
-              cima = cima.inf;
-              
-            for(int k = j; k >= 0; k--)
-              cima = cima.prox;
-    
-            resp_cel.sup  =  cima;
-            cima.inf      =  resp_cel;  
-          }
-        }
-      }
-    
-    
-      return resp;
-      }
     
     /*public Matriz multiplicacao(Matriz matriz) {
       Matriz saida = null;
