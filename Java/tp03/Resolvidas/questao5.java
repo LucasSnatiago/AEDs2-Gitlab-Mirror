@@ -88,7 +88,7 @@ class Matriz extends Celula {
       this.inicio = hold;
       criarLinha(hold, this.tamLinha-1);
       criarColuna(hold);
-      linkarCelulas(hold);
+      //linkarCelulas(hold);
     }
 
     //Criar linhas
@@ -103,14 +103,27 @@ class Matriz extends Celula {
 
     }
 
+    private void criarLinha2(Celula hold, int tamLinha) {
+      Celula tmp = hold;
+
+      for(int i = 0; i < tamLinha; i++) {
+        tmp.prox = new Celula();
+        tmp.prox.ant = tmp;
+        tmp.sup.prox.inf = tmp.prox;
+        tmp.prox.sup = tmp.sup.prox;
+        tmp = tmp.prox;
+      }
+
+    }
+
     //Criar as colunas
     private void criarColuna(Celula hold) {
       Celula tmp = hold;
 
       for(int i = 0; i < this.tamColuna-1; i++) {
         tmp.inf = new Celula();
-        criarLinha(tmp.inf, this.tamLinha-1);
         tmp.inf.sup = tmp;
+        criarLinha2(tmp.inf, this.tamLinha-1);
         tmp = tmp.inf;
       }
 
