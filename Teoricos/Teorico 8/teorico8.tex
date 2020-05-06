@@ -1,0 +1,81 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{setspace}
+\usepackage{mathtools}
+\usepackage{pgfplots}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{natbib}
+\usepackage{graphicx}
+
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{codigo}{
+    numberstyle=\tiny,
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=codigo}
+
+\setstretch{1.5}
+\pgfplotsset{width=10cm,compat=1.9}
+
+\pagenumbering{gobble}
+\clearpage
+\thispagestyle{empty}
+
+\title{Teórico VIII}
+\author{Lucas Santiago de Oliveira}
+\date{Maio de 2020}
+
+
+
+\begin{document}
+\maketitle
+
+\section{Questão 1}
+\lstinputlisting[language=Java]{codigos/questao1.java}
+\vspace{1cm}
+
+\section{Questão 2}
+\lstinputlisting[language=Java]{codigos/questao2.java}
+\vspace{1cm}
+
+\section{Questão 3}
+\lstinputlisting[language=Java]{codigos/questao3.java}
+\vspace{1cm}
+
+\section{Questão 4}
+\lstinputlisting[language=Java]{codigos/questao4.java}
+\vspace{1cm}
+
+\section{Questão 5}
+\lstinputlisting[language=Java]{codigos/questao5.java}
+\vspace{1cm}
+
+\section{Questão 6}
+\lstinputlisting[language=Java]{codigos/questao6.java}
+\vspace{1cm}
+
+\section{Questão 7}
+\lstinputlisting[language=Java]{codigos/questao7.java}
+\vspace{1cm}
+
+\end{document}

@@ -13,5 +13,5 @@ private void _inserir(int x, No i, No pai) {
     else pai.dir = new No(i);
   } else if(x < i.elemento) _inserir(x, i.esq, i);
   else if(x > i.elemento) _inserir(x, i.dir, i);
-  else if(x == i.elemento) System.err.println("Elemento não inserido! Elemento já existente na arvore!");
+  else if(x == i.elemento) System.err.println("Elemento nao inserido! Elemento ja existente na arvore!");
 }
