@@ -1,3 +1,5 @@
+#ifndef LERARQUIVOS_H
+#define LERARQUIVOS_H
 /*
     CRIACAO DA ESTRUTURA DE LEITURA DE ARQUIVOS EM C
     Criado por Lucas Santiago
@@ -50,3 +52,4 @@ String* lerArquivo(String* path){  //Funcao para extrair o texto de um arquivo
     return saida;
     
 }
+#endif

@@ -1,3 +1,5 @@
+#ifndef PERSONAGENS_H
+#define PERSONAGENS_H
 /*
     CRIACAO DA ESTRUTURA DE PERSONAGENS EM C
     Criado por Lucas Santiago
@@ -280,3 +282,4 @@ void escreverPersonagens(Personagens* personagem){  //Funcao para escrever na te
     escreverStringSemNovaLinha(getHomeworld(personagem));
     printf(" ## \n");
 }
+#endif

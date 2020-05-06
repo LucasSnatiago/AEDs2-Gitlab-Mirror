@@ -1,3 +1,5 @@
+#ifndef STRING_H
+#define STRING_H
 /*
     CRIACAO DO TIPO STRING EM C
     Criado por Lucas Santiago
@@ -661,3 +663,4 @@ int compararAlfabeto(char* stringA, char* stringB){
 
     return resp;
 }
+#endif

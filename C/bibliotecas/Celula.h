@@ -1,3 +1,5 @@
+#ifndef CELULA_H
+#define CELULA_H
 /*
     CRIACAO DO TIPO CELULA EM C
     Criado por Lucas Santiago
@@ -30,3 +32,4 @@ void freeCelula(Celula* cel) {
     freePersonagem(&cel->personagem);
     free(cel);
 }
+#endif

@@ -1,3 +1,5 @@
+#ifndef PADROES_H
+#define PADROES_H
 /*
     Funcoes padroes nos codigos
     Criado por Lucas Santiago
@@ -58,3 +60,4 @@ float lerFloat(){  //Ler um numero flutuante do teclado
     scanf("\n%f", &num);
     return num;
 }
+#endif

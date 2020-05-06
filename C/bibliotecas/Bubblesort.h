@@ -1,3 +1,5 @@
+#ifndef BUBBLESORT_H
+#define BUBBLESORT_H
 void bubbleSort(Ordenador* lista, int* numComparacoes, int* numMovimentacoes) {
     for (int i = (lista->numElementos - 1); i > 0; i--) {
         for (int j = 0; j < i; j++) {
@@ -11,3 +13,4 @@ void bubbleSort(Ordenador* lista, int* numComparacoes, int* numMovimentacoes) {
         }
     }
 }
+#endif

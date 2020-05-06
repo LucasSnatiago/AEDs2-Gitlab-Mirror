@@ -1,3 +1,5 @@
+#ifndef LOG_H
+#define LOG_H
 /*
     CRIACAO DA ESTRUTURA DE LOGS EM C
     Criado por Lucas Santiago
@@ -53,3 +55,4 @@ void inserirTempoExecucao(FILE *arq, clock_t tempoExecucao, int numMovimentacoes
 clock_t calcularTempo(clock_t start, clock_t fim){  //Retornando tempo de execucao do codigo
     return fim - start;
 }
+#endif
