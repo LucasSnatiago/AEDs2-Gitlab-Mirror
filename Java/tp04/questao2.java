@@ -3,14 +3,18 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.time.Clock;
 
-public class questao1 {
+public class questao2 {
     public static void main(String[] args){
-        MyIO.setCharset("ASCII");
+        MyIO.setCharset("UTF-8");
         String entrada = MyIO.readLine();
         Arquivo arq = new Arquivo();
         arq.lerArquivo(entrada);
         Personagem personagens = new Personagem(arq.texto);
         Arvore ps = new Arvore();
+
+        int[] seed = {7, 3, 11, 1, 5, 9, 12, 0, 2, 4, 6, 8, 10, 13, 14};
+
+        Arvores arvores = new Arvores(seed);
 
         while(!ehFim(entrada)){
 
@@ -54,14 +58,56 @@ public class questao1 {
     }
 }
 
+//Classe Arvore de Arvores
+class Arvores extends Arvore {
+    public Arvore raiz;
+    public int valorArvore;
+
+    //Contrutor de uma Arvore de Arvores
+    public Arvores() {
+        this.raiz = null;
+        this.valorArvore = -1;
+    }
+
+    //Seed de criacao de arvore de arvores
+    public Arvores(int[] seed) {
+        this.valorArvore = -1;
+        for(int i : seed) {
+            _seed(i);
+        }
+    }
+
+    //Inserir um personagem na arvore de arvores
+    public void inserir(Personagem personagem) {
+
+    }
+
+    //Criar um galho na arvore
+    private void _seed(int num) {
+        if(this.valorArvore == -1){
+            this.raiz = new Arvore();
+            this.valorArvore = num;
+        } else if(num < this.valorArvore) {
+            _inserirSeed(this.raiz.esq, num);
+        } else if(num > this.valorArvore) {
+
+        }
+    }
+
+    //Percorrer arvore
+    private void _inserirSeed(Arvore i, int num) {
+
+    }
+
+}
+
 //Classe Arvore Binaria
 class Arvore extends No {
     public No raiz;
-    public int numElementos;
 
+    //Construtor de uma arvore binaria
     public Arvore() {
         this.raiz = null;
-        this.numElementos = 0;
     }
 
     //Insere elementos na ArvoreBinaria
