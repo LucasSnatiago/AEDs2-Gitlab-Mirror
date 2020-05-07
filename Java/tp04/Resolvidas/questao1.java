@@ -3,14 +3,14 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.time.Clock;
 
-public class Questao3 {
+public class questao1 {
     public static void main(String[] args){
         MyIO.setCharset("UTF-8");
         String entrada = MyIO.readLine();
         Arquivo arq = new Arquivo();
         arq.lerArquivo(entrada);
         Personagem personagens = new Personagem(arq.texto);
-        Fila ps = new Fila(5);
+        Arvore ps = new Arvore();
 
         while(!ehFim(entrada)){
 
@@ -27,22 +27,31 @@ public class Questao3 {
         }        
 
         
-        int repeticoes = Integer.parseInt(MyIO.readLine());
-        for(int i = 0; i < repeticoes; i++) {
-            ps.ordenador(splitString(MyIO.readLine(), " "));
-        }
-        
-        ps.mostrar();
-    
+        entrada = MyIO.readLine();
+        while(!ehFim(entrada)) {
+            ordenador(ps, entrada);
+            entrada = MyIO.readLine();
+        }    
     }
 
+    //Recortar uma string
     public static String[] splitString(String entrada, String corte){  //Separar uma String em varias
         return entrada.split(corte);
     }
 
+    //Verificar se eh hora de finalizar o programa
     public static boolean ehFim(String entrada) {  //Descobrir se eh o fim do arquivo
         return entrada.trim().equals("FIM");
     } 
+
+    //Ordenar execucoes do programa
+    public static void ordenador(Arvore arvore, String nomePersonagem) {
+        
+        System.out.print(nomePersonagem + " ");
+        if(arvore.pesquisar(nomePersonagem)) MyIO.println("SIM");
+        else MyIO.println("NÃO");
+
+    }
 }
 
 //Classe Arvore Binaria
@@ -55,10 +64,53 @@ class Arvore extends No {
         this.numElementos = 0;
     }
 
+    //Insere elementos na ArvoreBinaria
     public void inserir(Personagem person) {
-        if() {
-            
-        }
+        this.raiz = _inserir(person, this.raiz);
+    }
+
+    //Metodo privado de insercao recursiva
+    private No _inserir(Personagem person, No i) {
+        if (person == null); //System.err.println("Personagem null");
+        else if (i == null) i = new No(person);
+        else if (_compararElementoPersonagem(person, i.personagem) < 0) i.dir = _inserir(person,i.dir);
+        else if (_compararElementoPersonagem(person, i.personagem) > 0) i.esq = _inserir(person,i.esq);
+        return i;
+    }
+
+    //Funcao para pesquisar um personagem na arvore
+    public boolean pesquisar(String nomePersonagem) {
+        System.out.print("raiz ");
+        return _pesquisar(this.raiz, nomePersonagem);
+    }
+
+    //Deslocar na arvore procurando se o elemento existe
+    private boolean _pesquisar(No i, String nomePersonagem) {
+        boolean encontrar = false;
+
+        if(i == null) encontrar = false;
+        else if(_compararElementoPersonagem(i.personagem, nomePersonagem) < 0){ 
+            System.out.print("dir ");
+            encontrar = _pesquisar(i.esq, nomePersonagem);
+        } else if(_compararElementoPersonagem(i.personagem, nomePersonagem) > 0){
+            System.out.print("esq ");
+            encontrar = _pesquisar(i.dir, nomePersonagem);
+        } else encontrar = true;
+
+        return encontrar;
+    }
+
+    //Compara elemento de personagem
+    private int _compararElementoPersonagem(Personagem A, Personagem B) {
+        //if(A == null) System.err.println("A é null!");
+        //if(B == null) System.err.println("B é null!");
+        //System.err.println(A.getNome() + "|" + B.getNome());
+        return A.getNome().compareTo(B.getNome());
+    }
+
+    //Compara elemento de personagem
+    private int _compararElementoPersonagem(Personagem A, String B) {
+        return A.getNome().compareTo(B);
     }
 }
 
