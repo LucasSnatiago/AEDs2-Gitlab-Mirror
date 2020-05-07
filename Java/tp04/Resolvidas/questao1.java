@@ -48,8 +48,8 @@ public class questao1 {
     public static void ordenador(Arvore arvore, String nomePersonagem) {
         
         System.out.print(nomePersonagem + " ");
-        if(arvore.pesquisar(nomePersonagem)) System.out.println("SIM");
-        else System.out.println("NAO");
+        if(arvore.pesquisar(nomePersonagem)) MyIO.println("SIM");
+        else MyIO.println("NÃO");
 
     }
 }
@@ -71,14 +71,16 @@ class Arvore extends No {
 
     //Metodo privado de insercao recursiva
     private No _inserir(Personagem person, No i) {
-        if (i == null) i = new No(person);
-        else if (_compararElementoPersonagem(person, i.personagem) < 0) i.dir = _inserir(personagem,i.dir);
-        else if (_compararElementoPersonagem(person, i.personagem) > 0) i.esq = _inserir(personagem,i.esq);
+        if (person == null); //System.err.println("Personagem null");
+        else if (i == null) i = new No(person);
+        else if (_compararElementoPersonagem(person, i.personagem) < 0) i.dir = _inserir(person,i.dir);
+        else if (_compararElementoPersonagem(person, i.personagem) > 0) i.esq = _inserir(person,i.esq);
         return i;
     }
 
     //Funcao para pesquisar um personagem na arvore
     public boolean pesquisar(String nomePersonagem) {
+        System.out.print("raiz ");
         return _pesquisar(this.raiz, nomePersonagem);
     }
 
@@ -88,10 +90,10 @@ class Arvore extends No {
 
         if(i == null) encontrar = false;
         else if(_compararElementoPersonagem(i.personagem, nomePersonagem) < 0){ 
-            System.out.print("esq ");
+            System.out.print("dir ");
             encontrar = _pesquisar(i.esq, nomePersonagem);
         } else if(_compararElementoPersonagem(i.personagem, nomePersonagem) > 0){
-            System.out.print("dir ");
+            System.out.print("esq ");
             encontrar = _pesquisar(i.dir, nomePersonagem);
         } else encontrar = true;
 
@@ -100,7 +102,9 @@ class Arvore extends No {
 
     //Compara elemento de personagem
     private int _compararElementoPersonagem(Personagem A, Personagem B) {
-        MyIO.println(A.getNome() + "|" + B.getNome());
+        //if(A == null) System.err.println("A é null!");
+        //if(B == null) System.err.println("B é null!");
+        //System.err.println(A.getNome() + "|" + B.getNome());
         return A.getNome().compareTo(B.getNome());
     }
 
