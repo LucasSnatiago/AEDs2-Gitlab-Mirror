@@ -59,19 +59,16 @@ public class questao2 {
 }
 
 //Classe Arvore de Arvores
-class Arvores extends Arvore {
-    public Arvore raiz;
-    public int valorArvore;
+class Arvores extends NoArvore {
+    public NoArvore raiz;
 
     //Contrutor de uma Arvore de Arvores
     public Arvores() {
         this.raiz = null;
-        this.valorArvore = -1;
     }
 
     //Seed de criacao de arvore de arvores
     public Arvores(int[] seed) {
-        this.valorArvore = -1;
         for(int i : seed) {
             _seed(i);
         }
@@ -79,26 +76,56 @@ class Arvores extends Arvore {
 
     //Inserir um personagem na arvore de arvores
     public void inserir(Personagem personagem) {
-
+        
     }
 
     //Criar um galho na arvore
     private void _seed(int num) {
-        if(this.valorArvore == -1){
-            this.raiz = new Arvore();
-            this.valorArvore = num;
-        } else if(num < this.valorArvore) {
-            _inserirSeed(this.raiz.esq, num);
-        } else if(num > this.valorArvore) {
-
+        if(this.raiz == null){
+            this.raiz = new NoArvore(num);
+            this.raiz.seed = num;
+        } else if(num < this.raiz.seed) {
+            this.raiz = _inserirSeed(this.raiz.esq, num);
+        } else if(num > this.raiz.seed) {
+            this.raiz = _inserirSeed(this.raiz.dir, num);
         }
     }
 
     //Percorrer arvore
-    private void _inserirSeed(Arvore i, int num) {
+    private NoArvore _inserirSeed(NoArvore i, int num) {
+        NoArvore tmp = null;
 
+        if (i == null) tmp = new NoArvore(num);
+        else if (num < i.seed) tmp = _inserirSeed(i.esq, num);
+        else if (num > i.seed) tmp = _inserirSeed(i.dir, num);
+
+        return tmp;
     }
 
+}
+
+//Classe No Arvore
+class NoArvore {
+    protected Arvore arvore;
+    protected NoArvore esq, dir;
+    protected int seed;
+    
+    //Construtor vazio no de Arvore
+    public NoArvore() {
+        this(null, 0);
+    }
+
+    //Construtor vazio no de Arvore usando seed
+    public NoArvore(int x) {
+        this(null, x);
+    }
+
+    //Criador do objeto no de Arvore
+    public NoArvore(Arvore arvore, int x) {
+        this.arvore = arvore;
+        this.esq = this.dir = null;
+        this.seed = x;
+    }
 }
 
 //Classe Arvore Binaria
