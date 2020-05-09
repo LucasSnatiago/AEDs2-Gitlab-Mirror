@@ -10,15 +10,14 @@ public class questao2 {
         Arquivo arq = new Arquivo();
         arq.lerArquivo(entrada);
         Personagem personagens = new Personagem(arq.texto);
-        Arvore ps = new Arvore();
+        //Arvore ps = new Arvore();
 
         int[] seed = {7, 3, 11, 1, 5, 9, 12, 0, 2, 4, 6, 8, 10, 13, 14};
-
         Arvores arvores = new Arvores(seed);
 
         while(!ehFim(entrada)){
 
-            ps.inserir(personagens);
+            arvores.inserir(personagens);
 
             entrada = MyIO.readLine();
             arq = null;
@@ -33,7 +32,7 @@ public class questao2 {
         
         entrada = MyIO.readLine();
         while(!ehFim(entrada)) {
-            ordenador(ps, entrada);
+            ordenador(arvores, entrada);
             entrada = MyIO.readLine();
         }    
     }
@@ -49,7 +48,7 @@ public class questao2 {
     } 
 
     //Ordenar execucoes do programa
-    public static void ordenador(Arvore arvore, String nomePersonagem) {
+    public static void ordenador(Arvores arvore, String nomePersonagem) {
         
         System.out.print(nomePersonagem + " ");
         if(arvore.pesquisar(nomePersonagem)) MyIO.println("SIM");
@@ -69,14 +68,53 @@ class Arvores extends NoArvore {
 
     //Seed de criacao de arvore de arvores
     public Arvores(int[] seed) {
-        for(int i : seed) {
-            _seed(i);
-        }
+        for(int i : seed) _seed(i);
     }
 
     //Inserir um personagem na arvore de arvores
     public void inserir(Personagem personagem) {
+        int num = (int) personagem.getAltura() % 15;
+
+        NoArvore i = _pesquisarArvore(num);
+        System.err.println(i);
+
+        if(i.arvore == null){
+            i.arvore = new Arvore();
+            i.arvore.inserir(personagem);
+
+        } else i.arvore.inserir(personagem);
+
+    }
+
+    //Pesquisar se um elemento existe em um arvore
+    public boolean pesquisar(String nome) {
+        return _pesquisar(this.raiz, nome);
+    }
+
+    //Pesquisando um elemento nas arvores
+    private boolean _pesquisar(NoArvore i, String nome) {
+        boolean achar = false;
+
         
+
+        return achar;
+    }
+
+    //Pesquisar uma seed dentro de uma arvore
+    private NoArvore _pesquisarArvore(int pesquisa) {
+        return _pesquisando(this.raiz, pesquisa);
+    }
+
+    //Percorrer a arvore 
+    private NoArvore _pesquisando(NoArvore i, int num) {
+        NoArvore resp = null;
+
+        if(i.esq != null) resp = _pesquisando(i.esq, num);
+        if(i.dir != null) resp = _pesquisando(i.dir, num);
+        
+        if(i.seed == num) resp = i;
+
+        return resp;
     }
 
     //Criar um galho na arvore
