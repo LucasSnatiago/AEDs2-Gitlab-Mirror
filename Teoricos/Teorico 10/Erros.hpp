@@ -3,7 +3,7 @@
 
 #include <err.h>
 
-#define warn(X) aviso(X)
+#define aviso(X) warn(X)
 #define erro(X) err(1, X)
 
 #endif
