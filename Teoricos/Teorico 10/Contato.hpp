@@ -7,13 +7,12 @@
 using namespace std; 
 
 class Contato {
-protected:
+public:
     string nome;
     string email;
     int telefone;
     int cpf;
 
-public:
     //Criando um Contato
     Contato() {
         this->nome = "";
@@ -31,9 +30,7 @@ public:
     }
 
     void mostrar() {
-        cout << "----------" << endl;
         cout << "Nome: " << this->nome << endl << "Email: " << this->email << endl << "Telefone: " << this->telefone << endl << "CPF: " << this->cpf << endl;
-        cout << "----------" << endl;
     }
 };
 

@@ -7,12 +7,11 @@
 
 using namespace std;
 
-class NoContato : public Contato {
-protected:
+class NoContato {
+public:
     Contato elemento;
     NoContato *esq, *dir;
 
-public:
     //Criacao de um No
     NoContato() {
         this->dir = this->esq = NULL;
