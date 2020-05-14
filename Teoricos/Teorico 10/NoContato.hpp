@@ -9,8 +9,7 @@ using namespace std;
 
 class NoContato {
 public:
-    char semente;
-    Contato elemento;
+    Contato *contato;
     NoContato *prox;
 
     //Criacao de um No
@@ -20,8 +19,13 @@ public:
 
     //Criacao de um no com um valor
     NoContato(string nome, string email, int telefone, int cpf) {
-        this->elemento.inserir(nome, email, telefone, cpf);
+        this->contato->inserir(nome, email, telefone, cpf);
         this->prox = NULL;
+    }
+
+    //Criar um novo contato
+    void inserir(Contato *inserir) {
+        contato = inserir;
     }
 };
 #endif
