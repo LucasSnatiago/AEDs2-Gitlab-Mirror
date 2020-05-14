@@ -30,7 +30,10 @@ public:
     }
 
     void mostrar() {
-        cout << "Nome: " << this->nome << endl << "Email: " << this->email << endl << "Telefone: " << this->telefone << endl << "CPF: " << this->cpf << endl;
+        cout << "Nome   - " << this->nome     << "\n"
+                "Email  - " << this->email    << "\n"
+                "Numero - " << this->telefone << "\n"
+                "CPF    - " << this->cpf      << endl;
     }
 };
 

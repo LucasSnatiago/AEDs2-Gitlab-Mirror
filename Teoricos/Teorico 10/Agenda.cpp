@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
-#include "Erros.hpp"
 #include "NoContato.hpp"
+#include <string.h>
 
 //Criacao de uma Agenda em C++
 class Agenda {
@@ -41,7 +41,7 @@ private:
                 if(i->dir == NULL) i->dir = inserir;
                 else _inserir(i->dir, inserir);
 
-            } else aviso("Objeto nao inserido! Já existente na arvore");
+            } else cerr << "Elemento: " << i->elemento.nome.c_str() << "! Já existente na arvore" << endl;
 
         }
     }
@@ -61,10 +61,10 @@ private:
 int main(int argc, char *argv[]) {
     Agenda agenda;
 
-    agenda.inserir("Teste1", "Teste1@example.com", 1342, 32423);
-    agenda.inserir("teste2", "teste2@example.com", 4758, 52452);
-    agenda.inserir("teste3", "teste3@example.com", 456987, 52452);
-    agenda.inserir("teste1", "teste1@example.com", 13211485, 2525424);
+    char entrada[256];
+    cin.getline(entrada, 256);
+
+    cout << entrada;
 
     agenda.mostrar();  
 }
