@@ -7,7 +7,7 @@ using namespace std;
 
 class NoArvore {
 public:
-    static char primeiraLetraNome;
+    char primeiraLetraNome;
     NoContato *inicio, *fim;
     NoArvore *esq, *dir;
 
