@@ -39,6 +39,22 @@ public:
 
     }
 
+    //Remover um elemento da Agenda a partir do nome
+    void remover(string nome) {
+        _remover(this->raiz, nome);
+
+    }
+
+    //Pesquisar um elemento na Arvore usando o nome
+    bool pesquisar(string nome) {
+        return _pesquisar(this->raiz, nome);
+    }
+
+    //Pesquisar um elemento na Arvore usando o CPF
+    bool pesquisar(int cpf) {
+        return _pesquisar(this->raiz, cpf);
+    }
+
 private:
     //Criacao de uma arvore a partir de uma seed
     void _seed(char semente, NoArvore *i) {
@@ -55,8 +71,7 @@ private:
                 if(i->dir == NULL) i->dir = new NoArvore(semente);
                 else _seed(semente, i->dir);
 
-            } else cerr << "Erro ao inserir semente repetida: " << semente << endl;
-
+            }
         }
     }
 
@@ -75,6 +90,27 @@ private:
                     << " nome repetido!" << endl;
     }
 
+    //Percorrer a Arvore e remover um elemento pelo nome
+    void _remover(NoArvore* i, string nome) {
+        if(i == NULL) cerr << "Elemento nao encontrado!" << endl;
+        else if(nome[0] < i->primeiraLetraNome) _remover(i->esq, nome);
+        else if(nome[0] > i->primeiraLetraNome) _remover(i->dir, nome);
+        else i->remover(nome);
+
+    }
+
+    //Percorrer elemento na Arvore pesquisando por nome
+    bool _pesquisar(NoArvore* i, string nome) {
+        bool resp = false;
+        if(i != NULL && nome[0] < i->primeiraLetraNome) resp = _pesquisar(i->esq, nome);
+        else if(nome[0] > i->primeiraLetraNome) resp = _pesquisar(i->esq, nome);
+        else {
+            resp = i->pesquisar(nome);
+            return resp;
+
+        }
+    }
+    
     //Percorrer arvore escrevendo valor contido nela
     void _mostrar(NoArvore *i) {
         if(i != NULL) {

@@ -3,6 +3,10 @@
 #include "Arvore.hpp"
 #include <string.h>
 
+#define bool short
+#define true 1
+#define false 0
+
 //Criacao de uma Agenda em C++
 class Agenda {
 protected:
@@ -24,20 +28,23 @@ public:
         this->arvore->inserir(nome, email, telefone, cpf);
     }
 
+    //Remover elemento da Agenda
+    void remover(string nome) {
+        this->arvore->remover(nome);
+    }
+
+    //Pesquisar elemento na Agenda pelo nome
+    bool pesquisar(string nome) {
+        return this->arvore->pesquisar(nome);
+    }
+
+    //Pesquisar elemento na Agenda pelo CPF
+    bool pesquisar(int cpf) {
+        return this->arvore->pesquisar(cpf);
+    }
+
     //Mostrar contatos da Agenda
     void mostrar() {
         this->arvore->mostrar();
     }
 };
-
-
-int main(int argc, char *argv[]) {
-    Agenda agenda;
-
-    char entrada[256];
-    cin.getline(entrada, 256);
-
-    cout << entrada;
-
-    agenda.mostrar();  
-}
