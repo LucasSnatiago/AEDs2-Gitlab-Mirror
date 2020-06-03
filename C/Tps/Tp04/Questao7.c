@@ -35,7 +35,7 @@ int main(void){
 
     while(!ehFimString(entrada)){
         if(pesquisarTabelaHash(tabela, entrada)) printf("%s SIM\n", entrada->string);
-        else printf("%s N%cO\n", entrada->string, (char)195);      
+        else printf("%s NÃO\n", entrada->string);      
 
         entrada = readString();
     }
