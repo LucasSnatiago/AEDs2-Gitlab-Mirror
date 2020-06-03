@@ -13,6 +13,8 @@
 #include <limits.h>
 #include <locale.h>
 
+#include "String.h"
+
 #define bool short
 #define true 1
 #define false 0
