@@ -14,7 +14,7 @@
 #include "../../bibliotecas/padroes.h"
 #include "../../bibliotecas/Erro.h"
 #include "../../bibliotecas/Personagens.h"
-#include "../../bibliotecas/TabelaHash.h"
+#include "../../bibliotecas/ArvoreAVL/AVLTree.h"
 
 //Criar um personagem a partir de uma path
 Personagens* personagemCarregado(String* entrada) {
@@ -23,10 +23,10 @@ Personagens* personagemCarregado(String* entrada) {
 
 int main(void){
     String *entrada = readString();
-    TabelaHash *tabela = new_TabelaHash(25);
+    struct Node *root = NULL; 
 
     while(!ehFimString(entrada)){
-        inserirTabelaHash(tabela, personagemCarregado(entrada));        
+        root = insert(root, personagemCarregado(entrada));        
 
         entrada = readString();
     }
@@ -34,8 +34,9 @@ int main(void){
     entrada = readString();
 
     while(!ehFimString(entrada)){
-        if(pesquisarTabelaHash(tabela, entrada)) printf("%s SIM\n", entrada->string);
-        else printf("%s NÃO\n", entrada->string);      
+        printf("%s raiz ", entrada->string);
+        if(_pesquisarAVL(root, entrada)) printf("SIM\n");
+        else printf("NÃO\n");      
 
         entrada = readString();
     }

@@ -55,12 +55,22 @@ void _inserirAVL(Celula* i, Personagens* personagem) {
     } else aviso("Esse elemento ja esta inserido na arvore!");
 
     if(i->fator > 1) {
+        if(i->esq->esq != NULL) {  //Rotacao simples para a direita
+            
+
+        } else {
+
+
+        }
         
-
     } else if(i->fator < -1) {
-
-
+        
     }
+}
+
+// Descobrir o nivel do no de uma arvore avl
+int _nivelAVL(Celula *no) {
+
 }
 
 #endif
