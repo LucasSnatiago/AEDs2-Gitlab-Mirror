@@ -3,7 +3,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.time.Clock;
 
-public class questao1 {
+public class Questao1 {
     public static void main(String[] args){
         MyIO.setCharset("ASCII");
         String entrada = MyIO.readLine();
