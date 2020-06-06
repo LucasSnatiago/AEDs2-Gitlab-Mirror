@@ -52,191 +52,174 @@ public class Questao2 {
         
         System.out.print(nomePersonagem + " ");
         if(arvore.pesquisar(nomePersonagem)) MyIO.println("SIM");
-        else MyIO.println("NÃO");
+        else System.out.printf("N%cO\n", (char)195);
 
     }
 }
 
-//Classe Arvore de Arvores
-class Arvores extends NoArvore {
-    public NoArvore raiz;
 
-    //Contrutor de uma Arvore de Arvores
-    public Arvores() {
-        this.raiz = null;
-    }
-
-    //Seed de criacao de arvore de arvores
-    public Arvores(int[] seed) {
-        for(int i : seed) _seed(i);
-    }
-
-    //Inserir um personagem na arvore de arvores
-    public void inserir(Personagem personagem) {
-        int num = (int) personagem.getAltura() % 15;
-
-        NoArvore i = _pesquisarArvore(num);
-        System.err.println(i);
-
-        if(i.arvore == null){
-            i.arvore = new Arvore();
-            i.arvore.inserir(personagem);
-
-        } else i.arvore.inserir(personagem);
-
-    }
-
-    //Pesquisar se um elemento existe em um arvore
-    public boolean pesquisar(String nome) {
-        return _pesquisar(this.raiz, nome);
-    }
-
-    //Pesquisando um elemento nas arvores
-    private boolean _pesquisar(NoArvore i, String nome) {
-        boolean achar = false;
-
+// Classe de arvore binaria
+class Arvore { 
+    // Classe no de Arvore Binaria
+    static class No {
+        protected String nomePersonagem;
+        protected No ESQ;
+        protected No DIR;
         
-
-        return achar;
-    }
-
-    //Pesquisar uma seed dentro de uma arvore
-    private NoArvore _pesquisarArvore(int pesquisa) {
-        return _pesquisando(this.raiz, pesquisa);
-    }
-
-    //Percorrer a arvore 
-    private NoArvore _pesquisando(NoArvore i, int num) {
-        NoArvore resp = null;
-
-        if(i.esq != null) resp = _pesquisando(i.esq, num);
-        if(i.dir != null) resp = _pesquisando(i.dir, num);
-        
-        if(i.seed == num) resp = i;
-
-        return resp;
-    }
-
-    //Criar um galho na arvore
-    private void _seed(int num) {
-        if(this.raiz == null){
-            this.raiz = new NoArvore(num);
-            this.raiz.seed = num;
-        } else if(num < this.raiz.seed) {
-            this.raiz = _inserirSeed(this.raiz.esq, num);
-        } else if(num > this.raiz.seed) {
-            this.raiz = _inserirSeed(this.raiz.dir, num);
+        public No() {
+            this.ESQ = this.DIR = null;
+            this.nomePersonagem = "";
         }
-    }
-
-    //Percorrer arvore
-    private NoArvore _inserirSeed(NoArvore i, int num) {
-        NoArvore tmp = null;
-
-        if (i == null) tmp = new NoArvore(num);
-        else if (num < i.seed) tmp = _inserirSeed(i.esq, num);
-        else if (num > i.seed) tmp = _inserirSeed(i.dir, num);
-
-        return tmp;
-    }
-
-}
-
-//Classe No Arvore
-class NoArvore {
-    protected Arvore arvore;
-    protected NoArvore esq, dir;
-    protected int seed;
+    };
     
-    //Construtor vazio no de Arvore
-    public NoArvore() {
-        this(null, 0);
-    }
-
-    //Construtor vazio no de Arvore usando seed
-    public NoArvore(int x) {
-        this(null, x);
-    }
-
-    //Criador do objeto no de Arvore
-    public NoArvore(Arvore arvore, int x) {
-        this.arvore = arvore;
-        this.esq = this.dir = null;
-        this.seed = x;
-    }
-}
-
-//Classe Arvore Binaria
-class Arvore extends No {
-    public No raiz;
-
-    //Construtor de uma arvore binaria
+    protected No raiz;
+    
     public Arvore() {
         this.raiz = null;
     }
 
-    //Insere elementos na ArvoreBinaria
-    public void inserir(Personagem person) {
-        this.raiz = _inserir(person, this.raiz);
+    // Inserir personagem
+    public void inserir(String nome) {
+        if(this.raiz == null) {
+            this.raiz = new No();
+            this.raiz.nomePersonagem = nome;
+
+        } else _inserir(this.raiz, nome);
     }
 
-    //Metodo privado de insercao recursiva
-    private No _inserir(Personagem person, No i) {
-        if (person == null); //System.err.println("Personagem null");
-        else if (i == null) i = new No(person);
-        else if (_compararElementoPersonagem(person, i.personagem) < 0) i.dir = _inserir(person,i.dir);
-        else if (_compararElementoPersonagem(person, i.personagem) > 0) i.esq = _inserir(person,i.esq);
-        return i;
+    // Inserir personagem
+    private void _inserir(No i, String nome) {
+        if(nome.compareTo(i.nomePersonagem) < 0) {
+            if(i.ESQ == null) {
+                i.ESQ = new No();
+                i.ESQ.nomePersonagem = nome;
+            
+            } else _inserir(i.ESQ, nome);
+        
+        } else if(nome.compareTo(i.nomePersonagem) > 0) {
+            if(i.DIR == null) {
+                i.DIR = new No();
+                i.DIR.nomePersonagem = nome;
+
+            } else _inserir(i.DIR, nome);
+
+        }
+    }
+    
+    // Pesquisar elemento na Arvore
+    public boolean pesquisar(String nome) {
+        return _pesquisar(this.raiz, nome);
     }
 
-    //Funcao para pesquisar um personagem na arvore
-    public boolean pesquisar(String nomePersonagem) {
-        System.out.print("raiz ");
-        return _pesquisar(this.raiz, nomePersonagem);
+    // Pesquisar elemento na Arvore
+    private boolean _pesquisar(No i, String nome) {
+        boolean achou = true;
+
+        if(i == null) achou = false;
+
+        else if(nome.compareTo(i.nomePersonagem) < 0) {
+            achou = _pesquisar(i.ESQ, nome);
+            MyIO.print("ESQ ");
+
+        } else if (nome.compareTo(i.nomePersonagem) > 0) {
+            achou = _pesquisar(i.DIR, nome);
+            MyIO.print("DIR ");
+
+        }
+
+        return achou;
     }
 
-    //Deslocar na arvore procurando se o elemento existe
-    private boolean _pesquisar(No i, String nomePersonagem) {
-        boolean encontrar = false;
-
-        if(i == null) encontrar = false;
-        else if(_compararElementoPersonagem(i.personagem, nomePersonagem) < 0){ 
-            System.out.print("dir ");
-            encontrar = _pesquisar(i.esq, nomePersonagem);
-        } else if(_compararElementoPersonagem(i.personagem, nomePersonagem) > 0){
-            System.out.print("esq ");
-            encontrar = _pesquisar(i.dir, nomePersonagem);
-        } else encontrar = true;
-
-        return encontrar;
-    }
-
-    //Compara elemento de personagem
-    private int _compararElementoPersonagem(Personagem A, Personagem B) {
-        //if(A == null) System.err.println("A é null!");
-        //if(B == null) System.err.println("B é null!");
-        //System.err.println(A.getNome() + "|" + B.getNome());
-        return A.getNome().compareTo(B.getNome());
-    }
-
-    //Compara elemento de personagem
-    private int _compararElementoPersonagem(Personagem A, String B) {
-        return A.getNome().compareTo(B);
-    }
 }
 
-//Classe No de arvore binaria
-class No {
-    protected Personagem personagem;
-    protected No esq, dir;
+// Classe Arvore de Arvores
+class Arvores {
+    // Classe no da Arvore
+    static class NoArvores {
+        protected Arvore raiz;
+        protected NoArvores esq;
+        protected NoArvores dir;
+        protected int semente;
 
-    public No() {
-        this(null);
+        // Construtor de No de Arvores
+        public NoArvores() {
+            this(0);
+        }
+
+         // Construtor de No de Arvores
+         public NoArvores(int seed) {
+            this.raiz = null;
+            this.esq = this.dir = null;
+            this.semente = seed;
+        }
+    };
+
+    protected NoArvores raiz;
+
+    public Arvores() {
+        this.raiz = null;
     }
 
-    public No(Personagem person) {
-        this.personagem = person;
-        this.esq = this.dir = null;
+    // Criando uma arvore binaria usando uma seed
+    public Arvores(int[] seed) {
+        this.raiz = new NoArvores(seed[0]);
+        for(int i : seed) _seed(this.raiz, i);
+    }
+
+    // Criando uma arvore a partir de uma seed
+    private void _seed(NoArvores i, int seed) {
+        if(seed < i.semente) {
+            if(i.esq == null) i.esq = new NoArvores(seed);
+            else _seed(i.esq, seed);
+
+        } else if(seed > i.semente) {
+            if(i.dir == null) i.dir = new NoArvores(seed);
+            else _seed(i.dir, seed);
+
+        }
+    }
+
+    // Inserir elemento na arvore
+    public void inserir(Personagem personagem) {
+        _inserir(this.raiz, personagem.getNome(), (int) personagem.getAltura() % 15);    
+    }
+
+    private void _inserir(NoArvores i, String nome, int pos) {
+
+        if(i.esq != null) _inserir(i.esq, nome, pos);
+        if(i.dir != null) _inserir(i.dir, nome, pos);
+
+        if(i != null && i.semente == pos) {
+            if(i.raiz == null) i.raiz = new Arvore();
+            i.raiz.inserir(nome);
+        
+        }
+    }
+
+    // Pesquisar elemento na arvore
+    public boolean pesquisar(String nome) {
+        MyIO.print("raiz ");
+        return _pesquisar(this.raiz, nome);
+
+    }
+
+    // Pesquisar um elemento nas Arvores
+    private boolean _pesquisar(NoArvores i, String nome) {
+        boolean achar = false;
+
+        if(i.esq != null) {
+            MyIO.print("esq ");
+            if(i.raiz != null && i.raiz.pesquisar(nome)) achar = true;
+            else achar = _pesquisar(i.esq, nome);
+
+        } else if(i.dir != null) {
+            MyIO.print("dir ");
+            if(i.raiz != null && i.raiz.pesquisar(nome)) achar = true;
+            else achar = _pesquisar(i.dir, nome);
+
+        }
+
+        return achar;
     }
 }
 
