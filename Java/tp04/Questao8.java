@@ -14,7 +14,9 @@ public class Questao8 {
 
         while(!ehFim(entrada)){
 
-            trie.insert(personagens);
+            try{
+                trie.inserir(personagens.getNome().trim());
+            } catch(Exception err){ System.err.println(err); }
 
             entrada = MyIO.readLine();
             arq = null;
@@ -24,12 +26,38 @@ public class Questao8 {
                 arq.lerArquivo(entrada);
                 personagens = new Personagem(arq.texto);
             }
-        }        
+        }
 
-        
         entrada = MyIO.readLine();
+        Trie trie2 = new Trie();
+        
+        while(!ehFim(entrada)){
+
+            try{
+                trie2.inserir(personagens.getNome().trim());
+            } catch(Exception err){ System.err.print(""); }
+
+            entrada = MyIO.readLine();
+            arq = null;
+            personagens = null;
+            if(!ehFim(entrada)){
+                arq = new Arquivo();
+                arq.lerArquivo(entrada);
+                personagens = new Personagem(arq.texto);
+            }
+        }    
+
+        String nomes[] = trie2.mostrar();
+        for(String i : nomes) {
+            try {
+                trie.inserir(i.trim());
+            } catch(Exception err) { System.out.print(""); }
+        }
+
+        entrada = MyIO.readLine();
+
         while(!ehFim(entrada)) {
-            ordenador(arvores, entrada);
+            ordenador(trie, entrada);
             entrada = MyIO.readLine();
         }    
     }
@@ -45,123 +73,134 @@ public class Questao8 {
     } 
 
     //Ordenar execucoes do programa
-    public static void ordenador(Arvores arvore, String nomePersonagem) {
+    public static void ordenador(Trie arvore, String nomePersonagem) {
         
         System.out.print(nomePersonagem + " ");
-        if(arvore.pesquisar(nomePersonagem)) MyIO.println("SIM");
-        else MyIO.println("NÃO");
+        
+        try{
+            if(arvore.pesquisar(nomePersonagem)) MyIO.println("SIM");
+            else System.out.printf("N%cO\n", (char)195);
+        } catch(Exception err) { System.out.print(""); }
 
     }
 }
 
 //Classe Arvore trie
-// Java implementation of search and insert operations 
-// on Trie 
-class Trie { 
-	
-	// Alphabet size (# of symbols) 
-	static final int ALPHABET_SIZE = 26; 
-	
-	// trie node 
-	static class TrieNode 
-	{ 
-		TrieNode[] children = new TrieNode[ALPHABET_SIZE]; 
-	
-		// isEndOfWord is true if the node represents 
-		// end of a word 
-		boolean isEndOfWord; 
-		
-		TrieNode(){ 
-			isEndOfWord = false; 
-			for (int i = 0; i < ALPHABET_SIZE; i++) 
-				children[i] = null; 
-		} 
-	}; 
-	
-	static TrieNode root; 
-	
-	// If not present, inserts key into trie 
-	// If the key is prefix of trie node, 
-	// just marks leaf node 
-	static void insert(Personagem key) 
-	{ 
-		int level; 
-		int length = key.length(); 
-		int index; 
-	
-		TrieNode pCrawl = root; 
-	
-		for (level = 0; level < length; level++) 
-		{ 
-			index = key.charAt(level) - 'a'; 
-			if (pCrawl.children[index] == null) 
-				pCrawl.children[index] = new TrieNode(); 
-	
-			pCrawl = pCrawl.children[index]; 
-		} 
-	
-		// mark last node as leaf 
-		pCrawl.isEndOfWord = true; 
-	} 
-	
-	// Returns true if key presents in trie, else false 
-	static boolean search(String key) 
-	{ 
-		int level; 
-		int length = key.length(); 
-		int index; 
-		TrieNode pCrawl = root; 
-	
-		for (level = 0; level < length; level++) 
-		{ 
-			index = key.charAt(level) - 'a'; 
-	
-			if (pCrawl.children[index] == null) 
-				return false; 
-	
-			pCrawl = pCrawl.children[index]; 
-		} 
-	
-		return (pCrawl != null && pCrawl.isEndOfWord); 
-	} 
-	
-	// Driver 
-	public static void main(String args[]) 
-	{ 
-		// Input keys (use only 'a' through 'z' and lower case) 
-		String keys[] = {"the", "a", "there", "answer", "any", 
-						"by", "bye", "their"}; 
-	
-		String output[] = {"Not present in trie", "Present in trie"}; 
-	
-	
-		root = new TrieNode(); 
-	
-		// Construct trie 
-		int i; 
-		for (i = 0; i < keys.length ; i++) 
-			insert(keys[i]); 
-	
-		// Search for different keys 
-		if(search("the") == true) 
-			System.out.println("the --- " + output[1]); 
-		else System.out.println("the --- " + output[0]); 
-		
-		if(search("these") == true) 
-			System.out.println("these --- " + output[1]); 
-		else System.out.println("these --- " + output[0]); 
-		
-		if(search("their") == true) 
-			System.out.println("their --- " + output[1]); 
-		else System.out.println("their --- " + output[0]); 
-		
-		if(search("thaw") == true) 
-			System.out.println("thaw --- " + output[1]); 
-		else System.out.println("thaw --- " + output[0]); 
-		
-	} 
-} 
-// This code is contributed by Sumit Ghosh 
+class Trie {
+   private No raiz;
+
+   public Trie(){
+       raiz = new No();
+   }
+
+   public void inserir(String s) throws Exception {
+       inserir(s, raiz, 0);
+   }
+
+   private void inserir(String s, No no, int i) throws Exception {
+       //System.out.print("\nEM NO(" + no.elemento + ") (" + i + ")");
+       if(no.prox[s.charAt(i)] == null){
+           //System.out.print("--> criando filho(" + s.charAt(i) + ")");
+           no.prox[s.charAt(i)] = new No(s.charAt(i));
+
+           if(i == s.length() - 1){
+               //System.out.print("(folha)");
+               no.prox[s.charAt(i)].folha = true;
+           }else{
+               inserir(s, no.prox[s.charAt(i)], i + 1);
+           }
+
+       } else if (no.prox[s.charAt(i)].folha == false && i < s.length() - 1){
+           inserir(s, no.prox[s.charAt(i)], i + 1);
+
+       } else {
+           throw new Exception("Erro ao inserir!");
+       } 
+   }
+
+
+   public boolean pesquisar(String s) throws Exception {
+       return pesquisar(s, raiz, 0);
+   }
+
+   public boolean pesquisar(String s, No no, int i) throws Exception {
+       boolean resp;
+       if(no.prox[s.charAt(i)] == null){
+           resp = false;
+       } else if(i == s.length() - 1){
+           resp = (no.prox[s.charAt(i)].folha == true);
+       } else if(i < s.length() - 1 ){
+           resp = pesquisar(s, no.prox[s.charAt(i)], i + 1);
+       } else {
+           throw new Exception("Erro ao pesquisar!");
+       }
+       return resp;
+   }
+
+
+   public String[] mostrar(){
+       String[] nomes = new String[100];
+       mostrar("", raiz, 0, nomes);
+       return nomes;
+   }
+
+   public void mostrar(String s, No no, int pos, String[] nomes) {
+       if(no.folha == true){
+           nomes[pos] = (s + no.elemento);
+       } else {
+           for(int i = 0; i < no.prox.length; i++){
+               if(no.prox[i] != null){
+                   mostrar(s + no.elemento, no.prox[i], pos+1, nomes);
+               }
+           }
+       }
+   }
+
+   public int contarAs(){
+       int resp = 0;
+       if(raiz != null){
+           resp = contarAs(raiz);
+       }
+       return resp;
+   }
+
+   public int contarAs(No no) {
+       int resp = (no.elemento == 'A') ? 1 : 0;
+
+       if(no.folha == false){
+           for(int i = 0; i < no.prox.length; i++){
+               if(no.prox[i] != null){
+                   resp += contarAs(no.prox[i]);
+               }
+           }
+       }
+       return resp;
+   }
+}
+
+//Classe No arvore trie
+
+class No {
+    public char elemento;
+    public int tamanho = 255;
+    public No[] prox;
+    public boolean folha;
+    
+    public No (){
+       this(' ');
+    }
+ 
+    public No (char elemento){
+       this.elemento = elemento;
+       prox = new No [tamanho];
+       for (int i = 0; i < tamanho; i++) prox[i] = null;
+       folha = false;
+    }
+ 
+    public static int hash (char x){
+       return (int)x;
+    }
+ }
 
 
 //Classe de Personagens do Star Wars
