@@ -14,7 +14,7 @@
 #include "../../bibliotecas/padroes.h"
 #include "../../bibliotecas/Erro.h"
 #include "../../bibliotecas/Personagens.h"
-#include "../../bibliotecas/ArvoreAVL/AVLTree.h"
+#include "../../bibliotecas/AVLTree.h"
 
 //Criar um personagem a partir de uma path
 Personagens* personagemCarregado(String* entrada) {
