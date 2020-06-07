@@ -51,6 +51,7 @@ public class Questao2 {
     public static void ordenador(Arvores arvore, String nomePersonagem) {
         
         System.out.print(nomePersonagem + " ");
+        //arvore.mostrar();
         if(arvore.pesquisar(nomePersonagem)) MyIO.println("SIM");
         else System.out.printf("N%cO\n", (char)195);
 
@@ -118,18 +119,17 @@ class Arvore {
         if(i == null) achou = false;
 
         else if(nome.compareTo(i.nomePersonagem) < 0) {
-            achou = _pesquisar(i.ESQ, nome);
             MyIO.print("ESQ ");
+            achou = _pesquisar(i.ESQ, nome);
 
         } else if (nome.compareTo(i.nomePersonagem) > 0) {
-            achou = _pesquisar(i.DIR, nome);
             MyIO.print("DIR ");
+            achou = _pesquisar(i.DIR, nome);
 
         }
-
+        
         return achou;
     }
-
 }
 
 // Classe Arvore de Arvores
@@ -212,7 +212,9 @@ class Arvores {
             if(i.raiz != null && i.raiz.pesquisar(nome)) achar = true;
             else achar = _pesquisar(i.esq, nome);
 
-        } else if(i.dir != null) {
+        }
+        
+        if(i.dir != null) {
             MyIO.print("dir ");
             if(i.raiz != null && i.raiz.pesquisar(nome)) achar = true;
             else achar = _pesquisar(i.dir, nome);
@@ -220,6 +222,28 @@ class Arvores {
         }
 
         return achar;
+    }
+
+    // Mostrar elementos da Arvore
+    public void mostrar() {
+        MyIO.print("raiz ");
+        _mostrar(this.raiz);
+    }
+
+    private void _mostrar(NoArvores i) {
+        if(i.esq != null) {
+            MyIO.print("esq ");
+            if(i.raiz != null) i.raiz.mostrar();
+            _mostrar(i.esq);
+
+        }
+        
+        if(i.dir != null) {
+            MyIO.print("dir ");
+            if(i.raiz != null) i.raiz.mostrar();
+            _mostrar(i.dir);
+
+        }
     }
 }
 
