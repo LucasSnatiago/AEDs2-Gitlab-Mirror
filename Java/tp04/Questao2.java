@@ -52,7 +52,7 @@ public class Questao2 {
         
         System.out.print(nomePersonagem + " ");
         //arvore.mostrar();
-        if(arvore.pesquisar(nomePersonagem)) MyIO.println("SIM");
+        if(arvore._pesquisar(nomePersonagem)) MyIO.println("SIM");
         else System.out.printf("N%cO\n", (char)195);
 
     }
@@ -130,6 +130,29 @@ class Arvore {
         
         return achou;
     }
+
+    public boolean mostrarPreOutro(String x) {
+        return mostrarPreOutro(this.raiz, x);
+    }
+
+    private boolean mostrarPreOutro(No i,String x) {
+		boolean resp = false;
+		if (i != null) {
+			if ( x.contains(i.nomePersonagem) == true ) {
+				resp = true;
+			}
+			else {
+				System.out.print("ESQ ");
+				resp = mostrarPreOutro(i.ESQ, x); // Elementos da esquerda.
+				if ( resp == false ) {
+					System.out.print("DIR ");
+					resp = mostrarPreOutro(i.DIR, x); // Elementos da direita.
+				}
+			}
+		}
+		return resp;
+	}
+  
 }
 
 // Classe Arvore de Arvores
@@ -197,34 +220,31 @@ class Arvores {
     }
 
     // Pesquisar elemento na arvore
-    public boolean pesquisar(String nome) {
+    public boolean _pesquisar(String nome) {
         MyIO.print("raiz ");
-        return _pesquisar(this.raiz, nome);
-
+        return mostrarPre(this.raiz, nome);
     }
 
-    // Pesquisar um elemento nas Arvores
-    private boolean _pesquisar(NoArvores i, String nome) {
-        boolean achar = false;
+	/**
+	 * Metodo privado recursivo para exibir elementos.
+	 * @param i No em analise.
+	 */
+	private boolean mostrarPre(NoArvores i,String x) {
+		boolean resp = false;
+		if (i != null) {
+            if(i.raiz != null) resp = i.raiz.mostrarPreOutro(x);
+			if ( resp == false ) {
+				System.out.print("esq ");
+				resp = mostrarPre(i.esq,x); // Elementos da esquerda.
+			} if ( resp == false ) {
+				System.out.print("dir ");
+				resp = mostrarPre(i.dir,x); // Elementos da direita.
+			}
+		}
+		return resp;
+	}  
 
-        if(i.esq != null) {
-            MyIO.print("esq ");
-            if(i.raiz != null && i.raiz.pesquisar(nome)) achar = true;
-            else achar = _pesquisar(i.esq, nome);
-
-        }
-        
-        if(i.dir != null) {
-            MyIO.print("dir ");
-            if(i.raiz != null && i.raiz.pesquisar(nome)) achar = true;
-            else achar = _pesquisar(i.dir, nome);
-
-        }
-
-        return achar;
-    }
-
-    // Mostrar elementos da Arvore
+    /*// Mostrar elementos da Arvore
     public void mostrar() {
         MyIO.print("raiz ");
         _mostrar(this.raiz);
@@ -244,7 +264,7 @@ class Arvores {
             _mostrar(i.dir);
 
         }
-    }
+    }*/
 }
 
 //Classe de Personagens do Star Wars
