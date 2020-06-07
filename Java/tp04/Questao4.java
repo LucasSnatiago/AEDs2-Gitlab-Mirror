@@ -12,11 +12,11 @@ public class Questao4 {
         Personagem personagens = new Personagem(arq.texto);
         //Arvore ps = new Arvore();
 
-        Arvores arvores = new Arvores(seed);
+        RBTree rbt = new RBTree(null); 
 
         while(!ehFim(entrada)){
 
-            arvores.inserir(personagens);
+            rbt.insert(personagens);
 
             entrada = MyIO.readLine();
             arq = null;
@@ -31,7 +31,7 @@ public class Questao4 {
         
         entrada = MyIO.readLine();
         while(!ehFim(entrada)) {
-            ordenador(arvores, entrada);
+            ordenador(rbt, entrada);
             entrada = MyIO.readLine();
         }    
     }
@@ -47,18 +47,259 @@ public class Questao4 {
     } 
 
     //Ordenar execucoes do programa
-    public static void ordenador(Arvores arvore, String nomePersonagem) {
+    public static void ordenador(RBTree arvore, String nomePersonagem) {
         
-        System.out.print(nomePersonagem + " ");
+        System.out.print(nomePersonagem + " raiz ");
         //arvore.mostrar();
-        if(arvore._pesquisar(nomePersonagem)) MyIO.println("SIM");
+        if(arvore.search(nomePersonagem)) MyIO.println("SIM");
         else System.out.printf("N%cO\n", (char)195);
 
     }
 }
 
 // Classe de arvore binaria Alvinegra
+// Fonte: https://www.sanfoundry.com/java-program-implement-red-black-tree/
 
+ /* Class Node */
+ class RedBlackNode
+ {    
+     RedBlackNode left, right;
+     Personagem element;
+     int color;
+ 
+     /* Constructor */
+     public RedBlackNode(Personagem theElement)
+     {
+         this( theElement, null, null );
+     } 
+     /* Constructor */
+     public RedBlackNode(Personagem theElement, RedBlackNode lt, RedBlackNode rt)
+     {
+         left = lt;
+         right = rt;
+         element = theElement;
+         color = 1;
+     }    
+ }
+ 
+ /* Class RBTree */
+ class RBTree
+ {
+     private RedBlackNode current;
+     private RedBlackNode parent;
+     private RedBlackNode grand;
+     private RedBlackNode great;
+     private RedBlackNode header;    
+     private static RedBlackNode nullNode;
+     /* static initializer for nullNode */
+     static 
+     {
+         nullNode = new RedBlackNode(null);
+         nullNode.left = nullNode;
+         nullNode.right = nullNode;
+     }
+     /* Black - 1  RED - 0 */
+     static final int BLACK = 1;    
+     static final int RED   = 0;
+ 
+     /* Constructor */
+     public RBTree(Personagem negInf)
+     {
+         header = new RedBlackNode(negInf);
+         header.left = nullNode;
+         header.right = nullNode;
+     }
+     /* Function to check if tree is empty */
+     public boolean isEmpty()
+     {
+         return header.right == nullNode;
+     }
+     /* Make the tree logically empty */
+     public void makeEmpty()
+     {
+         header.right = nullNode;
+     }
+     /* Function to insert item */
+     public void insert(Personagem item )
+     {
+         current = parent = grand = header;
+         nullNode.element = item;
+         while (current.element != item)
+         {            
+             great = grand; 
+             grand = parent; 
+             parent = current;
+             //current = item < current.element ? current.left : current.right;
+             if(item != null && current.element != null && item.getNome().compareTo(current.element.getNome()) < 0)
+                 current = current.left;
+
+             else current = current.right;
+             
+             // Check if two red children and fix if so            
+             if (current.left.color == RED && current.right.color == RED)
+                 handleReorient( item );
+         }
+         // Insertion fails if already present
+         if (current != nullNode)
+             return;
+         current = new RedBlackNode(item, nullNode, nullNode);
+         // Attach to parent
+         //if (item < parent.element)
+         if (item != null && parent.element != null && item.getNome().compareTo(parent.element.getNome()) < 0)
+             parent.left = current;
+         else
+             parent.right = current;        
+         handleReorient( item );
+     }
+     private void handleReorient(Personagem item)
+     {
+         // Do the color flip
+         current.color = RED;
+         current.left.color = BLACK;
+         current.right.color = BLACK;
+ 
+         if (parent.color == RED)   
+         {
+             // Have to rotate
+             grand.color = RED;
+             //if (item < grand.element != item < parent.element)
+             if ((item.getNome().compareTo(grand.element.getNome()) < 0) != (item.getNome().compareTo(parent.element.getNome()) < 0))
+                 parent = rotate( item, grand );  // Start dbl rotate
+             current = rotate(item, great );
+             current.color = BLACK;
+         }
+         // Make root black
+         header.right.color = BLACK; 
+     }      
+     private RedBlackNode rotate(Personagem item, RedBlackNode parent)
+     {
+         //if(item < parent.element)
+         if(item != null && parent.element != null && item.getNome().compareTo(parent.element.getNome()) < 0)
+             //return parent.left = item < parent.left.element ? rotateWithLeftChild(parent.left) : rotateWithRightChild(parent.left);
+             if(parent.left.element.getNome().compareTo(parent.left.element.getNome()) < 0)
+                 return parent.left = rotateWithLeftChild(parent.left);
+             else
+                 return parent.right = rotateWithRightChild(parent.left);
+
+         else
+             //return parent.right = item < parent.right.element ? rotateWithLeftChild(parent.right) : rotateWithRightChild(parent.right); 
+             if(parent.right.element.getNome().compareTo(parent.right.element.getNome()) < 0)
+                return parent.right = rotateWithLeftChild(parent.right);
+             else
+                return parent.right = rotateWithRightChild(parent.right);
+     }
+     /* Rotate binary tree node with left child */
+     private RedBlackNode rotateWithLeftChild(RedBlackNode k2)
+     {
+         RedBlackNode k1 = k2.left;
+         k2.left = k1.right;
+         k1.right = k2;
+         return k1;
+     }
+     /* Rotate binary tree node with right child */
+     private RedBlackNode rotateWithRightChild(RedBlackNode k1)
+     {
+         RedBlackNode k2 = k1.right;
+         k1.right = k2.left;
+         k2.left = k1;
+         return k2;
+     }
+     /* Functions to count number of nodes */
+     public int countNodes()
+     {
+         return countNodes(header.right);
+     }
+     private int countNodes(RedBlackNode r)
+     {
+         if (r == nullNode)
+             return 0;
+         else
+         {
+             int l = 1;
+             l += countNodes(r.left);
+             l += countNodes(r.right);
+             return l;
+         }
+     }
+     /* Functions to search for an element */
+     public boolean search(String val)
+     {
+         return search(header.right, val);
+     }
+     private boolean search(RedBlackNode r, String val)
+     {
+            boolean found = false;
+
+            if(r != nullNode) {
+                //if (val < rval)
+                if(val.compareTo(r.element.getNome()) < 0) {
+                    MyIO.print("esq ");
+                    //r = r.left;
+                    found = search(r.left, val);
+                }
+                //else if (val > rval)
+                else if (val.compareTo(r.element.getNome()) > 0) {
+                    MyIO.print("dir ");
+                    //r = r.right;
+                    found = search(r.right, val);
+                }
+                else found = true;
+            }
+
+        return found;
+     }
+     /* Function for inorder traversal */ 
+     public void inorder()
+     {
+         inorder(header.right);
+     }
+     private void inorder(RedBlackNode r)
+     {
+         if (r != nullNode)
+         {
+             inorder(r.left);
+             char c = 'B';
+             if (r.color == 0)
+                 c = 'R';
+             System.out.print(r.element +""+c+" ");
+             inorder(r.right);
+         }
+     }
+     /* Function for preorder traversal */
+     public void preorder()
+     {
+         preorder(header.right);
+     }
+     private void preorder(RedBlackNode r)
+     {
+         if (r != nullNode)
+         {
+             char c = 'B';
+             if (r.color == 0)
+                 c = 'R';
+             System.out.print(r.element +""+c+" ");
+             preorder(r.left);             
+             preorder(r.right);
+         }
+     }
+     /* Function for postorder traversal */
+     public void postorder()
+     {
+         postorder(header.right);
+     }
+     private void postorder(RedBlackNode r)
+     {
+         if (r != nullNode)
+         {
+             postorder(r.left);             
+             postorder(r.right);
+             char c = 'B';
+             if (r.color == 0)
+                 c = 'R';
+             System.out.print(r.element +""+c+" ");
+         }
+     }     
+ }
 
 //Classe de Personagens do Star Wars
 class Personagem {
